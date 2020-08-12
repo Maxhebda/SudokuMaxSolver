@@ -21,6 +21,9 @@ namespace SudokuMaxSolver
     /// </summary>
     public partial class MainWindow : Window
     {
+        BoardTab board = new BoardTab();
+        Button[,] buttonMain = new Button[9, 9];
+
         public MainWindow()
         {
             InitializeComponent();
@@ -28,21 +31,19 @@ namespace SudokuMaxSolver
         }
 
         void generateBoard()
-        {
-            
+        {   
             UniformGrid grid = new UniformGrid();
             grid.Width = 450;
             grid.Height = 450;
             grid.Columns = 9;
             stackPanelMain.Children.Add(grid);
             // generate 9x9 buttons
-            Button[,] buttonMain = new Button[9, 9];
             for (byte y = 0; y < 9; y++)
             {
                 for (byte x = 0; x < 9; x++)
                 {
                     buttonMain[y, x] = new Button();
-                    buttonMain[y, x].Content = "b" + y + x;
+                    buttonMain[y, x].Content = "0";
                     buttonMain[y, x].Width = 50;
                     buttonMain[y, x].Height = 50;
                     buttonMain[y, x].Click += bMain_Click;
@@ -53,9 +54,15 @@ namespace SudokuMaxSolver
             }
             this.Height = dockPanelMain.Height;
         }
+
         private void bMain_Click(object sender, RoutedEventArgs e)
         {
-            menuProgram.Header = "sss";
+            // number y and x of our button
+            byte y = byte.Parse(((Button)sender).Name[1] + "");
+            byte x =byte.Parse(((Button)sender).Name[2] + "");
+            board.set(y, x, x);
+            buttonMain[y, x].Content = "a";
+            Console.WriteLine(board.get(y, x));
         }
     }
 }
