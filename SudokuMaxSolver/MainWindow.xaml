@@ -1,0 +1,18 @@
+﻿<Window x:Class="SudokuMaxSolver.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SudokuMaxSolver"
+        mc:Ignorable="d"
+        Title="SudokuMaxSolver" ResizeMode="NoResize" MaxWidth="480">
+    
+    <DockPanel x:Name="dockPanelMain" Height="520" Width="460">
+        <Menu  DockPanel.Dock="Top">
+            <MenuItem x:Name="menuProgram" Header="Program" />
+            <MenuItem Header="Edycja" IsEnabled="False" />
+            <MenuItem Header="Info" IsEnabled="False"/>
+        </Menu>
+        <StackPanel x:Name="stackPanelMain" Margin="5" DockPanel.Dock="Top" Width="auto" Height="auto"/>
+    </DockPanel>
+</Window>
