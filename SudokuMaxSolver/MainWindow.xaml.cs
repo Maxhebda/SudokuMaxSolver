@@ -33,12 +33,14 @@ namespace SudokuMaxSolver
         }
 
         void generateBoard()
-        {   
-            UniformGrid grid = new UniformGrid();
-            grid.Width = 450;
-            grid.Height = 450;
-            grid.Columns = 9;
-            stackPanelMain.Children.Add(grid);
+        {
+            Canvas canvas = new Canvas();
+            canvas.Width = 450;
+            canvas.Height = 450;
+            canvas.Background = Brushes.White;
+            stackPanelMain.Children.Add(canvas);
+            Line[] myTmpLine = new Line[4];             //line for main board
+
             // generate 9x9 buttons
             for (byte y = 0; y < 9; y++)
             {
@@ -51,9 +53,26 @@ namespace SudokuMaxSolver
                     buttonMain[y, x].Click += bMain_Click;
                     buttonMain[y, x].Name = "b" + y + x;
                     buttonMain[y, x].FontSize = 14;
-                    grid.Children.Add(buttonMain[y, x]);
+                    Canvas.SetLeft(buttonMain[y, x], x*50);
+                    Canvas.SetTop(buttonMain[y, x], y*50);
+                    canvas.Children.Add(buttonMain[y, x]);
                 }
             }
+
+            // generate 4 lines for the main board
+            byte myTmpLineCounter = 0;
+            for (byte i = 0; i < 4;  i++)
+            {
+                myTmpLine[i] = new Line();
+                myTmpLine[i].X1 = i == 0 ? 149 : i == 1 ? 299 : 0;
+                myTmpLine[i].X2 = i == 0 ? 149 : i == 1 ? 299 : 450;
+                myTmpLine[i].Y1 = i <= 1 ? 0   : i == 2 ? 149 : 299;
+                myTmpLine[i].Y2 = i <= 1 ? 450 : i == 2 ? 149 : 299;
+                myTmpLine[myTmpLineCounter].Stroke = System.Windows.Media.Brushes.Black;
+                myTmpLine[myTmpLineCounter].StrokeThickness = 3;
+                canvas.Children.Add(myTmpLine[myTmpLineCounter++]);
+            }
+
             this.Height = dockPanelMain.Height;
         }
         void generatePopup(byte yMain, byte xMain)
@@ -62,6 +81,7 @@ namespace SudokuMaxSolver
             grid.Columns = 3;
             grid.Width = 100;
             grid.Height = 100;
+            grid.Background = Brushes.White;
             for (byte iPopup = 0; iPopup < 9; iPopup++)
             {
                 buttonPopup[iPopup] = new Button();
@@ -69,6 +89,7 @@ namespace SudokuMaxSolver
                 buttonPopup[iPopup].Width = 30;
                 buttonPopup[iPopup].Height = 30;
                 buttonPopup[iPopup].Name = "p" + (iPopup + 1);
+                buttonPopup[iPopup].Margin = new Thickness(3);
                 buttonPopup[iPopup].Click += bPopup_Click;
                 grid.Children.Add(buttonPopup[iPopup]);
             }
