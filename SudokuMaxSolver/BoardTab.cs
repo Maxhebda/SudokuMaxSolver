@@ -9,16 +9,18 @@ namespace SudokuMaxSolver
 {
     class BoardTab
     {
-        byte [,] board = new byte[9,9];
+        byte[,] board = new byte[9, 9];
         public BoardTab()
         {
             clear();
         }
         public void clear()
         {
+            Random rand = new Random();
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
-                    board[y, x] = 0;
+                    //        board[y, x] = 0;
+                    board[y, x] = (byte)rand.Next(0, 10);
         }
         public void set(byte y, byte x, byte value)
         {
@@ -29,21 +31,25 @@ namespace SudokuMaxSolver
         {
             return board[y, x];
         }
-        public List<byte> valuesInRow(byte row)     //all values in the row
+        public List<byte> valuesInRow(byte row)     //all values in the row (+1 overload)
         {
             List<byte> list = new List<byte>();
             byte tmp;
-            for (byte x = 0; x<9; x++)
+            for (byte x = 0; x < 9; x++)
             {
                 tmp = board[row, x];
-                if (tmp!=0)
+                if (tmp != 0)
                 {
                     list.Add(tmp);
                 }
             }
             return list;
         }
-        public List<byte> valuesInColumn(byte column)     //all values in the column
+        public List<byte> valuesInRow(byte y, byte x)     //all values in the row
+        {
+            return valuesInRow(y);
+        }
+        public List<byte> valuesInColumn(byte column)     //all values in the column (+1 overload)
         {
             List<byte> list = new List<byte>();
             byte tmp;
@@ -57,18 +63,22 @@ namespace SudokuMaxSolver
             }
             return list;
         }
-        public List<byte> valuesInSquare(byte square)     //all values in the square 1..9
+        public List<byte> valuesInColumn(byte y, byte x)  //all values in the column
+        {
+            return valuesInColumn(x);
+        }
+        public List<byte> valuesInSquare(byte square)     //all values in the square 1..9 (+1 overload)
         {
             List<byte> list = new List<byte>();
             byte tmp;
-            switch(square)
+            switch (square)
             {
                 case 1:
-                    for (byte y=0 ; y<3 ; y++)
-                        for (byte x=0 ; x<3 ; x++)
+                    for (byte y = 0; y < 3; y++)
+                        for (byte x = 0; x < 3; x++)
                         {
                             tmp = board[y, x];
-                            if (tmp!=0)
+                            if (tmp != 0)
                             {
                                 list.Add(tmp);
                             }
@@ -165,5 +175,20 @@ namespace SudokuMaxSolver
             }
             return list;
         }
+        public List<byte> valuesInSquare(byte y, byte x)     //all values in the square 1..9
+        {
+            if (y < 3 && x < 3) return valuesInSquare(1);
+            if (y < 3 && x > 2 && x < 6) return valuesInSquare(2);
+            if (y < 3 && x > 5) return valuesInSquare(3);
+
+            if (y > 2 && y < 6 && x < 3) return valuesInSquare(4);
+            if (y > 2 && y < 6 && x > 2 && x < 6) return valuesInSquare(5);
+            if (y > 2 && y < 6 && x > 5) return valuesInSquare(6);
+
+            if (y > 5 && x < 3) return valuesInSquare(7);
+            if (y > 5 && x > 2 && x < 6) return valuesInSquare(8);
+            return valuesInSquare(9);                
+        }
+
     }
 }

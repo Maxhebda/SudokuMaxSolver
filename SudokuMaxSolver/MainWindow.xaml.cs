@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace SudokuMaxSolver
                 for (byte x = 0; x < 9; x++)
                 {
                     buttonMain[y, x] = new Button();
-                    buttonMain[y, x].Content = "0";
+                    buttonMain[y, x].Content = (board.get(y,x)==0)?"": "" + board.get(y, x);
                     buttonMain[y, x].Width = 50;
                     buttonMain[y, x].Height = 50;
                     buttonMain[y, x].Click += bMain_Click;
@@ -88,7 +89,7 @@ namespace SudokuMaxSolver
                 buttonPopup[iPopup].Content = iPopup + 1;
                 buttonPopup[iPopup].Width = 30;
                 buttonPopup[iPopup].Height = 30;
-                buttonPopup[iPopup].Name = "p" + (iPopup + 1);
+                buttonPopup[iPopup].Name = "p" + (iPopup + 1) + "_" + yMain + xMain;        // name button in popup is "p3_00"
                 buttonPopup[iPopup].Margin = new Thickness(3);
                 buttonPopup[iPopup].Click += bPopup_Click;
                 grid.Children.Add(buttonPopup[iPopup]);
@@ -96,6 +97,7 @@ namespace SudokuMaxSolver
 
             popupMain.Child = grid;
             popupMain.PlacementTarget = (Button)buttonMain[yMain,xMain];
+            popupMain.Name = "p" + yMain + xMain;       // name popup is "p00"
             popupMain.Placement = PlacementMode.Right;
             popupMain.Width = 102;
             popupMain.Height = 102;
@@ -112,15 +114,29 @@ namespace SudokuMaxSolver
 
         private void bMain_Click(object sender, RoutedEventArgs e)
         {
-            // close old popup if is open
-            if (popupMain.IsOpen == true) popupMain.IsOpen = false;
-
             // number y and x of our button
             byte y = byte.Parse(((Button)sender).Name[1] + "");
             byte x = byte.Parse(((Button)sender).Name[2] + "");
-            board.set(y, x, x);
-            buttonMain[y, x].Content = "a";
-            Console.WriteLine(board.get(y, x));
+
+            // double click close popup
+            if (popupMain.Name == "p" + y + x && popupMain.IsOpen==true)
+            {
+                popupMain.IsOpen = false;
+                popupMain.Name = null;
+                return;
+            }
+
+            // close old popup if is open
+            if (popupMain.IsOpen == true) popupMain.IsOpen = false;
+
+            // board.set(y, x, x);
+            // buttonMain[y, x].Content = "a";
+            List<byte> l = board.valuesInSquare(y,x);
+            for (int i=0; i<l.Count; i++)
+            {
+                Debug.Write(l[i] + ", ");
+            }
+            Debug.WriteLine(" ");
 
             generatePopup(y, x);    //show the popup after clicking the button
         }
