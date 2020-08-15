@@ -16,11 +16,11 @@ namespace SudokuMaxSolver
         }
         public void clear()
         {
-            Random rand = new Random();
+            //Random rand = new Random();
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
-                    //        board[y, x] = 0;
-                    board[y, x] = (byte)rand.Next(0, 10);
+                            board[y, x] = 0;
+                    //board[y, x] = (byte)rand.Next(0, 10);
         }
         public void set(byte y, byte x, byte value)
         {
@@ -190,24 +190,55 @@ namespace SudokuMaxSolver
             return valuesInSquare(9);                
         }
 
-        public bool isInColumn(byte column, byte nr)
-        {
-            for (byte x = 0; x < 9; x++)
-            {
-                if (board[column, x] == nr)
-                    return true;
-            }
-            return false;
-        }
-        public bool isInRow(byte row, byte nr)
+        public bool isInColumn(byte column, byte nr)        //check if the number is in the column (+1 overload)
         {
             for (byte y = 0; y < 9; y++)
             {
-                if (board[y, row] == nr)
+                if (board[y, column] == nr)
                     return true;
             }
             return false;
         }
-
+        public bool isInColumn(byte y, byte x, byte nr)     //check if the number is in the column
+        {
+            return isInColumn(x, nr);
+        }
+        public bool isInRow(byte row, byte nr)              //check if the number is in the row (+1 overload)
+        {
+            for (byte x = 0; x < 9; x++)
+            {
+                if (board[row, x] == nr)
+                    return true;
+            }
+            return false;
+        }
+        public bool isInRow(byte y, byte x, byte nr)        //check if the number is in the row
+        {
+            return isInRow(y, nr);
+        }
+        public bool isInSquare(byte square, byte nr)        //check if the number is in the square (+1 overload)
+        {
+            List<byte> l = valuesInSquare(square);
+            for (byte a = 0; a < l.Count; a++)
+            {
+                if (l[a]==nr)
+                {
+                    return true;
+                }         
+            } 
+            return false;
+        }
+        public bool isInSquare(byte y, byte x, byte nr)     //check if the number is in the square
+        {
+            List<byte> l = valuesInSquare(y, x);
+            for (byte a = 0; a < l.Count; a++)
+            {
+                if (l[a] == nr)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -87,12 +87,21 @@ namespace SudokuMaxSolver
                 if (board.get(yMain, xMain) == iPopup + 1)
                 {
                     buttonPopup[iPopup].Content = "X";
-                    buttonPopup[iPopup].Name = "p" + (iPopup + 1) + "_" + yMain + xMain;        // name button in popup is "p3_00"
+                    buttonPopup[iPopup].Name = "p0_" + yMain + xMain;        // name button in popup is "p0_00"
+                    
                 }
                 else
                 {
+                     if (board.isInRow(yMain, xMain, (byte)(iPopup+1)) || board.isInColumn(yMain, xMain, (byte)(iPopup + 1)) || board.isInSquare(yMain, xMain, (byte)(iPopup + 1)))
+                        {
+                        buttonPopup[iPopup].IsEnabled = false;
+                    }
+                    else
+                    {
+                        buttonPopup[iPopup].IsEnabled = true;
+                    }
                     buttonPopup[iPopup].Content = iPopup + 1;
-                    buttonPopup[iPopup].Name = "p0_" + yMain + xMain;        // name button in popup is "p0_00"
+                    buttonPopup[iPopup].Name = "p" + (iPopup + 1) + "_" + yMain + xMain;        // name button in popup is "p3_00"
                 }
                 buttonPopup[iPopup].Width = 30;
                 buttonPopup[iPopup].Height = 30;
@@ -116,6 +125,16 @@ namespace SudokuMaxSolver
         {
             // hidden popup
             popupMain.IsOpen = false;
+
+            // number y and x on the our main button and number popup to change
+            byte y = byte.Parse(((Button)sender).Name[3] + "");
+            byte x = byte.Parse(((Button)sender).Name[4] + "");
+            byte p = byte.Parse(((Button)sender).Name[1] + "");
+
+            //change of number on the main board
+            board.set(y, x, p);
+            buttonMain[y, x].Content = (p == 0) ? "" : "" + p;
+            Debug.WriteLine(((Button)sender).Name);
         }
 
         private void bMain_Click(object sender, RoutedEventArgs e)
@@ -134,15 +153,6 @@ namespace SudokuMaxSolver
 
             // close old popup if is open
             if (popupMain.IsOpen == true) popupMain.IsOpen = false;
-
-            // board.set(y, x, x);
-            // buttonMain[y, x].Content = "a";
-            List<byte> l = board.valuesInSquare(y,x);
-            for (int i=0; i<l.Count; i++)
-            {
-                Debug.Write(l[i] + ", ");
-            }
-            Debug.WriteLine(" ");
 
             generatePopup(y, x);    //show the popup after clicking the button
         }
