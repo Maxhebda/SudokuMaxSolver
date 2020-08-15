@@ -17,9 +17,6 @@ using System.Windows.Shapes;
 
 namespace SudokuMaxSolver
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         BoardTab board = new BoardTab();
@@ -85,11 +82,20 @@ namespace SudokuMaxSolver
             grid.Background = Brushes.White;
             for (byte iPopup = 0; iPopup < 9; iPopup++)
             {
+                // show "x" if you click to number
                 buttonPopup[iPopup] = new Button();
-                buttonPopup[iPopup].Content = iPopup + 1;
+                if (board.get(yMain, xMain) == iPopup + 1)
+                {
+                    buttonPopup[iPopup].Content = "X";
+                    buttonPopup[iPopup].Name = "p" + (iPopup + 1) + "_" + yMain + xMain;        // name button in popup is "p3_00"
+                }
+                else
+                {
+                    buttonPopup[iPopup].Content = iPopup + 1;
+                    buttonPopup[iPopup].Name = "p0_" + yMain + xMain;        // name button in popup is "p0_00"
+                }
                 buttonPopup[iPopup].Width = 30;
                 buttonPopup[iPopup].Height = 30;
-                buttonPopup[iPopup].Name = "p" + (iPopup + 1) + "_" + yMain + xMain;        // name button in popup is "p3_00"
                 buttonPopup[iPopup].Margin = new Thickness(3);
                 buttonPopup[iPopup].Click += bPopup_Click;
                 grid.Children.Add(buttonPopup[iPopup]);

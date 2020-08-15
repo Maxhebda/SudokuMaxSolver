@@ -190,5 +190,24 @@ namespace SudokuMaxSolver
             return valuesInSquare(9);                
         }
 
+        public bool isInColumn(byte column, byte nr)
+        {
+            for (byte x = 0; x < 9; x++)
+            {
+                if (board[column, x] == nr)
+                    return true;
+            }
+            return false;
+        }
+        public bool isInRow(byte row, byte nr)
+        {
+            for (byte y = 0; y < 9; y++)
+            {
+                if (board[y, row] == nr)
+                    return true;
+            }
+            return false;
+        }
+
     }
 }
