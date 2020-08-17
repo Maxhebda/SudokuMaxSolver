@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Windows.Media;
-using System.Windows.Media.TextFormatting;
 
 namespace SudokuMaxSolver
 {
     class Sudoku_AI
     {
-        public enum difficultyLevel 
-            {
-                Trywialna, BardzoLatwa, Latwa, Przecietna, DosycTrudna, Trudna, BardzoTrudna, Diaboliczna, Niemozliwa
-            }
+        public enum difficultyLevel
+        {
+            Trywialna, BardzoLatwa, Latwa, Przecietna, DosycTrudna, Trudna, BardzoTrudna, Diaboliczna, Niemozliwa
+        }
         byte[,] boardAI = new byte[9, 9];
         Random rand = new Random();
 
@@ -21,17 +18,21 @@ namespace SudokuMaxSolver
         }
         public void generateNewBoard(difficultyLevel level)
         {
-            for (byte i=0; i<4; i++)
+            //generate full good board
+            generateBigColumnAround(); 
+            generateBigRowAround();
+            generateSmallColumnAround();
+            generateSmallRowAround();
+            for (byte a = 0; a < 4; a++)
             {
-                generateSmallColumnAround();
-                generateSmallRowAround();
+                generateAroundNumbers();
             }
         }
-        private void generate9square()      //generate full good board
+        private void generate9square()      //generate full good board  (basic board)
         {
             byte reduceBy8(int a)
             {
-                while(a>9)
+                while (a > 9)
                 {
                     a = a - 9;
                 }
@@ -45,7 +46,7 @@ namespace SudokuMaxSolver
                         boardAI[y, x] = reduceBy8(1 + x + y * 3);
                     }
                     else
-                        if (y<6)
+                        if (y < 6)
                     {
                         boardAI[y, x] = reduceBy8(2 + x + y * 3);
                     }
@@ -61,8 +62,8 @@ namespace SudokuMaxSolver
             byte nrOfColumn2;
             for (byte i = 0; i < 3; i++)
             {
-                nrOfColumn1 = (byte)rand.Next(i*3, 3 + i * 3);        // column 0,1,2   3,4,5   6,7,8
-                nrOfColumn2 = (byte)rand.Next(i*3, 3 + i * 3);
+                nrOfColumn1 = (byte)rand.Next(i * 3, 3 + i * 3);        // column 0,1,2   3,4,5   6,7,8
+                nrOfColumn2 = (byte)rand.Next(i * 3, 3 + i * 3);
                 while (nrOfColumn1 == nrOfColumn2)
                 {
                     nrOfColumn2 = (byte)rand.Next(i * 3, 3 + i * 3);
@@ -74,7 +75,6 @@ namespace SudokuMaxSolver
                     boardAI[y, nrOfColumn1] = boardAI[y, nrOfColumn2];
                     boardAI[y, nrOfColumn2] = tmp;
                 }
-                Debug.WriteLine(nrOfColumn1 + " " + nrOfColumn2);
             }
         }
         private void generateSmallRowAround()        //move the small row around
@@ -96,7 +96,82 @@ namespace SudokuMaxSolver
                     boardAI[nrOfRow1, x] = boardAI[nrOfRow2, x];
                     boardAI[nrOfRow2, x] = tmp;
                 }
-                Debug.WriteLine(nrOfRow1 + " " + nrOfRow2);
+            }
+        }
+        private void generateBigColumnAround()        //move the big columns around
+        {
+            byte nrOfColumngroup1;
+            byte nrOfColumngroup2;
+
+            nrOfColumngroup1 = (byte)rand.Next(0, 3);        // column group (0,1,2), (3,4,5), (6,7,8)
+            nrOfColumngroup2 = (byte)rand.Next(0, 3);
+            while (nrOfColumngroup1 == nrOfColumngroup2)
+            {
+                nrOfColumngroup2 = (byte)rand.Next(0, 3);
+            }
+            byte tmp;
+            for (byte y = 0; y < 9; y++)
+            {
+                tmp = boardAI[y, nrOfColumngroup1 * 3];
+                boardAI[y, nrOfColumngroup1 * 3] = boardAI[y, nrOfColumngroup2 * 3];
+                boardAI[y, nrOfColumngroup2 * 3] = tmp;
+                tmp = boardAI[y, nrOfColumngroup1 * 3+1];
+                boardAI[y, nrOfColumngroup1 * 3+1] = boardAI[y, nrOfColumngroup2 * 3+1];
+                boardAI[y, nrOfColumngroup2 * 3+1] = tmp;
+                tmp = boardAI[y, nrOfColumngroup1 * 3+2];
+                boardAI[y, nrOfColumngroup1 * 3+2] = boardAI[y, nrOfColumngroup2 * 3+2];
+                boardAI[y, nrOfColumngroup2 * 3+2] = tmp;
+            }
+        }
+        private void generateBigRowAround()        //move the big row around
+        {
+            byte nrOfRowGroup1;
+            byte nrOfRowGroup2;
+
+            nrOfRowGroup1 = (byte)rand.Next(0, 3);        // row group (0,1,2), (3,4,5), (6,7,8)
+            nrOfRowGroup2 = (byte)rand.Next(0, 3);
+            while (nrOfRowGroup1 == nrOfRowGroup2)
+            {
+                nrOfRowGroup2 = (byte)rand.Next(0, 3);
+            }
+            byte tmp;
+            for (byte x = 0; x < 9; x++)
+            {
+                tmp = boardAI[nrOfRowGroup1 * 3, x];
+                boardAI[nrOfRowGroup1 * 3, x] = boardAI[nrOfRowGroup2 * 3, x];
+                boardAI[nrOfRowGroup2 * 3, x] = tmp;
+                tmp = boardAI[nrOfRowGroup1 * 3 + 1, x];
+                boardAI[nrOfRowGroup1 * 3 + 1, x] = boardAI[nrOfRowGroup2 * 3 + 1, x];
+                boardAI[nrOfRowGroup2 * 3 + 1, x] = tmp;
+                tmp = boardAI[nrOfRowGroup1 * 3 + 2, x];
+                boardAI[nrOfRowGroup1 * 3 + 2, x] = boardAI[nrOfRowGroup2 * 3 + 2, x];
+                boardAI[nrOfRowGroup2 * 3 + 2, x] = tmp;
+            }
+        }
+        private void generateAroundNumbers()        //around two random numbers
+        {
+            byte nr1;
+            byte nr2;
+
+            nr1 = (byte)rand.Next(1, 10);        // random number 1..9
+            nr2 = (byte)rand.Next(1, 10);
+            while (nr1 == nr2)
+            {
+                nr2 = (byte)rand.Next(1, 10);
+            }
+            for (byte y = 0; y < 9; y++)
+            {
+                for (byte x = 0; x < 9; x++)
+                {
+                    if (boardAI[y, x] == nr1)
+                    {
+                        boardAI[y, x] = nr2;
+                    }
+                    else if (boardAI[y, x] == nr2)
+                    {
+                        boardAI[y, x] = nr1;
+                    }
+                }
             }
         }
         public byte get(byte y, byte x)

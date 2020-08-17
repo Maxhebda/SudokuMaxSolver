@@ -125,7 +125,7 @@ namespace SudokuMaxSolver
             //change of number on the main board
             board.set(y, x, p);
             buttonMain[y, x].Content = (p == 0) ? "" : "" + p;
-            Debug.WriteLine(((Button)sender).Name);
+            //Debug.WriteLine(((Button)sender).Name);
         }
 
         private void bMain_Click(object sender, RoutedEventArgs e)
@@ -150,7 +150,7 @@ namespace SudokuMaxSolver
         private void menuTrywialna_Click(object sender, RoutedEventArgs e)
         {
             Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.BardzoLatwa);
+            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Trywialna);
             board.load(newSudoku);
             refreshBoard();
         }
@@ -158,7 +158,12 @@ namespace SudokuMaxSolver
         {
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
-                    buttonMain[y, x].Content = (board.get(y,x) == 0) ? "" : "" + board.get(y, x);
+                    buttonMain[y, x].Content = (board.get(y, x) == 0) ? "" : "" + board.get(y, x);
+        }
+
+        private void menuProgram_Click(object sender, RoutedEventArgs e)
+        {
+           popupMain.IsOpen = false;
         }
     }
 }

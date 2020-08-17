@@ -9,7 +9,7 @@
     
     <DockPanel x:Name="dockPanelMain" Height="520" Width="460">
         <Menu  DockPanel.Dock="Top">
-            <MenuItem x:Name="menuProgram" Header="Program">
+            <MenuItem x:Name="menuProgram" Header="Program" Click="menuProgram_Click">
                 <MenuItem Header="Generuj nową planszę">
                     <MenuItem x:Name="menuTrywialna" Header="Trywialna" Click="menuTrywialna_Click"/>
                 </MenuItem>
