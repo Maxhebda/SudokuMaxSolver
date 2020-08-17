@@ -12,6 +12,14 @@
             <MenuItem x:Name="menuProgram" Header="Program" Click="menuProgram_Click">
                 <MenuItem Header="Generuj nową planszę">
                     <MenuItem x:Name="menuTrywialna" Header="Trywialna" Click="menuTrywialna_Click"/>
+                    <MenuItem x:Name="menuBardzoLatwa" Header="Bardzo Łatwa" Click="menuBardzoLatwa_Click"/>
+                    <MenuItem x:Name="menuLatwa" Header="Łatwa" Click="menuLatwa_Click"/>
+                    <MenuItem x:Name="menuPrzecietna" Header="Przeciętna" Click="menuPrzecietna_Click"/>
+                    <MenuItem x:Name="menuDosycTrudna" Header="Dosyć Trudna" Click="menuDosycTrudna_Click"/>
+                    <MenuItem x:Name="menuTrudna" Header="Trudna" Click="menuTrudna_Click"/>
+                    <MenuItem x:Name="menuBardzoTrudna" Header="Bardzo Trudna" Click="menuBardzoTrudna_Click"/>
+                    <MenuItem x:Name="menuDiaboliczna" Header="Diaboliczna" Click="menuDiaboliczna_Click"/>
+                    <MenuItem x:Name="menuNiemozliwa" Header="Niemożliwa" Click="menuNiemozliwa_Click"/>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Edycja" IsEnabled="False" />

@@ -6,9 +6,10 @@ namespace SudokuMaxSolver
     class Sudoku_AI
     {
         public enum difficultyLevel
-        {
-            Trywialna, BardzoLatwa, Latwa, Przecietna, DosycTrudna, Trudna, BardzoTrudna, Diaboliczna, Niemozliwa
+        {   // number of ready digits
+            Trywialna =45, BardzoLatwa=42, Latwa=39, Przecietna=36, DosycTrudna=33, Trudna=30, BardzoTrudna=27, Diaboliczna=23, Niemozliwa=19
         }
+
         byte[,] boardAI = new byte[9, 9];
         Random rand = new Random();
 
@@ -26,6 +27,18 @@ namespace SudokuMaxSolver
             for (byte a = 0; a < 4; a++)
             {
                 generateAroundNumbers();
+            }
+            byte deleteDigits =(byte)(81 - level);
+            byte deleteDigitsCounter = 0;
+            while(deleteDigitsCounter<deleteDigits)
+            {
+                byte x = (byte)rand.Next(0, 9);
+                byte y = (byte)rand.Next(0, 9);
+                if (boardAI[y,x]!=0)
+                {
+                    boardAI[y, x] = 0;
+                    deleteDigitsCounter++;
+                }
             }
         }
         private void generate9square()      //generate full good board  (basic board)
