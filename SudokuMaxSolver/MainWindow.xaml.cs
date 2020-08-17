@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace SudokuMaxSolver
@@ -45,26 +35,26 @@ namespace SudokuMaxSolver
                 for (byte x = 0; x < 9; x++)
                 {
                     buttonMain[y, x] = new Button();
-                    buttonMain[y, x].Content = (board.get(y,x)==0)?"": "" + board.get(y, x);
+                    buttonMain[y, x].Content = (board.get(y, x) == 0) ? "" : "" + board.get(y, x);
                     buttonMain[y, x].Width = 50;
                     buttonMain[y, x].Height = 50;
                     buttonMain[y, x].Click += bMain_Click;
                     buttonMain[y, x].Name = "b" + y + x;
                     buttonMain[y, x].FontSize = 14;
-                    Canvas.SetLeft(buttonMain[y, x], x*50);
-                    Canvas.SetTop(buttonMain[y, x], y*50);
+                    Canvas.SetLeft(buttonMain[y, x], x * 50);
+                    Canvas.SetTop(buttonMain[y, x], y * 50);
                     canvas.Children.Add(buttonMain[y, x]);
                 }
             }
 
             // generate 4 lines for the main board
             byte myTmpLineCounter = 0;
-            for (byte i = 0; i < 4;  i++)
+            for (byte i = 0; i < 4; i++)
             {
                 myTmpLine[i] = new Line();
                 myTmpLine[i].X1 = i == 0 ? 149 : i == 1 ? 299 : 0;
                 myTmpLine[i].X2 = i == 0 ? 149 : i == 1 ? 299 : 450;
-                myTmpLine[i].Y1 = i <= 1 ? 0   : i == 2 ? 149 : 299;
+                myTmpLine[i].Y1 = i <= 1 ? 0 : i == 2 ? 149 : 299;
                 myTmpLine[i].Y2 = i <= 1 ? 450 : i == 2 ? 149 : 299;
                 myTmpLine[myTmpLineCounter].Stroke = System.Windows.Media.Brushes.Black;
                 myTmpLine[myTmpLineCounter].StrokeThickness = 3;
@@ -88,12 +78,12 @@ namespace SudokuMaxSolver
                 {
                     buttonPopup[iPopup].Content = "X";
                     buttonPopup[iPopup].Name = "p0_" + yMain + xMain;        // name button in popup is "p0_00"
-                    
+
                 }
                 else
                 {
-                     if (board.isInRow(yMain, xMain, (byte)(iPopup+1)) || board.isInColumn(yMain, xMain, (byte)(iPopup + 1)) || board.isInSquare(yMain, xMain, (byte)(iPopup + 1)))
-                        {
+                    if (board.isInRow(yMain, xMain, (byte)(iPopup + 1)) || board.isInColumn(yMain, xMain, (byte)(iPopup + 1)) || board.isInSquare(yMain, xMain, (byte)(iPopup + 1)))
+                    {
                         buttonPopup[iPopup].IsEnabled = false;
                     }
                     else
@@ -110,8 +100,9 @@ namespace SudokuMaxSolver
                 grid.Children.Add(buttonPopup[iPopup]);
             }
 
+            //set popup
             popupMain.Child = grid;
-            popupMain.PlacementTarget = (Button)buttonMain[yMain,xMain];
+            popupMain.PlacementTarget = (Button)buttonMain[yMain, xMain];
             popupMain.Name = "p" + yMain + xMain;       // name popup is "p00"
             popupMain.Placement = PlacementMode.Right;
             popupMain.Width = 102;
@@ -144,10 +135,10 @@ namespace SudokuMaxSolver
             byte x = byte.Parse(((Button)sender).Name[2] + "");
 
             // double click close popup
-            if (popupMain.Name == "p" + y + x && popupMain.IsOpen==true)
+            if (popupMain.Name == "p" + y + x && popupMain.IsOpen == true)
             {
                 popupMain.IsOpen = false;
-                popupMain.Name = null;
+                popupMain.Name = "p";
                 return;
             }
 
@@ -155,6 +146,19 @@ namespace SudokuMaxSolver
             if (popupMain.IsOpen == true) popupMain.IsOpen = false;
 
             generatePopup(y, x);    //show the popup after clicking the button
+        }
+        private void menuTrywialna_Click(object sender, RoutedEventArgs e)
+        {
+            Sudoku_AI newSudoku = new Sudoku_AI();
+            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.BardzoLatwa);
+            board.load(newSudoku);
+            refreshBoard();
+        }
+        private void refreshBoard()     //show board
+        {
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                    buttonMain[y, x].Content = (board.get(y,x) == 0) ? "" : "" + board.get(y, x);
         }
     }
 }

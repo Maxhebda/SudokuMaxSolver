@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace SudokuMaxSolver
 {
@@ -16,11 +11,9 @@ namespace SudokuMaxSolver
         }
         public void clear()
         {
-            //Random rand = new Random();
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
-                            board[y, x] = 0;
-                    //board[y, x] = (byte)rand.Next(0, 10);
+                    board[y, x] = 0;
         }
         public void set(byte y, byte x, byte value)
         {
@@ -187,7 +180,7 @@ namespace SudokuMaxSolver
 
             if (y > 5 && x < 3) return valuesInSquare(7);
             if (y > 5 && x > 2 && x < 6) return valuesInSquare(8);
-            return valuesInSquare(9);                
+            return valuesInSquare(9);
         }
 
         public bool isInColumn(byte column, byte nr)        //check if the number is in the column (+1 overload)
@@ -221,11 +214,11 @@ namespace SudokuMaxSolver
             List<byte> l = valuesInSquare(square);
             for (byte a = 0; a < l.Count; a++)
             {
-                if (l[a]==nr)
+                if (l[a] == nr)
                 {
                     return true;
-                }         
-            } 
+                }
+            }
             return false;
         }
         public bool isInSquare(byte y, byte x, byte nr)     //check if the number is in the square
@@ -239,6 +232,12 @@ namespace SudokuMaxSolver
                 }
             }
             return false;
+        }
+        public void load(Sudoku_AI sudoku)
+        {
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                    board[y, x] = sudoku.get(y, x);
         }
     }
 }
