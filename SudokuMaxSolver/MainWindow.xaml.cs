@@ -39,6 +39,7 @@ namespace SudokuMaxSolver
                     buttonMain[y, x].Width = 50;
                     buttonMain[y, x].Height = 50;
                     buttonMain[y, x].Click += bMain_Click;
+                    buttonMain[y, x].MouseRightButtonDown += bPopup_RightClick;     //close popup if you click right mouse
                     buttonMain[y, x].Name = "b" + y + x;
                     buttonMain[y, x].FontSize = 14;
                     Canvas.SetLeft(buttonMain[y, x], x * 50);
@@ -70,6 +71,7 @@ namespace SudokuMaxSolver
             grid.Width = 100;
             grid.Height = 100;
             grid.Background = Brushes.White;
+            grid.MouseRightButtonDown += bPopup_RightClick;     //close popup if you click right mouse
             for (byte iPopup = 0; iPopup < 9; iPopup++)
             {
                 // show "x" if you click to number
@@ -97,6 +99,7 @@ namespace SudokuMaxSolver
                 buttonPopup[iPopup].Height = 30;
                 buttonPopup[iPopup].Margin = new Thickness(3);
                 buttonPopup[iPopup].Click += bPopup_Click;
+                buttonPopup[iPopup].MouseRightButtonDown += bPopup_RightClick;      //close popup if you click right mouse
                 grid.Children.Add(buttonPopup[iPopup]);
             }
 
@@ -126,6 +129,11 @@ namespace SudokuMaxSolver
             board.set(y, x, p);
             buttonMain[y, x].Content = (p == 0) ? "" : "" + p;
             //Debug.WriteLine(((Button)sender).Name);
+        }
+        private void bPopup_RightClick(object sender, RoutedEventArgs e)
+        {
+            // hidden popup
+            popupMain.IsOpen = false;
         }
 
         private void bMain_Click(object sender, RoutedEventArgs e)
