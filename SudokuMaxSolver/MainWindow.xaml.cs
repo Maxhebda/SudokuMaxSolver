@@ -245,26 +245,14 @@ namespace SudokuMaxSolver
             refreshBoard();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void menuNowaPlansza_Click(object sender, RoutedEventArgs e)
         {
-            text.Width = 600;
-            text.Height = 300;
-            string s = "\t\t\t\t{\n\t\t\t\t";
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
-                    s = s + board.get(y, x);
-                    if (y != 8 || x != 8) s = s + ",";
-                    if (x == 8) s = s + "\n\t\t\t\t";
+                    buttonMain[y, x].Content = "";
                 }
-            s = s + "},\n";
-            text.Text = s;
-            text.Background = Brushes.White;
-            p.Width = 600;
-            p.Height = 300;
-            p.PlacementTarget = buttonMain[0,0];
-            p.Child = text;
-            p.IsOpen = true;
+            board.clear();
         }
     }
 }

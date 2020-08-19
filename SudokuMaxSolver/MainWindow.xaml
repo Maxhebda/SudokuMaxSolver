@@ -10,6 +10,7 @@
     <DockPanel x:Name="dockPanelMain" Height="520" Width="460">
         <Menu  DockPanel.Dock="Top">
             <MenuItem x:Name="menuProgram" Header="Program" Click="menuProgram_Click">
+                <MenuItem Header="Nowa plansza" Click="menuNowaPlansza_Click"/>
                 <MenuItem Header="Generuj nową planszę">
                     <MenuItem x:Name="menuTrywialna" Header="Trywialna" Click="menuTrywialna_Click">
                         <MenuItem.Icon>
@@ -58,7 +59,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="a" Click="MenuItem_Click"/>
+                
             </MenuItem>
             <MenuItem Header="Edycja" IsEnabled="False" />
             <MenuItem Header="Info" IsEnabled="False"/>
