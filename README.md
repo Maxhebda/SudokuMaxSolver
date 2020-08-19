@@ -12,4 +12,4 @@ Mini project written in c # Visual Studio / C# / WPF
 * sudoku solution with steps and description
 
 ## Screen from 19.08.2020 :
-![SudokuMaxSolver (Sudoku Solver) - Maksymilian Hebda](./projectScreenImage/SudokuMaxSolver1.png){ width=50% }
+![SudokuMaxSolver (Sudoku Solver) - Maksymilian Hebda](./projectScreenImage/SudokuMaxSolver1.png width=50% )
