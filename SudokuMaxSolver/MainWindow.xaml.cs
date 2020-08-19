@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -237,6 +238,11 @@ namespace SudokuMaxSolver
             newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Niemozliwa);
             board.load(newSudoku);
             refreshBoard();
+        }
+
+        private void menuDiaboliczna_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+
         }
     }
 }

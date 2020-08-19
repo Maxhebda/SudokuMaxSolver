@@ -6,9 +6,9 @@ using System.Windows;
 // zestaw atrybutów. Zmień wartości tych atrybutów, aby zmodyfikować informacje
 // powiązane z zestawem.
 [assembly: AssemblyTitle("SudokuMaxSolver")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Generowanie i rozwiązywanie Sudoku")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Maksymilian Hebda")]
 [assembly: AssemblyProduct("SudokuMaxSolver")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
