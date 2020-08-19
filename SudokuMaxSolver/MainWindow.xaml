@@ -58,6 +58,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
+                <MenuItem Header="a" Click="MenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="Edycja" IsEnabled="False" />
             <MenuItem Header="Info" IsEnabled="False"/>

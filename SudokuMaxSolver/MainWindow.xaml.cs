@@ -13,6 +13,11 @@ namespace SudokuMaxSolver
         BoardTab board = new BoardTab();
         Button[,] buttonMain = new Button[9, 9];        //main board
         Popup popupMain = new Popup();
+
+        //delete
+        Popup p = new Popup();
+        TextBox text = new TextBox();
+
         Button[] buttonPopup = new Button[9];           //small board popup
 
         public MainWindow()
@@ -240,9 +245,26 @@ namespace SudokuMaxSolver
             refreshBoard();
         }
 
-        private void menuDiaboliczna_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            text.Width = 600;
+            text.Height = 300;
+            string s = "\t\t\t\t{\n\t\t\t\t";
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                {
+                    s = s + board.get(y, x);
+                    if (y != 8 || x != 8) s = s + ",";
+                    if (x == 8) s = s + "\n\t\t\t\t";
+                }
+            s = s + "},\n";
+            text.Text = s;
+            text.Background = Brushes.White;
+            p.Width = 600;
+            p.Height = 300;
+            p.PlacementTarget = buttonMain[0,0];
+            p.Child = text;
+            p.IsOpen = true;
         }
     }
 }
