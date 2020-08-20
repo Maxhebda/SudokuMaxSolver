@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -24,6 +25,7 @@ namespace SudokuMaxSolver
         {
             InitializeComponent();
             generateBoard();
+            refreshBoard();
         }
 
         void generateBoard()
@@ -86,11 +88,15 @@ namespace SudokuMaxSolver
                 {
                     buttonPopup[iPopup].Content = "X";
                     buttonPopup[iPopup].Name = "p0_" + yMain + xMain;        // name button in popup is "p0_00"
+                    if (board.getReadOnly(yMain, xMain))
+                    {
+                        buttonPopup[iPopup].IsEnabled = false;
+                    }
 
                 }
                 else
                 {
-                    if (board.isInRow(yMain, xMain, (byte)(iPopup + 1)) || board.isInColumn(yMain, xMain, (byte)(iPopup + 1)) || board.isInSquare(yMain, xMain, (byte)(iPopup + 1)))
+                    if (board.getReadOnly(yMain,xMain) || board.isInRow(yMain, xMain, (byte)(iPopup + 1)) || board.isInColumn(yMain, xMain, (byte)(iPopup + 1)) || board.isInSquare(yMain, xMain, (byte)(iPopup + 1)))
                     {
                         buttonPopup[iPopup].IsEnabled = false;
                     }
@@ -101,6 +107,7 @@ namespace SudokuMaxSolver
                     buttonPopup[iPopup].Content = iPopup + 1;
                     buttonPopup[iPopup].Name = "p" + (iPopup + 1) + "_" + yMain + xMain;        // name button in popup is "p3_00"
                 }
+                buttonPopup[iPopup].FontWeight = FontWeights.Normal;
                 buttonPopup[iPopup].Width = 30;
                 buttonPopup[iPopup].Height = 30;
                 buttonPopup[iPopup].Margin = new Thickness(3);
@@ -165,7 +172,19 @@ namespace SudokuMaxSolver
         {
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
+                {
                     buttonMain[y, x].Content = (board.get(y, x) == 0) ? "" : "" + board.get(y, x);
+                    if (board.getReadOnly(y, x))
+                    {
+                        buttonMain[y, x].FontWeight = FontWeights.Bold;
+                        buttonMain[y, x].Background = Brushes.Aqua;
+                    }
+                    else
+                    {
+                        buttonMain[y, x].FontWeight = FontWeights.Regular;
+                        buttonMain[y, x].Background = Brushes.AliceBlue;
+                    }
+                }
         }
 
         private void menuProgram_Click(object sender, RoutedEventArgs e)
@@ -253,6 +272,20 @@ namespace SudokuMaxSolver
                     buttonMain[y, x].Content = "";
                 }
             board.clear();
+            refreshBoard();
+        }
+
+        private void wyczysc_Click(object sender, RoutedEventArgs e)
+        {
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                {
+                    if (!board.getReadOnly(y,x))
+                    {
+                        board.set(y, x, 0);
+                    }
+                }
+            refreshBoard();
         }
     }
 }

@@ -4,7 +4,13 @@ namespace SudokuMaxSolver
 {
     class BoardTab
     {
-        byte[,] board = new byte[9, 9];
+        struct boardBody
+        {
+            public byte value;
+            public bool readOnly;
+        }
+        boardBody[,] board = new boardBody[9, 9];
+
         public BoardTab()
         {
             clear();
@@ -13,16 +19,23 @@ namespace SudokuMaxSolver
         {
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
-                    board[y, x] = 0;
+                {
+                    board[y, x].value = 0;
+                    board[y, x].readOnly = false;
+                }
         }
         public void set(byte y, byte x, byte value)
         {
             if (x > 9 || y > 9) return;
-            board[y, x] = value;
+            board[y, x].value = value;
         }
         public byte get(byte y, byte x)
         {
-            return board[y, x];
+            return board[y, x].value;
+        }
+        public bool getReadOnly(byte y, byte x)
+        {
+            return board[y, x].readOnly;
         }
         public List<byte> valuesInRow(byte row)     //all values in the row (+1 overload)
         {
@@ -30,7 +43,7 @@ namespace SudokuMaxSolver
             byte tmp;
             for (byte x = 0; x < 9; x++)
             {
-                tmp = board[row, x];
+                tmp = board[row, x].value;
                 if (tmp != 0)
                 {
                     list.Add(tmp);
@@ -48,7 +61,7 @@ namespace SudokuMaxSolver
             byte tmp;
             for (byte y = 0; y < 9; y++)
             {
-                tmp = board[y, column];
+                tmp = board[y, column].value;
                 if (tmp != 0)
                 {
                     list.Add(tmp);
@@ -70,7 +83,7 @@ namespace SudokuMaxSolver
                     for (byte y = 0; y < 3; y++)
                         for (byte x = 0; x < 3; x++)
                         {
-                            tmp = board[y, x];
+                            tmp = board[y, x].value;
                             if (tmp != 0)
                             {
                                 list.Add(tmp);
@@ -81,7 +94,7 @@ namespace SudokuMaxSolver
                     for (byte y = 0; y < 3; y++)
                         for (byte x = 3; x < 6; x++)
                         {
-                            tmp = board[y, x];
+                            tmp = board[y, x].value;
                             if (tmp != 0)
                             {
                                 list.Add(tmp);
@@ -92,7 +105,7 @@ namespace SudokuMaxSolver
                     for (byte y = 0; y < 3; y++)
                         for (byte x = 6; x < 9; x++)
                         {
-                            tmp = board[y, x];
+                            tmp = board[y, x].value;
                             if (tmp != 0)
                             {
                                 list.Add(tmp);
@@ -103,7 +116,7 @@ namespace SudokuMaxSolver
                     for (byte y = 3; y < 6; y++)
                         for (byte x = 0; x < 3; x++)
                         {
-                            tmp = board[y, x];
+                            tmp = board[y, x].value;
                             if (tmp != 0)
                             {
                                 list.Add(tmp);
@@ -114,7 +127,7 @@ namespace SudokuMaxSolver
                     for (byte y = 3; y < 6; y++)
                         for (byte x = 3; x < 6; x++)
                         {
-                            tmp = board[y, x];
+                            tmp = board[y, x].value;
                             if (tmp != 0)
                             {
                                 list.Add(tmp);
@@ -125,7 +138,7 @@ namespace SudokuMaxSolver
                     for (byte y = 3; y < 6; y++)
                         for (byte x = 6; x < 9; x++)
                         {
-                            tmp = board[y, x];
+                            tmp = board[y, x].value;
                             if (tmp != 0)
                             {
                                 list.Add(tmp);
@@ -136,7 +149,7 @@ namespace SudokuMaxSolver
                     for (byte y = 6; y < 9; y++)
                         for (byte x = 0; x < 3; x++)
                         {
-                            tmp = board[y, x];
+                            tmp = board[y, x].value;
                             if (tmp != 0)
                             {
                                 list.Add(tmp);
@@ -147,7 +160,7 @@ namespace SudokuMaxSolver
                     for (byte y = 6; y < 9; y++)
                         for (byte x = 3; x < 6; x++)
                         {
-                            tmp = board[y, x];
+                            tmp = board[y, x].value;
                             if (tmp != 0)
                             {
                                 list.Add(tmp);
@@ -158,7 +171,7 @@ namespace SudokuMaxSolver
                     for (byte y = 6; y < 9; y++)
                         for (byte x = 6; x < 9; x++)
                         {
-                            tmp = board[y, x];
+                            tmp = board[y, x].value;
                             if (tmp != 0)
                             {
                                 list.Add(tmp);
@@ -187,7 +200,7 @@ namespace SudokuMaxSolver
         {
             for (byte y = 0; y < 9; y++)
             {
-                if (board[y, column] == nr)
+                if (board[y, column].value == nr)
                     return true;
             }
             return false;
@@ -200,7 +213,7 @@ namespace SudokuMaxSolver
         {
             for (byte x = 0; x < 9; x++)
             {
-                if (board[row, x] == nr)
+                if (board[row, x].value == nr)
                     return true;
             }
             return false;
@@ -237,7 +250,17 @@ namespace SudokuMaxSolver
         {
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
-                    board[y, x] = sudoku.get(y, x);
+                {
+                    board[y, x].value = sudoku.get(y, x);
+                    if (board[y, x].value != 0)
+                    {
+                        board[y, x].readOnly = true;
+                    }
+                    else
+                    {
+                        board[y, x].readOnly = false;
+                    }
+                }
         }
     }
 }

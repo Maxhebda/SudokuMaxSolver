@@ -61,7 +61,11 @@
                 </MenuItem>
                 
             </MenuItem>
-            <MenuItem Header="Edycja" IsEnabled="False" />
+            <MenuItem Header="Edycja">
+                <MenuItem Header="Wyczyść" Click="wyczysc_Click">
+                    
+                </MenuItem>
+            </MenuItem>
             <MenuItem Header="Info" IsEnabled="False"/>
         </Menu>
         <StackPanel x:Name="stackPanelMain" Margin="5" DockPanel.Dock="Top" Width="auto" Height="auto"/>
