@@ -252,7 +252,7 @@ namespace SudokuMaxSolver
             refreshBoard();
         }
 
-        private void wyczysc_Click(object sender, RoutedEventArgs e)
+        private void menuWyczysc_Click(object sender, RoutedEventArgs e)
         {
             //close popup if is open
             popupMain.IsOpen = false;
@@ -266,6 +266,11 @@ namespace SudokuMaxSolver
                     }
                 }
             refreshBoard();
+        }
+
+        private void menuRozwiazBrutalnie_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

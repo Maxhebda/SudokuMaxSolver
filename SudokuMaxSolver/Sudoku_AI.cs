@@ -426,5 +426,13 @@ namespace SudokuMaxSolver
         {
             return boardAI[y, x];
         }
+        public void analyzerLoad(BoardTab tab)
+        {
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                {
+                    boardAI[y, x] = tab.get(y, x);
+                }
+        }
     }
 }

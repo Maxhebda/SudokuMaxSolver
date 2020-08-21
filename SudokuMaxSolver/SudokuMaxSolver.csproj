@@ -155,5 +155,8 @@
   <ItemGroup>
     <Resource Include="icon_wyczysc.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon_bruteForce.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -69,10 +69,28 @@
                 
             </MenuItem>
             <MenuItem Header="Edycja">
-                <MenuItem Header="Wyczyść" Click="wyczysc_Click">
+                <MenuItem Header="Wyczyść" Click="menuWyczysc_Click">
                     <MenuItem.Icon>
                         <Image Source="icon_wyczysc.png"/>
                     </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <StackPanel ToolTipService.ShowOnDisabled="True" ToolTipService.InitialShowDelay="1000">
+                            <TextBlock Text="Wyczyść wszystkie edytowalne pola"/>
+                        </StackPanel>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Header="Rozwiąż brutalnie (siłowo)" Click="menuRozwiazBrutalnie_Click">
+                    <MenuItem.Icon>
+                        <Image Source="icon_bruteForce.png"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <StackPanel ToolTipService.ShowOnDisabled="True" ToolTipService.InitialShowDelay="1000">
+                            <TextBlock Text="Rozwiąż Sudoku metodą BruteForce (atak siłowy)"/>
+                            <Separator/>
+                            <TextBlock FontStyle="Italic" Text="Technika polegająca na sprawdzeniu wszystkich możliwych kombinacji."/>
+                            <TextBlock FontStyle="Italic" Text="Jest bardzo czasochłonna przy słabszych komputerach ale rozwiąże każde Sudoku."/>
+                        </StackPanel>
+                    </MenuItem.ToolTip>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Info" IsEnabled="False"/>
