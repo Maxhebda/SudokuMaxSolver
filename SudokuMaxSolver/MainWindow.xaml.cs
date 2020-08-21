@@ -166,7 +166,11 @@ namespace SudokuMaxSolver
             // close old popup if is open
             if (popupMain.IsOpen == true) popupMain.IsOpen = false;
 
-            generatePopup(y, x);    //show the popup after clicking the button
+            //if button is read only then do not open it
+            if (!board.getReadOnly(y,x))
+            {
+                generatePopup(y, x);    //show the popup after clicking the button
+            }
         }
         private void refreshBoard()     //show board
         {
@@ -192,74 +196,47 @@ namespace SudokuMaxSolver
            popupMain.IsOpen = false;
         }
 
-        private void menuTrywialna_Click(object sender, RoutedEventArgs e)
+        private void menuGenerujNowaPlansze_Click(object sender, RoutedEventArgs e)
         {
             Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Trywialna);
-            board.load(newSudoku);
-            refreshBoard();
-        }
+            switch (((MenuItem)sender).Name)
+            {
+                case "menuTrywialna":
+                    newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Trywialna);
+                    break;
 
-        private void menuBardzoLatwa_Click(object sender, RoutedEventArgs e)
-        {
-            Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.BardzoLatwa);
-            board.load(newSudoku);
-            refreshBoard();
-        }
+                case "menuBardzoLatwa":
+                    newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.BardzoLatwa);
+                    break;
 
-        private void menuLatwa_Click(object sender, RoutedEventArgs e)
-        {
-            Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Latwa);
-            board.load(newSudoku);
-            refreshBoard();
-        }
+                case "menuLatwa":
+                    newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Latwa);
+                    break;
 
-        private void menuPrzecietna_Click(object sender, RoutedEventArgs e)
-        {
-            Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Przecietna);
-            board.load(newSudoku);
-            refreshBoard();
-        }
+                case "menuPrzecietna":
+                    newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Przecietna);
+                    break;
 
-        private void menuDosycTrudna_Click(object sender, RoutedEventArgs e)
-        {
-            Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.DosycTrudna);
-            board.load(newSudoku);
-            refreshBoard();
-        }
+                case "menuDosycTrudna":
+                    newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.DosycTrudna);
+                    break;
 
-        private void menuTrudna_Click(object sender, RoutedEventArgs e)
-        {
-            Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Trudna);
-            board.load(newSudoku);
-            refreshBoard();
-        }
+                case "menuTrudna":
+                    newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Trudna);
+                    break;
 
-        private void menuBardzoTrudna_Click(object sender, RoutedEventArgs e)
-        {
-            Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.BardzoTrudna);
-            board.load(newSudoku);
-            refreshBoard();
-        }
+                case "menuBardzoTrudna":
+                    newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.BardzoTrudna);
+                    break;
 
-        private void menuDiaboliczna_Click(object sender, RoutedEventArgs e)
-        {
-            Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Diaboliczna);
-            board.load(newSudoku);
-            refreshBoard();
-        }
+                case "menuDiaboliczna":
+                    newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Diaboliczna);
+                    break;
 
-        private void menuNiemozliwa_Click(object sender, RoutedEventArgs e)
-        {
-            Sudoku_AI newSudoku = new Sudoku_AI();
-            newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Niemozliwa);
+                case "menuNiemozliwa":
+                    newSudoku.generateNewBoard(Sudoku_AI.difficultyLevel.Niemozliwa);
+                    break;
+            }
             board.load(newSudoku);
             refreshBoard();
         }
@@ -277,6 +254,9 @@ namespace SudokuMaxSolver
 
         private void wyczysc_Click(object sender, RoutedEventArgs e)
         {
+            //close popup if is open
+            popupMain.IsOpen = false;
+
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {

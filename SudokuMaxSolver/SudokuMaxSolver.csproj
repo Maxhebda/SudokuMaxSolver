@@ -146,5 +146,14 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon_generuj.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon_pusta.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon_wyczysc.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

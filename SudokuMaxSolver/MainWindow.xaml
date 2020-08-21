@@ -10,50 +10,57 @@
     <DockPanel x:Name="dockPanelMain" Height="520" Width="460">
         <Menu  DockPanel.Dock="Top">
             <MenuItem x:Name="menuProgram" Header="Program" Click="menuProgram_Click">
-                <MenuItem Header="Nowa plansza" Click="menuNowaPlansza_Click"/>
+                <MenuItem Header="Pusta plansza" Click="menuNowaPlansza_Click">
+                    <MenuItem.Icon>
+                        <Image Source="icon_pusta.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="Generuj nową planszę">
-                    <MenuItem x:Name="menuTrywialna" Header="Trywialna" Click="menuTrywialna_Click">
+                    <MenuItem.Icon>
+                        <Image Source="icon_generuj.png"/>
+                    </MenuItem.Icon>
+                    <MenuItem x:Name="menuTrywialna" Header="Trywialna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
                             <Image Source="icon_trywialna.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="menuBardzoLatwa" Header="Bardzo Łatwa" Click="menuBardzoLatwa_Click">
+                    <MenuItem x:Name="menuBardzoLatwa" Header="Bardzo Łatwa" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
                             <Image Source="icon_bardzolatwa.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="menuLatwa" Header="Łatwa" Click="menuLatwa_Click">
+                    <MenuItem x:Name="menuLatwa" Header="Łatwa" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
                             <Image Source="icon_latwa.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="menuPrzecietna" Header="Przeciętna" Click="menuPrzecietna_Click">
+                    <MenuItem x:Name="menuPrzecietna" Header="Przeciętna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
                             <Image Source="icon_przecietna.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="menuDosycTrudna" Header="Dosyć Trudna" Click="menuDosycTrudna_Click">
+                    <MenuItem x:Name="menuDosycTrudna" Header="Dosyć Trudna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
                             <Image Source="icon_dosyctrudna.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="menuTrudna" Header="Trudna" Click="menuTrudna_Click">
+                    <MenuItem x:Name="menuTrudna" Header="Trudna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
                             <Image Source="icon_trudna.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="menuBardzoTrudna" Header="Bardzo Trudna" Click="menuBardzoTrudna_Click">
+                    <MenuItem x:Name="menuBardzoTrudna" Header="Bardzo Trudna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
                             <Image Source="icon_bardzotrudna.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem x:Name="menuDiaboliczna" Header="Diaboliczna" Click="menuDiaboliczna_Click">
+                    <MenuItem x:Name="menuDiaboliczna" Header="Diaboliczna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
                             <Image Source="icon_diaboliczna.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem x:Name="menuNiemozliwa" Header="Niemożliwa" Click="menuNiemozliwa_Click">
+                    <MenuItem x:Name="menuNiemozliwa" Header="Niemożliwa" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
                             <Image Source="icon_niemozliwa.png"/>
                         </MenuItem.Icon>
@@ -63,7 +70,9 @@
             </MenuItem>
             <MenuItem Header="Edycja">
                 <MenuItem Header="Wyczyść" Click="wyczysc_Click">
-                    
+                    <MenuItem.Icon>
+                        <Image Source="icon_wyczysc.png"/>
+                    </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Info" IsEnabled="False"/>
