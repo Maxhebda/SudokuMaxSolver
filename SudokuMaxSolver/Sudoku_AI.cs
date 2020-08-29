@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace SudokuMaxSolver
 {
@@ -7,7 +8,8 @@ namespace SudokuMaxSolver
     {
         public enum difficultyLevel
         {   // number of ready digits
-            Trywialna =45, BardzoLatwa=42, Latwa=39, Przecietna=36, DosycTrudna=33, Trudna=30, BardzoTrudna=27, Diaboliczna=23, Niemozliwa=19
+            Trywialna =58, BardzoLatwa=42, Latwa=39, Przecietna=36, DosycTrudna=33, Trudna=30, BardzoTrudna=27, Diaboliczna=23, Niemozliwa=19
+            //            Trywialna =45, BardzoLatwa=42, Latwa=39, Przecietna=36, DosycTrudna=33, Trudna=30, BardzoTrudna=27, Diaboliczna=23, Niemozliwa=19
         }
 
         byte[,] boardAI = new byte[9, 9];
@@ -20,6 +22,7 @@ namespace SudokuMaxSolver
         }
         public void generateNewBoard(difficultyLevel level)
         {
+            /*
             //generate full good board
             generateBigColumnAround(); 
             generateBigRowAround();
@@ -29,6 +32,7 @@ namespace SudokuMaxSolver
             {
                 generateAroundNumbers();
             }
+            */
             byte deleteDigits =(byte)(81 - level);
             byte deleteDigitsCounter = 0;
             while(deleteDigitsCounter<deleteDigits)
@@ -268,7 +272,7 @@ namespace SudokuMaxSolver
                 }
             };
             byte nrTab = (byte)rand.Next(0, tab.Length/81);
-            Debug.WriteLine(tab.Length/81);
+
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
@@ -433,6 +437,113 @@ namespace SudokuMaxSolver
                 {
                     boardAI[y, x] = tab.get(y, x);
                 }
+        }
+        static private bool idzDalej(ref byte y, ref byte x)
+        {
+            if (x < 8)
+            {
+                x++;
+            }
+            else
+            {
+                if (y < 8)
+                {
+                    y++;
+                    x = 0;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        static public bool autoSolver_brutal(ref BoardTab boardOriginal)
+        {
+            //create copy board
+            BoardTab boardCopy = new BoardTab(boardOriginal);
+
+            //a reference function that checks all possible possibilities
+            bool findGoodCell(byte yStart, byte xStart, byte NrStart, BoardTab board)
+            {
+                if (board.get(yStart,xStart)==0)
+                {
+                    //komorka pusta mozemy wpisac i sprawdzac
+
+                    //srawdzamy czy mozna wipisac
+                    if (board.isInColumn(yStart, xStart, NrStart) || board.isInRow(yStart, xStart, NrStart) || board.isInSquare(yStart, xStart, NrStart))
+                    {
+                        // nie mozna wpisac wiec zwiekszamy numer i probujemy od nowa
+                        if (NrStart < 9)
+                        {
+                            // zwiekszamy i sprawdzamy kolejna liczbe 
+                            NrStart++;
+                            return findGoodCell(yStart, xStart, NrStart, board);
+                        }
+                        else
+                        {
+                            Debug.WriteLine("(" + yStart + "," + xStart + "->x)");
+                            // nie mozna juz zwiekszyc numeru - zadne nie mozna tu wsadzic! = blad
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        board.set(yStart, xStart, NrStart);
+                        // sparwdzam czy spisanie liczby powoduje niszczenie dalszej czesci tablicy
+                        if (findGoodCell(yStart, xStart, 1, board)==false)
+                        {
+                            //zniszczylo wiec zwiekszamy numer o jeden oraz czyscimy nr z tablicy
+                            if(NrStart < 9)
+                            {
+                                NrStart++;
+                                board.set(yStart, xStart, 0);
+                                return findGoodCell(yStart, xStart, NrStart, board);
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        //idziemy dalej czyli sprawdzamy dalsza czesc tablicy od nr 1
+                        if (idzDalej(ref yStart, ref xStart))
+                        {
+                            return findGoodCell(yStart, xStart, 1, board);
+                        }
+                        else
+                        {
+                            //jestesmy na koncu  a udało się wpisać wiec zwtacamy true;
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    //komorka pelna wiec idziemy do nastepnej
+                    if (idzDalej(ref yStart, ref xStart))
+                    {
+                        // mozna przejsc wiec sprawdzamy komorke od 1
+                        return findGoodCell(yStart, xStart, 1, board);
+                    }
+                    else
+                    {
+                        // nie mozemy przejsc dalej a ostatnia komorka jest juz uzupelniona wiec tez udalo sie dotrzec do konca - zwracamy true
+                        return true;
+                    }
+                }
+            }
+
+            //start position 0,0 and number 1
+            if (findGoodCell(0, 0, 1, boardCopy))
+            {
+                // rozwiązano więc podmieniamy zawartosc rozwiązanego sudoku :
+                boardOriginal = new BoardTab(boardCopy);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

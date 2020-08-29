@@ -15,6 +15,15 @@ namespace SudokuMaxSolver
         {
             clear();
         }
+        public BoardTab(BoardTab boardOld)  //create copy
+        {
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                {
+                    board[y, x].value = boardOld.get(y, x);
+                    board[y, x].readOnly = boardOld.getReadOnly(y, x);
+                }
+        }
         public void clear()
         {
             for (byte y = 0; y < 9; y++)

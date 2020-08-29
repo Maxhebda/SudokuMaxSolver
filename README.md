@@ -6,6 +6,7 @@ Mini project written in c # Visual Studio / C# / WPF
 * dynamic generation of buttons (9x9) and popup (3x3) on the window
 * generating sudoku with a certain degree of difficulty (easy..impossible)
 * short menu with icons
+* brute force sudoku solution (add separate static function to be used in other projects)
 ### What else needs to be done
 * board analysis (checking how many solutions there are, determining the degree of difficulty)
 * sudoku solution
