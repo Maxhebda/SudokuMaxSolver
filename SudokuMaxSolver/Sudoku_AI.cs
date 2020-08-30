@@ -482,7 +482,7 @@ namespace SudokuMaxSolver
                         }
                         else
                         {
-                            Debug.WriteLine("(" + yStart + "," + xStart + "->x)");
+                            //Debug.WriteLine("(" + yStart + "," + xStart + "->x)");
                             // nie mozna juz zwiekszyc numeru - zadne nie mozna tu wsadzic! = blad
                             return false;
                         }
@@ -491,13 +491,14 @@ namespace SudokuMaxSolver
                     {
                         board.set(yStart, xStart, NrStart);
                         // sparwdzam czy spisanie liczby powoduje niszczenie dalszej czesci tablicy
-                        if (findGoodCell(yStart, xStart, 1, board)==false)
+                        if (findGoodCell(yStart, xStart, NrStart, board) == false)
                         {
+
                             //zniszczylo wiec zwiekszamy numer o jeden oraz czyscimy nr z tablicy
-                            if(NrStart < 9)
+                            board.set(yStart, xStart, 0);
+                            if (NrStart < 9)
                             {
                                 NrStart++;
-                                board.set(yStart, xStart, 0);
                                 return findGoodCell(yStart, xStart, NrStart, board);
                             }
                             else
@@ -505,15 +506,19 @@ namespace SudokuMaxSolver
                                 return false;
                             }
                         }
-                        //idziemy dalej czyli sprawdzamy dalsza czesc tablicy od nr 1
-                        if (idzDalej(ref yStart, ref xStart))
+                        else    //nie zniszczylo wiec idziemy do nastepnej komorki
                         {
-                            return findGoodCell(yStart, xStart, 1, board);
-                        }
-                        else
-                        {
-                            //jestesmy na koncu  a udało się wpisać wiec zwtacamy true;
-                            return true;
+
+                            //idziemy dalej czyli sprawdzamy dalsza czesc tablicy od nr 1
+                            if (idzDalej(ref yStart, ref xStart))
+                            {
+                                return findGoodCell(yStart, xStart, 1, board);
+                            }
+                            else
+                            {
+                                //jestesmy na koncu  a udało się wpisać wiec zwtacamy true;
+                                return true;
+                            }
                         }
                     }
                 }
