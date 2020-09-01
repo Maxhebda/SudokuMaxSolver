@@ -8,7 +8,7 @@ namespace SudokuMaxSolver
     {
         public enum difficultyLevel
         {   // number of ready digits
-            Trywialna =48, BardzoLatwa=45, Latwa=42, Przecietna=39, DosycTrudna=36, Trudna=33, BardzoTrudna=30, Diaboliczna=26, Niemozliwa=24
+            Trywialna =48, BardzoLatwa=45, Latwa=42, Przecietna=39, DosycTrudna=36, Trudna=33, BardzoTrudna=30, Diaboliczna=28, Niemozliwa=26
             //            Trywialna =45, BardzoLatwa=42, Latwa=39, Przecietna=36, DosycTrudna=33, Trudna=30, BardzoTrudna=27, Diaboliczna=23, Niemozliwa=19
         }
 

@@ -11,6 +11,7 @@ namespace SudokuMaxSolver
 {
     public partial class MainWindow : Window
     {
+        ToolTip toolTip = new ToolTip();
         BoardTab board = new BoardTab();
         Button[,] buttonMain = new Button[9, 9];        //main board
         Popup popupMain = new Popup();
@@ -282,6 +283,37 @@ namespace SudokuMaxSolver
                 Debug.WriteLine("\nnot solved");
             }
 
+        }
+
+        private void menuZablokujWidoczne_Click(object sender, RoutedEventArgs e)
+        {
+            //close popup if is open
+            popupMain.IsOpen = false;
+
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                {
+                    if (board.get(y,x)!=0)
+                    {
+                        board.setReadOnly(y, x, true);
+                    }
+                }
+            refreshBoard();
+        }
+        private void menuOdblokujWidoczne_Click(object sender, RoutedEventArgs e)
+        {
+            //close popup if is open
+            popupMain.IsOpen = false;
+
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                {
+                    if (board.get(y, x) != 0)
+                    {
+                        board.setReadOnly(y, x,false);
+                    }
+                }
+            refreshBoard();
         }
     }
 }

@@ -55,6 +55,10 @@ namespace SudokuMaxSolver
         {
             return board[y, x].readOnly;
         }
+        public void setReadOnly(byte y, byte x, bool value)
+        {
+            board[y, x].readOnly = value;
+        }
         public List<byte> valuesInRow(byte row)     //all values in the row (+1 overload)
         {
             List<byte> list = new List<byte>();

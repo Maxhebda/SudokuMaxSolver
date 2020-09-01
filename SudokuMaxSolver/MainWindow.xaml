@@ -79,6 +79,31 @@
                         </StackPanel>
                     </MenuItem.ToolTip>
                 </MenuItem>
+                <MenuItem Header="Zablokuj widoczne cyfry" Click="menuZablokujWidoczne_Click">
+                    <MenuItem.Icon>
+                        <Image Source="icon_zablokujWidoczne.png"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <StackPanel ToolTipService.ShowOnDisabled="True" ToolTipService.InitialShowDelay="1000">
+                            <TextBlock Text="Zablokuj widoczne cyfry przed edycją"/>
+                            <Separator/>
+                            <TextBlock FontStyle="Italic" Text="Wszystkie widoczne cyfry zostaną pogrubione i nie będziesz mógł ich zmnienic."/>
+                        </StackPanel>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Header="Odblokuj widoczne cyfry" Click="menuOdblokujWidoczne_Click">
+                    <MenuItem.Icon>
+                        <Image Source="icon_odblokujWidoczne.png"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <StackPanel ToolTipService.ShowOnDisabled="True" ToolTipService.InitialShowDelay="1000">
+                            <TextBlock Text="Odblokuj widoczne cyfry do edycji"/>
+                            <Separator/>
+                            <TextBlock FontStyle="Italic" Text="Wszystkie zablokowane cyfry zostaną odblokowane i będziesz mógł je zmieniać."/>
+                        </StackPanel>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <Separator/>
                 <MenuItem Header="Rozwiąż brutalnie (siłowo)" Click="menuRozwiazBrutalnie_Click">
                     <MenuItem.Icon>
                         <Image Source="icon_bruteForce.png"/>

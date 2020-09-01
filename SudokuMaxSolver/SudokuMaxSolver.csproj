@@ -158,5 +158,9 @@
   <ItemGroup>
     <Resource Include="icon_bruteForce.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon_odblokujWidoczne.png" />
+    <Resource Include="icon_zablokujWidoczne.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
