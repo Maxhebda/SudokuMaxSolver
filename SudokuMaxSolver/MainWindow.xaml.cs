@@ -270,15 +270,18 @@ namespace SudokuMaxSolver
 
         private void menuRozwiazBrutalnie_Click(object sender, RoutedEventArgs e)
         {
+            Debug.WriteLine("Number od solutions : " + Sudoku_AI.autoSolver_numberOfSolutions(board));
+
             if (Sudoku_AI.autoSolver_brutal(ref board))
             {
-                Debug.WriteLine("\nRozwiazano");
+                Debug.WriteLine("\nIs solved!");
                 refreshBoard();
             }
             else
             {
-                Debug.WriteLine("\nNie da sie rozwiazac");
+                Debug.WriteLine("\nnot solved");
             }
+
         }
     }
 }

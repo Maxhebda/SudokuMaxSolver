@@ -24,6 +24,15 @@ namespace SudokuMaxSolver
                     board[y, x].readOnly = boardOld.getReadOnly(y, x);
                 }
         }
+        public BoardTab(byte[,] boardAI)  //create copy at BoardAI 
+        {
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                {
+                    board[y, x].value = boardAI[y,x];
+                    board[y, x].readOnly = false;
+                }
+        }
         public void clear()
         {
             for (byte y = 0; y < 9; y++)

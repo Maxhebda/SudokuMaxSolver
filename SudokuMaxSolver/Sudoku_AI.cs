@@ -8,7 +8,7 @@ namespace SudokuMaxSolver
     {
         public enum difficultyLevel
         {   // number of ready digits
-            Trywialna =58, BardzoLatwa=42, Latwa=39, Przecietna=36, DosycTrudna=33, Trudna=30, BardzoTrudna=27, Diaboliczna=23, Niemozliwa=19
+            Trywialna =48, BardzoLatwa=45, Latwa=42, Przecietna=39, DosycTrudna=36, Trudna=33, BardzoTrudna=30, Diaboliczna=26, Niemozliwa=24
             //            Trywialna =45, BardzoLatwa=42, Latwa=39, Przecietna=36, DosycTrudna=33, Trudna=30, BardzoTrudna=27, Diaboliczna=23, Niemozliwa=19
         }
 
@@ -35,14 +35,36 @@ namespace SudokuMaxSolver
             */
             byte deleteDigits =(byte)(81 - level);
             byte deleteDigitsCounter = 0;
+            byte oldDigit;
+            int counterTrying=0;
             while(deleteDigitsCounter<deleteDigits)
             {
                 byte x = (byte)rand.Next(0, 9);
                 byte y = (byte)rand.Next(0, 9);
                 if (boardAI[y,x]!=0)
                 {
+                    //removing digits and checking if sudoku has only one solution
+                    oldDigit = boardAI[y, x];
                     boardAI[y, x] = 0;
-                    deleteDigitsCounter++;
+
+                    //checking if sudoku has only one solution
+                    if (Sudoku_AI.autoSolver_numberOfSolutions(new BoardTab(boardAI))!=1)
+                    {
+                        boardAI[y, x] = oldDigit;
+                        counterTrying++;
+
+                        //if looking for a long time, stop!
+                        if (counterTrying>50)
+                        {
+                            //Debug.WriteLine("abortet deleting digits!");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        counterTrying = 0;
+                        deleteDigitsCounter++;
+                    }
                 }
             }
         }
@@ -549,6 +571,121 @@ namespace SudokuMaxSolver
             {
                 return false;
             }
+        }
+
+        //solves sudoku, the function returns the number of solutions. 0 - none, 1 - one, 2 - more than one.
+        static public byte autoSolver_numberOfSolutions(BoardTab boardCopy)
+        {
+            byte numberOfSolution = 0;
+
+            //a reference function that checks all possible possibilities
+            bool findGoodCell(byte yStart, byte xStart, byte NrStart, BoardTab board)
+            {
+                if (board.get(yStart, xStart) == 0)
+                {
+                    //komorka pusta mozemy wpisac i sprawdzac
+
+                    //srawdzamy czy mozna wipisac
+                    if (board.isInColumn(yStart, xStart, NrStart) || board.isInRow(yStart, xStart, NrStart) || board.isInSquare(yStart, xStart, NrStart))
+                    {
+                        // nie mozna wpisac wiec zwiekszamy numer i probujemy od nowa
+                        if (NrStart < 9)
+                        {
+                            // zwiekszamy i sprawdzamy kolejna liczbe 
+                            NrStart++;
+                            return findGoodCell(yStart, xStart, NrStart, board);
+                        }
+                        else
+                        {
+                            //Debug.WriteLine("(" + yStart + "," + xStart + "->x)");
+                            // nie mozna juz zwiekszyc numeru - zadne nie mozna tu wsadzic! = blad
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        board.set(yStart, xStart, NrStart);
+                        // sparwdzam czy spisanie liczby powoduje niszczenie dalszej czesci tablicy
+                        if (findGoodCell(yStart, xStart, NrStart, board) == false)
+                        {
+
+                            //zniszczylo wiec zwiekszamy numer o jeden oraz czyscimy nr z tablicy
+                            board.set(yStart, xStart, 0);
+                            if (NrStart < 9)
+                            {
+                                NrStart++;
+                                return findGoodCell(yStart, xStart, NrStart, board);
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else    //nie zniszczylo wiec idziemy do nastepnej komorki
+                        {
+
+                            //idziemy dalej czyli sprawdzamy dalsza czesc tablicy od nr 1
+                            if (idzDalej(ref yStart, ref xStart))
+                            {
+                                return findGoodCell(yStart, xStart, 1, board);
+                            }
+                            else
+                            {
+                                //jestesmy na koncu  a udało się wpisać wiec powinnism zakonczyc szukanie rozwiazania i zwrocic true ale....;
+                                //-------------------------------------------------------------- pod spodem modyfikacja
+                                if (numberOfSolution == 0)
+                                {
+                                    numberOfSolution=1;
+                                    // w przypadku znalezienia pierwszego rozwiazania zwracamy jednak false by program nie uznal rozwiazania
+                                    return false;
+                                }
+                                else
+                                {
+                                    if (numberOfSolution==1)
+                                    {
+                                        numberOfSolution=2;
+                                    }
+                                    //jezeli juz mamy jedno rozwiazanie to dodajemy drugie i konczymy szukanie zwracajac true
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //komorka pelna wiec idziemy do nastepnej
+                    if (idzDalej(ref yStart, ref xStart))
+                    {
+                        // mozna przejsc wiec sprawdzamy komorke od 1
+                        return findGoodCell(yStart, xStart, 1, board);
+                    }
+                    else
+                    {
+                        // nie mozemy przejsc dalej a ostatnia komorka jest juz uzupelniona wiec tez udalo sie dotrzec do konca - zwracamy true
+                        //-------------------------------------------------------------- pod spodem modyfikacja
+                        if (numberOfSolution == 0)
+                        {
+                            numberOfSolution = 1;
+                            // w przypadku znalezienia pierwszego rozwiazania zwracamy jednak false by program nie uznal rozwiazania
+                            return false;
+                        }
+                        else
+                        {
+                            if (numberOfSolution == 1)
+                            {
+                                numberOfSolution = 2;
+                            }
+                            //jezeli juz mamy jedno rozwiazanie to dodajemy drugie i konczymy szukanie zwracajac true
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            //start position 0,0 and number 1
+            findGoodCell(0, 0, 1, boardCopy);
+            return numberOfSolution;
         }
     }
 }
