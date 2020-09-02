@@ -9,7 +9,7 @@ namespace SudokuMaxSolver
         public enum difficultyLevel
         {   // number of ready digits
             Trywialna =48, BardzoLatwa=45, Latwa=42, Przecietna=39, DosycTrudna=36, Trudna=33, BardzoTrudna=30, Diaboliczna=28, Niemozliwa=26
-            //            Trywialna =45, BardzoLatwa=42, Latwa=39, Przecietna=36, DosycTrudna=33, Trudna=30, BardzoTrudna=27, Diaboliczna=23, Niemozliwa=19
+            // trivial, very easy, easy, average, quite difficult, difficult, very difficult, diabolical, impossible
         }
 
         byte[,] boardAI = new byte[9, 9];
@@ -22,7 +22,7 @@ namespace SudokuMaxSolver
         }
         public void generateNewBoard(difficultyLevel level)
         {
-            /*
+
             //generate full good board
             generateBigColumnAround(); 
             generateBigRowAround();
@@ -32,7 +32,6 @@ namespace SudokuMaxSolver
             {
                 generateAroundNumbers();
             }
-            */
             byte deleteDigits =(byte)(81 - level);
             byte deleteDigitsCounter = 0;
             byte oldDigit;
@@ -489,34 +488,34 @@ namespace SudokuMaxSolver
             bool findGoodCell(byte yStart, byte xStart, byte NrStart, BoardTab board)
             {
                 if (board.get(yStart,xStart)==0)
-                {
-                    //komorka pusta mozemy wpisac i sprawdzac
+                { 
+                    // the cell is empty, we can enter the value and check
 
-                    //srawdzamy czy mozna wipisac
+                    // we check if we can enter a value
                     if (board.isInColumn(yStart, xStart, NrStart) || board.isInRow(yStart, xStart, NrStart) || board.isInSquare(yStart, xStart, NrStart))
                     {
-                        // nie mozna wpisac wiec zwiekszamy numer i probujemy od nowa
+                        // value cannot be entered! we increase the value
                         if (NrStart < 9)
                         {
-                            // zwiekszamy i sprawdzamy kolejna liczbe 
+                            // we increase the value and check
                             NrStart++;
                             return findGoodCell(yStart, xStart, NrStart, board);
                         }
                         else
                         {
-                            //Debug.WriteLine("(" + yStart + "," + xStart + "->x)");
-                            // nie mozna juz zwiekszyc numeru - zadne nie mozna tu wsadzic! = blad
+                            // Debug.WriteLine("(" + yStart + "," + xStart + "->x)");
+                            // you can no longer increase the value. Error!
                             return false;
                         }
                     }
                     else
                     {
                         board.set(yStart, xStart, NrStart);
-                        // sparwdzam czy spisanie liczby powoduje niszczenie dalszej czesci tablicy
+                        // after entering, I check if the board is correct
                         if (findGoodCell(yStart, xStart, NrStart, board) == false)
                         {
 
-                            //zniszczylo wiec zwiekszamy numer o jeden oraz czyscimy nr z tablicy
+                            // destroyed the boards! we increase the value, clear value in table
                             board.set(yStart, xStart, 0);
                             if (NrStart < 9)
                             {
@@ -528,17 +527,17 @@ namespace SudokuMaxSolver
                                 return false;
                             }
                         }
-                        else    //nie zniszczylo wiec idziemy do nastepnej komorki
+                        else    
                         {
 
-                            //idziemy dalej czyli sprawdzamy dalsza czesc tablicy od nr 1
+                            // did not destroy! we move on to the next cell. we start with 1
                             if (idzDalej(ref yStart, ref xStart))
                             {
                                 return findGoodCell(yStart, xStart, 1, board);
                             }
                             else
                             {
-                                //jestesmy na koncu  a udało się wpisać wiec zwtacamy true;
+                                // we are at the end of the board + we managed to enter the value = true
                                 return true;
                             }
                         }
@@ -546,15 +545,15 @@ namespace SudokuMaxSolver
                 }
                 else
                 {
-                    //komorka pelna wiec idziemy do nastepnej
+                    // the cell is full
                     if (idzDalej(ref yStart, ref xStart))
                     {
-                        // mozna przejsc wiec sprawdzamy komorke od 1
+                        // we move on to the next cell. we start with 1
                         return findGoodCell(yStart, xStart, 1, board);
                     }
                     else
                     {
-                        // nie mozemy przejsc dalej a ostatnia komorka jest juz uzupelniona wiec tez udalo sie dotrzec do konca - zwracamy true
+                        // end board
                         return true;
                     }
                 }
@@ -563,7 +562,7 @@ namespace SudokuMaxSolver
             //start position 0,0 and number 1
             if (findGoodCell(0, 0, 1, boardCopy))
             {
-                // rozwiązano więc podmieniamy zawartosc rozwiązanego sudoku :
+                // solved correctly. we replace boards
                 boardOriginal = new BoardTab(boardCopy);
                 return true;
             }
@@ -583,33 +582,33 @@ namespace SudokuMaxSolver
             {
                 if (board.get(yStart, xStart) == 0)
                 {
-                    //komorka pusta mozemy wpisac i sprawdzac
+                    //the cell is empty, we can enter the value and check
 
-                    //srawdzamy czy mozna wipisac
+                    //we check if we can enter a value
                     if (board.isInColumn(yStart, xStart, NrStart) || board.isInRow(yStart, xStart, NrStart) || board.isInSquare(yStart, xStart, NrStart))
                     {
-                        // nie mozna wpisac wiec zwiekszamy numer i probujemy od nowa
+                        // value cannot be entered! we increase the value
                         if (NrStart < 9)
                         {
-                            // zwiekszamy i sprawdzamy kolejna liczbe 
+                            // we increase the value and check 
                             NrStart++;
                             return findGoodCell(yStart, xStart, NrStart, board);
                         }
                         else
                         {
                             //Debug.WriteLine("(" + yStart + "," + xStart + "->x)");
-                            // nie mozna juz zwiekszyc numeru - zadne nie mozna tu wsadzic! = blad
+                            // you can no longer increase the value. Error!
                             return false;
                         }
                     }
                     else
                     {
                         board.set(yStart, xStart, NrStart);
-                        // sparwdzam czy spisanie liczby powoduje niszczenie dalszej czesci tablicy
+                        // after entering, I check if the board is correct
                         if (findGoodCell(yStart, xStart, NrStart, board) == false)
                         {
 
-                            //zniszczylo wiec zwiekszamy numer o jeden oraz czyscimy nr z tablicy
+                            // destroyed the boards! we increase the value, clear value in table
                             board.set(yStart, xStart, 0);
                             if (NrStart < 9)
                             {
@@ -621,22 +620,22 @@ namespace SudokuMaxSolver
                                 return false;
                             }
                         }
-                        else    //nie zniszczylo wiec idziemy do nastepnej komorki
+                        else  
                         {
 
-                            //idziemy dalej czyli sprawdzamy dalsza czesc tablicy od nr 1
+                            // did not destroy! we move on to the next cell. we start with 1
                             if (idzDalej(ref yStart, ref xStart))
                             {
                                 return findGoodCell(yStart, xStart, 1, board);
                             }
                             else
                             {
-                                //jestesmy na koncu  a udało się wpisać wiec powinnism zakonczyc szukanie rozwiazania i zwrocic true ale....;
-                                //-------------------------------------------------------------- pod spodem modyfikacja
+                                // GOOD
+                                //-------
                                 if (numberOfSolution == 0)
                                 {
                                     numberOfSolution=1;
-                                    // w przypadku znalezienia pierwszego rozwiazania zwracamy jednak false by program nie uznal rozwiazania
+                                    // we return the first solution to false to keep looking
                                     return false;
                                 }
                                 else
@@ -645,7 +644,7 @@ namespace SudokuMaxSolver
                                     {
                                         numberOfSolution=2;
                                     }
-                                    //jezeli juz mamy jedno rozwiazanie to dodajemy drugie i konczymy szukanie zwracajac true
+                                    // if we find the second solution, we exit the function = set true
                                     return true;
                                 }
                             }
@@ -654,20 +653,20 @@ namespace SudokuMaxSolver
                 }
                 else
                 {
-                    //komorka pelna wiec idziemy do nastepnej
+                    // the cell is full
                     if (idzDalej(ref yStart, ref xStart))
                     {
-                        // mozna przejsc wiec sprawdzamy komorke od 1
+                        // we move on to the next cell. we start with 1
                         return findGoodCell(yStart, xStart, 1, board);
                     }
                     else
                     {
-                        // nie mozemy przejsc dalej a ostatnia komorka jest juz uzupelniona wiec tez udalo sie dotrzec do konca - zwracamy true
-                        //-------------------------------------------------------------- pod spodem modyfikacja
+                        // GOOD
+                        //-------
                         if (numberOfSolution == 0)
                         {
                             numberOfSolution = 1;
-                            // w przypadku znalezienia pierwszego rozwiazania zwracamy jednak false by program nie uznal rozwiazania
+                            // we return the first solution to false to keep looking
                             return false;
                         }
                         else
@@ -676,7 +675,7 @@ namespace SudokuMaxSolver
                             {
                                 numberOfSolution = 2;
                             }
-                            //jezeli juz mamy jedno rozwiazanie to dodajemy drugie i konczymy szukanie zwracajac true
+                            // if we find the second solution, we exit the function = set true
                             return true;
                         }
                     }
