@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SolutionInformation.cs" />
     <Compile Include="Sudoku_AI.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +162,9 @@
   <ItemGroup>
     <Resource Include="icon_odblokujWidoczne.png" />
     <Resource Include="icon_zablokujWidoczne.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon_manual.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

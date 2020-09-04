@@ -117,6 +117,21 @@
                         </StackPanel>
                     </MenuItem.ToolTip>
                 </MenuItem>
+                <MenuItem Header="Rozwiąż manualnie (jak człowiek)" Click="menuRozwiazManualnie_Click">
+                    <MenuItem.Icon>
+                        <Image Source="icon_manual.png"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <StackPanel ToolTipService.ShowOnDisabled="True" ToolTipService.InitialShowDelay="1000">
+                            <TextBlock Text="Rozwiąż Sudoku metodą ręczną krok po kroku (jak człowiek)"/>
+                            <Separator/>
+                            <TextBlock FontStyle="Italic" Text="Zaawansowana technika rozwiązywania Sudoku."/>
+                            <TextBlock FontStyle="Italic" Text="Plansza jest rozwiązywana na bazie ludzkiego umysłu a każdy krok jest opisywany."/>
+                            <TextBlock FontStyle="Italic" Text="Opcja ta jest idealna dla początkujacych, którzy chcą się czegoś nauczyć."/>
+                            <TextBlock FontStyle="Italic" Text="Ta metoda nie zawsze jest skuteczna i może nie rozwiązać całego Sudoku."/>
+                        </StackPanel>
+                    </MenuItem.ToolTip>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Info" IsEnabled="False"/>
         </Menu>

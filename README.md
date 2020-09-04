@@ -1,5 +1,6 @@
 # SudokuMaxSolver
 Mini project written in c # Visual Studio / C# / WPF
+<img src="./projectScreenImage/SudokuMaxSolver2.png" width=300/>
 
 ## The program is under construction :
 ### Was completed
@@ -13,6 +14,5 @@ Mini project written in c # Visual Studio / C# / WPF
 * board analysis (checking how many solutions there are (method is finished)), determining the degree of difficulty)
 * sudoku solution with steps and description
 
-## Screen from 01.09.2020 :
-<img src="./projectScreenImage/SudokuMaxSolver1.png" width=300/>
-<img src="./projectScreenImage/SudokuMaxSolver2.png" width=300/>
+## Screen from 04.09.2020 :
+<img src="./projectScreenImage/SudokuMaxSolver1.png" width=250/> <img src="./projectScreenImage/SudokuMaxSolver3.png" width=250/>

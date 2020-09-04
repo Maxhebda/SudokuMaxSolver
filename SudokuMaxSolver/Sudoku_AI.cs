@@ -686,5 +686,37 @@ namespace SudokuMaxSolver
             findGoodCell(0, 0, 1, boardCopy);
             return numberOfSolution;
         }
+        public static SolutionInformation ManualSolver01_TheOnlyPossible(ref BoardTab board)
+        {
+            SolutionInformation tmp = new SolutionInformation();
+            byte counterPossible;
+            byte findValue = 0;
+            for (byte y = 0; y < 9; y++)
+            {
+                for (byte x = 0; x < 9; x++)
+                {
+                    counterPossible = 0;
+                    for (byte value = 1; value <= 9; value ++)
+                    {
+                        if (board.get(y,x)==0 && !board.isInColumn(y,x,value) && !board.isInRow(y, x, value) && !board.isInSquare(y, x, value))
+                        {
+                            findValue = value;
+                            counterPossible++;
+                            if (counterPossible>1)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    // found the only possible
+                    if (counterPossible==1)
+                    {
+                        board.set(y, x, findValue);
+                        tmp.Add("Znaleziono jedynego możliwego kandydata.", y, x, findValue);
+                    }
+                }
+            }
+            return tmp;
+        }
     }
 }
