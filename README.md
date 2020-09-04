@@ -1,5 +1,6 @@
 # SudokuMaxSolver
 Mini project written in c # Visual Studio / C# / WPF
+
 <img src="./projectScreenImage/SudokuMaxSolver2.png" width=300/>
 
 ## The program is under construction :
@@ -10,6 +11,7 @@ Mini project written in c # Visual Studio / C# / WPF
 * short menu with icons
 * brute force sudoku solution (add separate static function to be used in other projects)
 * sudoku solution (brute force)
+* sudoku solution with steps and description (+ method 01 - TheOnlyPossible)
 ### What else needs to be done
 * board analysis (checking how many solutions there are (method is finished)), determining the degree of difficulty)
 * sudoku solution with steps and description
