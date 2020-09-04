@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -716,6 +717,11 @@ namespace SudokuMaxSolver
                     }
                 }
             }
+            return tmp;
+        }
+        public static SolutionInformation ManualSolver02_SingleCandidateInRow(ref BoardTab board)
+        {
+            SolutionInformation tmp = new SolutionInformation();
             return tmp;
         }
     }

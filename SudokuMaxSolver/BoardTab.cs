@@ -217,6 +217,26 @@ namespace SudokuMaxSolver
             if (y > 5 && x > 2 && x < 6) return valuesInSquare(8);
             return valuesInSquare(9);
         }
+        public List<byte> allCandidates(byte y, byte x)     //all possible candidates who can be entered in the cell
+        {
+            List<byte> tmp = new List<byte>();
+
+            // if the cell is not empty it will return null
+            if (board[y,x].value!=0)
+            {
+                return tmp;
+            }
+
+            //searching for candidates in cell
+            for (byte value = 1; value <= 9; value++)
+            {
+                if (!isInColumn(y,x) && !isInRow(y,x) && !isInSquare(y,x))
+                {
+                    tmp.Add(value);
+                }
+            }
+            return tmp;
+        }
 
         public bool isInColumn(byte column, byte nr)        //check if the number is in the column (+1 overload)
         {
