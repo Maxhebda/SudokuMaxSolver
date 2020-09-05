@@ -17,7 +17,7 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 - [x] method 01 - TheOnlyPossible
 - [x] method 02 - SingleCandidateInRow
 - [x] method 03 - SingleCandidateInColumn
-- [ ] method 04 - SingleCandidateInSquare
+- [x] method 04 - SingleCandidateInSquare
 - [ ] method 05 - Twins
 ### What else needs to be done
 * board analysis (checking how many solutions there are (method is finished)), determining the degree of difficulty)

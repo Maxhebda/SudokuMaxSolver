@@ -792,7 +792,7 @@ namespace SudokuMaxSolver
                 //clear singleCandidate
                 singleCandidate = 0;
 
-                //summing all candidates in a row
+                //summing all candidates in a column
                 for (byte y = 0; y < 9; y++)
                 {
                     foreach (byte candidate in board.allCandidates(y, column))
@@ -811,7 +811,7 @@ namespace SudokuMaxSolver
                     }
                 }
 
-                //looking for a candidate in a row
+                //looking for a candidate in a column
                 if (singleCandidate != 0)
                 {
                     for (byte y = 0; y < 9; y++)
@@ -833,5 +833,282 @@ namespace SudokuMaxSolver
             }
             return tmp;
         }
+        public static SolutionInformation ManualSolver04_SingleCandidateInSquare(ref BoardTab board)
+        {
+            SolutionInformation tmp = new SolutionInformation();
+            byte[] counterCandidate = new byte[9];
+            byte singleCandidate;
+            for (byte square = 1; square <= 9; square++)
+            {
+                //clear Candidate table
+                for (byte i = 0; i < 9; i++)
+                {
+                    counterCandidate[i] = 0;
+                }
+
+                //clear singleCandidate
+                singleCandidate = 0;
+
+                //summing all candidates in a square
+                switch (square)
+                {
+                    case 1:
+                        for (byte y = 0; y < 3; y++)
+                                for (byte x = 0; x < 3; x++)
+                                {
+                                    foreach (byte candidate in board.allCandidates(y, x))
+                                    {
+                                        counterCandidate[candidate - 1]++;
+                                    }
+                                }
+                        break;
+                    case 2:
+                        for (byte y = 0; y < 3; y++)
+                            for (byte x = 3; x < 6; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    counterCandidate[candidate - 1]++;
+                                }
+                            }
+                        break;
+                    case 3:
+                        for (byte y = 0; y < 3; y++)
+                            for (byte x = 6; x < 9; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    counterCandidate[candidate - 1]++;
+                                }
+                            }
+                        break;
+                    case 4:
+                        for (byte y = 3; y < 6; y++)
+                            for (byte x = 0; x < 3; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    counterCandidate[candidate - 1]++;
+                                }
+                            }
+                        break;
+                    case 5:
+                        for (byte y = 3; y < 6; y++)
+                            for (byte x = 3; x < 6; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    counterCandidate[candidate - 1]++;
+                                }
+                            }
+                        break;
+                    case 6:
+                        for (byte y = 3; y < 6; y++)
+                            for (byte x = 6; x < 9; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    counterCandidate[candidate - 1]++;
+                                }
+                            }
+                        break;
+                    case 7:
+                        for (byte y = 6; y < 9; y++)
+                            for (byte x = 0; x < 3; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    counterCandidate[candidate - 1]++;
+                                }
+                            }
+                        break;
+                    case 8:
+                        for (byte y = 6; y < 9; y++)
+                            for (byte x = 3; x < 6; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    counterCandidate[candidate - 1]++;
+                                }
+                            }
+                        break;
+                    case 9:
+                        for (byte y = 6; y < 9; y++)
+                            for (byte x = 6; x < 9; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    counterCandidate[candidate - 1]++;
+                                }
+                            }
+                        break;
+                }
+
+                //checking if there is only one candidate
+                for (byte i = 0; i < 9; i++)
+                {
+                    if (counterCandidate[i] == 1)
+                    {
+                        singleCandidate = (byte)(i + 1);
+                        break;
+                    }
+                }
+
+                //looking for a candidate in a row
+                if (singleCandidate != 0)
+                {
+                    switch (square)
+                    {
+                        case 1:
+                            for (byte y = 0; y < 3; y++)
+                                for (byte x = 0; x < 3; x++)
+                                {
+                                    for (byte i = 0; i< board.allCandidates(y,x).Count; i++)
+                                    {
+                                        if (board.allCandidates(y, x)[i] == singleCandidate)
+                                        {
+                                            //editing board
+                                            board.set(y, x, singleCandidate);
+                                            tmp.Add("Znaleziono pojedynczego kandydata w pierwszym kwadracie.", y, x, singleCandidate);
+                                            break; //exit loop
+                                        }
+                                    }
+                                }
+                            break;
+                        case 2:
+                            for (byte y = 0; y < 3; y++)
+                                for (byte x = 3; x < 6; x++)
+                                {
+                                    for (byte i = 0; i < board.allCandidates(y, x).Count; i++)
+                                    {
+                                        if (board.allCandidates(y, x)[i] == singleCandidate)
+                                        {
+                                            //editing board
+                                            board.set(y, x, singleCandidate);
+                                            tmp.Add("Znaleziono pojedynczego kandydata w drugim kwadracie.", y, x, singleCandidate);
+                                            break; //exit loop
+                                        }
+                                    }
+                                }
+                            break;
+                        case 3:
+                            for (byte y = 0; y < 3; y++)
+                                for (byte x = 6; x < 9; x++)
+                                {
+                                    for (byte i = 0; i < board.allCandidates(y, x).Count; i++)
+                                    {
+                                        if (board.allCandidates(y, x)[i] == singleCandidate)
+                                        {
+                                            //editing board
+                                            board.set(y, x, singleCandidate);
+                                            tmp.Add("Znaleziono pojedynczego kandydata w trzecim kwadracie.", y, x, singleCandidate);
+                                            break; //exit loop
+                                        }
+                                    }
+                                }
+                            break;
+                        case 4:
+                            for (byte y = 3; y < 6; y++)
+                                for (byte x = 0; x < 3; x++)
+                                {
+                                    for (byte i = 0; i < board.allCandidates(y, x).Count; i++)
+                                    {
+                                        if (board.allCandidates(y, x)[i] == singleCandidate)
+                                        {
+                                            //editing board
+                                            board.set(y, x, singleCandidate);
+                                            tmp.Add("Znaleziono pojedynczego kandydata w czwartym kwadracie.", y, x, singleCandidate);
+                                            break; //exit loop
+                                        }
+                                    }
+                                }
+                            break;
+                        case 5:
+                            for (byte y = 3; y < 6; y++)
+                                for (byte x = 3; x < 6; x++)
+                                {
+                                    for (byte i = 0; i < board.allCandidates(y, x).Count; i++)
+                                    {
+                                        if (board.allCandidates(y, x)[i] == singleCandidate)
+                                        {
+                                            //editing board
+                                            board.set(y, x, singleCandidate);
+                                            tmp.Add("Znaleziono pojedynczego kandydata w piątym kwadracie.", y, x, singleCandidate);
+                                            break; //exit loop
+                                        }
+                                    }
+                                }
+                            break;
+                        case 6:
+                            for (byte y = 3; y < 6; y++)
+                                for (byte x = 6; x < 9; x++)
+                                {
+                                    for (byte i = 0; i < board.allCandidates(y, x).Count; i++)
+                                    {
+                                        if (board.allCandidates(y, x)[i] == singleCandidate)
+                                        {
+                                            //editing board
+                                            board.set(y, x, singleCandidate);
+                                            tmp.Add("Znaleziono pojedynczego kandydata w szóstym kwadracie.", y, x, singleCandidate);
+                                            break; //exit loop
+                                        }
+                                    }
+                                }
+                            break;
+                        case 7:
+                            for (byte y = 6; y < 9; y++)
+                                for (byte x = 0; x < 3; x++)
+                                {
+                                    for (byte i = 0; i < board.allCandidates(y, x).Count; i++)
+                                    {
+                                        if (board.allCandidates(y, x)[i] == singleCandidate)
+                                        {
+                                            //editing board
+                                            board.set(y, x, singleCandidate);
+                                            tmp.Add("Znaleziono pojedynczego kandydata w siódmym kwadracie.", y, x, singleCandidate);
+                                            break; //exit loop
+                                        }
+                                    }
+                                }
+                            break;
+                        case 8:
+                            for (byte y = 6; y < 9; y++)
+                                for (byte x = 3; x < 6; x++)
+                                {
+                                    for (byte i = 0; i < board.allCandidates(y, x).Count; i++)
+                                    {
+                                        if (board.allCandidates(y, x)[i] == singleCandidate)
+                                        {
+                                            //editing board
+                                            board.set(y, x, singleCandidate);
+                                            tmp.Add("Znaleziono pojedynczego kandydata w ósmym kwadracie.", y, x, singleCandidate);
+                                            break; //exit loop
+                                        }
+                                    }
+                                }
+                            break;
+                        case 9:
+                            for (byte y = 6; y < 9; y++)
+                                for (byte x = 6; x < 9; x++)
+                                {
+                                    for (byte i = 0; i < board.allCandidates(y, x).Count; i++)
+                                    {
+                                        if (board.allCandidates(y, x)[i] == singleCandidate)
+                                        {
+                                            //editing board
+                                            board.set(y, x, singleCandidate);
+                                            tmp.Add("Znaleziono pojedynczego kandydata w dziewiątym kwadracie.", y, x, singleCandidate);
+                                            break; //exit loop
+                                        }
+                                    }
+                                }
+                            break;
+                    }
+                }
+
+            }
+            return tmp;
+        }
+
     }
 }
