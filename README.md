@@ -14,11 +14,11 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 * brute force sudoku solution (add separate static function to be used in other projects)
 * sudoku solution (brute force)
 * sudoku solution with steps and description :
-Markup : - [x] method 01 - TheOnlyPossible
-         - [ ] method 02 - SingleCandidateInRow
-         - [ ] method 03 - SingleCandidateInColumn
-         - [ ] method 04 - SingleCandidateInSquare
-         - [ ] method 05 - Twins
+- [x] method 01 - TheOnlyPossible
+- [x] method 02 - SingleCandidateInRow
+- [x] method 03 - SingleCandidateInColumn
+- [ ] method 04 - SingleCandidateInSquare
+- [ ] method 05 - Twins
 ### What else needs to be done
 * board analysis (checking how many solutions there are (method is finished)), determining the degree of difficulty)
 * sudoku solution with steps and description

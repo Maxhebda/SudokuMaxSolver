@@ -320,18 +320,40 @@ namespace SudokuMaxSolver
             //close popup if is open
             popupMain.IsOpen = false;
 
-            Debug.WriteLine("Manual solving test...");      
-            SolutionInformation tmp = Sudoku_AI.ManualSolver01_TheOnlyPossible(ref board);
+            SolutionInformation tmp = new SolutionInformation();
+
+            Debug.WriteLine("Manual solving test...");  
+            
+            //test only posible
+            tmp = Sudoku_AI.ManualSolver01_TheOnlyPossible(ref board);
+            if (tmp.Count() > 0)
+            {
+                for (int i = 0; i < tmp.Count(); i++)
+                {
+                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                }
+            }
+
+            //test single in row
+            tmp.Clear();
+            tmp = Sudoku_AI.ManualSolver02_SingleCandidateInRow(ref board);
+            if (tmp.Count() > 0)
+            {
+                for (int i = 0; i < tmp.Count(); i++)
+                {
+                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                }
+            }
+
+            //test single in column
+            tmp.Clear();
+            tmp = Sudoku_AI.ManualSolver03_SingleCandidateInColumn(ref board);
             if (tmp.Count()>0)
             {
                 for( int i = 0 ; i < tmp.Count(); i++)
                 {
                     Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
                 }
-            }
-            else
-            {
-                Debug.WriteLine("I haven't found any more solutions.");
             }
             refreshBoard();
         }

@@ -230,7 +230,7 @@ namespace SudokuMaxSolver
             //searching for candidates in cell
             for (byte value = 1; value <= 9; value++)
             {
-                if (!isInColumn(y,x) && !isInRow(y,x) && !isInSquare(y,x))
+                if (!isInColumn(y,x,value) && !isInRow(y,x,value) && !isInSquare(y,x,value))
                 {
                     tmp.Add(value);
                 }

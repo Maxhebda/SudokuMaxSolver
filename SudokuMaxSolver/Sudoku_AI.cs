@@ -722,6 +722,115 @@ namespace SudokuMaxSolver
         public static SolutionInformation ManualSolver02_SingleCandidateInRow(ref BoardTab board)
         {
             SolutionInformation tmp = new SolutionInformation();
+            byte[] counterCandidate = new byte[9];
+            byte singleCandidate;
+            for (byte row = 0; row < 9; row++)
+            {
+                //clear Candidate table
+                for (byte i = 0; i < 9; i++)
+                {
+                    counterCandidate[i] = 0;
+                }
+
+                //clear singleCandidate
+                singleCandidate = 0;
+
+                //summing all candidates in a row
+                for (byte x = 0; x < 9; x++)
+                {
+                    foreach (byte candidate in board.allCandidates(row,x))
+                    {
+                        counterCandidate[candidate - 1]++;
+                    }
+                }
+
+                //checking if there is only one candidate
+                for (byte i = 0; i < 9; i++)
+                {
+                    if (counterCandidate[i]==1)
+                    {
+                        singleCandidate = (byte)(i + 1);
+                        break;
+                    }
+                }
+
+                //looking for a candidate in a row
+                if (singleCandidate!=0)
+                {
+                    for (byte x = 0; x < 9; x++)
+                    {
+                        for (byte can = 0; can < board.allCandidates(row,x).Count; can++)
+                        {
+                            if (board.allCandidates(row,x)[can]==singleCandidate)
+                            {
+                                //editing board
+                                board.set(row, x, singleCandidate);
+                                tmp.Add("Znaleziono pojedynczego kandydata we wierszu.", row, x, singleCandidate);
+                                x = 9; //exit second loop (for)
+                                break; //exit loop (foreach)
+                            }
+                        }
+                    }
+                }
+
+            }
+            return tmp;
+        }
+        public static SolutionInformation ManualSolver03_SingleCandidateInColumn(ref BoardTab board)
+        {
+            SolutionInformation tmp = new SolutionInformation();
+            byte[] counterCandidate = new byte[9];
+            byte singleCandidate;
+            for (byte column = 0; column < 9; column++)
+            {
+                //clear Candidate table
+                for (byte i = 0; i < 9; i++)
+                {
+                    counterCandidate[i] = 0;
+                }
+
+                //clear singleCandidate
+                singleCandidate = 0;
+
+                //summing all candidates in a row
+                for (byte y = 0; y < 9; y++)
+                {
+                    foreach (byte candidate in board.allCandidates(y, column))
+                    {
+                        counterCandidate[candidate - 1]++;
+                    }
+                }
+
+                //checking if there is only one candidate
+                for (byte i = 0; i < 9; i++)
+                {
+                    if (counterCandidate[i] == 1)
+                    {
+                        singleCandidate = (byte)(i + 1);
+                        break;
+                    }
+                }
+
+                //looking for a candidate in a row
+                if (singleCandidate != 0)
+                {
+                    for (byte y = 0; y < 9; y++)
+                    {
+                        for (byte can = 0; can < board.allCandidates(y, column).Count; can++)
+                        {
+                            if (board.allCandidates(y, column)[can] == singleCandidate)
+                            {
+                                //editing board
+                                board.set(y, column, singleCandidate);
+                                tmp.Add("Znaleziono pojedynczego kandydata w kolumnie.", y, column, singleCandidate);
+                                y = 9; //exit second loop (for)
+                                break; //exit loop (foreach)
+                            }
+                        }
+                    }
+                }
+
+            }
             return tmp;
         }
     }
