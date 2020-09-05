@@ -460,7 +460,7 @@ namespace SudokuMaxSolver
                     boardAI[y, x] = tab.get(y, x);
                 }
         }
-        static private bool idzDalej(ref byte y, ref byte x)
+        static private bool goNextCell(ref byte y, ref byte x)
         {
             if (x < 8)
             {
@@ -532,7 +532,7 @@ namespace SudokuMaxSolver
                         {
 
                             // did not destroy! we move on to the next cell. we start with 1
-                            if (idzDalej(ref yStart, ref xStart))
+                            if (goNextCell(ref yStart, ref xStart))
                             {
                                 return findGoodCell(yStart, xStart, 1, board);
                             }
@@ -547,7 +547,7 @@ namespace SudokuMaxSolver
                 else
                 {
                     // the cell is full
-                    if (idzDalej(ref yStart, ref xStart))
+                    if (goNextCell(ref yStart, ref xStart))
                     {
                         // we move on to the next cell. we start with 1
                         return findGoodCell(yStart, xStart, 1, board);
@@ -625,7 +625,7 @@ namespace SudokuMaxSolver
                         {
 
                             // did not destroy! we move on to the next cell. we start with 1
-                            if (idzDalej(ref yStart, ref xStart))
+                            if (goNextCell(ref yStart, ref xStart))
                             {
                                 return findGoodCell(yStart, xStart, 1, board);
                             }
@@ -655,7 +655,7 @@ namespace SudokuMaxSolver
                 else
                 {
                     // the cell is full
-                    if (idzDalej(ref yStart, ref xStart))
+                    if (goNextCell(ref yStart, ref xStart))
                     {
                         // we move on to the next cell. we start with 1
                         return findGoodCell(yStart, xStart, 1, board);
@@ -719,14 +719,30 @@ namespace SudokuMaxSolver
             }
             return tmp;
         }
-        public static SolutionInformation ManualSolver02_SingleCandidateInRow(ref BoardTab board)
+        public static SolutionInformation ManualSolver02_SingleCandidateInRow(ref BoardTab board, byte[] listRowToCheck)
         {
             SolutionInformation tmp = new SolutionInformation();
+            List<Candidate> candidates = new List<Candidate>();
             byte[] counterCandidate = new byte[9];
-            byte singleCandidate;
-            for (byte row = 0; row < 9; row++)
+            byte singleCandidate = 0;
+            byte row;
+            for (byte lrow = 0; lrow < listRowToCheck.Length; lrow++)
             {
-                //clear Candidate table
+                row = listRowToCheck[lrow];
+
+                //clear candodates list
+                candidates.Clear();
+
+                //searching for candidates
+                for (byte x = 0; x < 9; x++)
+                {
+                    foreach(byte c in board.allCandidates(row, x))
+                    {
+                        candidates.Add(new Candidate(row,x,c));
+                    }
+                }
+
+                //clear counter candidate
                 for (byte i = 0; i < 9; i++)
                 {
                     counterCandidate[i] = 0;
@@ -735,16 +751,13 @@ namespace SudokuMaxSolver
                 //clear singleCandidate
                 singleCandidate = 0;
 
-                //summing all candidates in a row
-                for (byte x = 0; x < 9; x++)
+                //summing up all candidates
+                foreach (Candidate candidate in candidates)
                 {
-                    foreach (byte candidate in board.allCandidates(row,x))
-                    {
-                        counterCandidate[candidate - 1]++;
-                    }
+                    counterCandidate[candidate.Value - 1]++;
                 }
 
-                //checking if there is only one candidate
+                //checking if there is a single candidate
                 for (byte i = 0; i < 9; i++)
                 {
                     if (counterCandidate[i]==1)
@@ -754,21 +767,16 @@ namespace SudokuMaxSolver
                     }
                 }
 
-                //looking for a candidate in a row
+                //finding and entering a candidate
                 if (singleCandidate!=0)
                 {
-                    for (byte x = 0; x < 9; x++)
+                    foreach (Candidate candidate in candidates)
                     {
-                        for (byte can = 0; can < board.allCandidates(row,x).Count; can++)
+                        if (candidate.Value==singleCandidate)
                         {
-                            if (board.allCandidates(row,x)[can]==singleCandidate)
-                            {
-                                //editing board
-                                board.set(row, x, singleCandidate);
-                                tmp.Add("Znaleziono pojedynczego kandydata we wierszu.", row, x, singleCandidate);
-                                x = 9; //exit second loop (for)
-                                break; //exit loop (foreach)
-                            }
+                            board.set(candidate.Y, candidate.X, singleCandidate);
+                            tmp.Add("Znaleziono pojedynczego kandydata w kolumnie.", candidate.Y, candidate.X, singleCandidate);
+                            break;
                         }
                     }
                 }
@@ -776,14 +784,30 @@ namespace SudokuMaxSolver
             }
             return tmp;
         }
-        public static SolutionInformation ManualSolver03_SingleCandidateInColumn(ref BoardTab board)
+        public static SolutionInformation ManualSolver03_SingleCandidateInColumn(ref BoardTab board, byte[] listColumnToCheck)
         {
             SolutionInformation tmp = new SolutionInformation();
+            List<Candidate> candidates = new List<Candidate>();
             byte[] counterCandidate = new byte[9];
-            byte singleCandidate;
-            for (byte column = 0; column < 9; column++)
+            byte singleCandidate = 0;
+            byte column;
+            for (byte lcol = 0; lcol < listColumnToCheck.Length; lcol++)
             {
-                //clear Candidate table
+                column = listColumnToCheck[lcol];
+
+                //clear candodates list
+                candidates.Clear();
+
+                //searching for candidates
+                for (byte y = 0; y < 9; y++)
+                {
+                    foreach (byte c in board.allCandidates(y, column))
+                    {
+                        candidates.Add(new Candidate(y, column, c));
+                    }
+                }
+
+                //clear counter candidate
                 for (byte i = 0; i < 9; i++)
                 {
                     counterCandidate[i] = 0;
@@ -792,16 +816,13 @@ namespace SudokuMaxSolver
                 //clear singleCandidate
                 singleCandidate = 0;
 
-                //summing all candidates in a column
-                for (byte y = 0; y < 9; y++)
+                //summing up all candidates
+                foreach (Candidate candidate in candidates)
                 {
-                    foreach (byte candidate in board.allCandidates(y, column))
-                    {
-                        counterCandidate[candidate - 1]++;
-                    }
+                    counterCandidate[candidate.Value - 1]++;
                 }
 
-                //checking if there is only one candidate
+                //checking if there is a single candidate
                 for (byte i = 0; i < 9; i++)
                 {
                     if (counterCandidate[i] == 1)
@@ -811,21 +832,16 @@ namespace SudokuMaxSolver
                     }
                 }
 
-                //looking for a candidate in a column
+                //finding and entering a candidate
                 if (singleCandidate != 0)
                 {
-                    for (byte y = 0; y < 9; y++)
+                    foreach (Candidate candidate in candidates)
                     {
-                        for (byte can = 0; can < board.allCandidates(y, column).Count; can++)
+                        if (candidate.Value == singleCandidate)
                         {
-                            if (board.allCandidates(y, column)[can] == singleCandidate)
-                            {
-                                //editing board
-                                board.set(y, column, singleCandidate);
-                                tmp.Add("Znaleziono pojedynczego kandydata w kolumnie.", y, column, singleCandidate);
-                                y = 9; //exit second loop (for)
-                                break; //exit loop (foreach)
-                            }
+                            board.set(candidate.Y, candidate.X, singleCandidate);
+                            tmp.Add("Znaleziono pojedynczego kandydata w kolumnie.", candidate.Y, candidate.X, singleCandidate);
+                            break;
                         }
                     }
                 }
@@ -833,13 +849,16 @@ namespace SudokuMaxSolver
             }
             return tmp;
         }
-        public static SolutionInformation ManualSolver04_SingleCandidateInSquare(ref BoardTab board)
+        public static SolutionInformation ManualSolver04_SingleCandidateInSquare(ref BoardTab board, byte[] listSquareToCheck)
         {
             SolutionInformation tmp = new SolutionInformation();
             byte[] counterCandidate = new byte[9];
             byte singleCandidate;
-            for (byte square = 1; square <= 9; square++)
+            byte square;
+            for (byte lsqu = 0; lsqu < listSquareToCheck.Length; lsqu++)
             {
+                square = listSquareToCheck[lsqu];
+
                 //clear Candidate table
                 for (byte i = 0; i < 9; i++)
                 {

@@ -333,10 +333,10 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
                 }
             }
-
+            
             //test single in row
             tmp.Clear();
-            tmp = Sudoku_AI.ManualSolver02_SingleCandidateInRow(ref board);
+            tmp = Sudoku_AI.ManualSolver02_SingleCandidateInRow(ref board, new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
             if (tmp.Count() > 0)
             {
                 for (int i = 0; i < tmp.Count(); i++)
@@ -344,10 +344,10 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
                 }
             }
-
+            
             //test single in column
             tmp.Clear();
-            tmp = Sudoku_AI.ManualSolver03_SingleCandidateInColumn(ref board);
+            tmp = Sudoku_AI.ManualSolver03_SingleCandidateInColumn(ref board, new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
             if (tmp.Count()>0)
             {
                 for( int i = 0 ; i < tmp.Count(); i++)
@@ -358,7 +358,7 @@ namespace SudokuMaxSolver
             
             //test single in square
             tmp.Clear();
-            tmp = Sudoku_AI.ManualSolver04_SingleCandidateInSquare(ref board);
+            tmp = Sudoku_AI.ManualSolver04_SingleCandidateInSquare(ref board, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             if (tmp.Count() > 0)
             {
                 for (int i = 0; i < tmp.Count(); i++)
@@ -366,7 +366,7 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
                 }
             }
-
+            
 
             refreshBoard();
         }

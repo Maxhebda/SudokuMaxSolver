@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Candidate.cs" />
     <Compile Include="SolutionInformation.cs" />
     <Compile Include="Sudoku_AI.cs" />
     <Page Include="MainWindow.xaml">
