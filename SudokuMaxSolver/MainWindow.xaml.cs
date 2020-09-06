@@ -323,7 +323,7 @@ namespace SudokuMaxSolver
             SolutionInformation tmp = new SolutionInformation();
 
             Debug.WriteLine("Manual solving test...");  
-            
+            /*
             //test only posible
             tmp = Sudoku_AI.ManualSolver01_TheOnlyPossible(ref board);
             if (tmp.Count() > 0)
@@ -366,7 +366,17 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
                 }
             }
-            
+            */
+            //test twins in square
+            tmp.Clear();
+            tmp = Sudoku_AI.ManualSolver05_TwinsInSquare(ref board);
+            if (tmp.Count() > 0)
+            {
+                for (int i = 0; i < tmp.Count(); i++)
+                {
+                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                }
+            }
 
             refreshBoard();
         }

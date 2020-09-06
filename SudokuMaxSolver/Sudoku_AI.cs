@@ -1128,6 +1128,114 @@ namespace SudokuMaxSolver
             }
             return tmp;
         }
+        public static SolutionInformation ManualSolver05_TwinsInSquare(ref BoardTab board)
+        {
+            SolutionInformation tmp = new SolutionInformation();
+            List<Candidate> candidates = new List<Candidate>();
+            for (var square = 1; square <= 9; square++)
+            {
+                candidates.Clear();
+                switch (square)
+                {
+                    case 1:
+                        for (byte y = 0; y < 3; y++)
+                            for (byte x = 0; x < 3; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    candidates.Add(new Candidate(y, x, candidate));
+                                }
+                            }
+                        break;
+                    case 2:
+                        for (byte y = 0; y < 3; y++)
+                            for (byte x = 3; x < 6; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    candidates.Add(new Candidate(y, x, candidate));
+                                }
+                            }
+                        break;
+                    case 3:
+                        for (byte y = 0; y < 3; y++)
+                            for (byte x = 6; x < 9; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    candidates.Add(new Candidate(y, x, candidate));
+                                }
+                            }
+                        break;
+                    case 4:
+                        for (byte y = 3; y < 6; y++)
+                            for (byte x = 0; x < 3; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    candidates.Add(new Candidate(y, x, candidate));
+                                }
+                            }
+                        break;
+                    case 5:
+                        for (byte y = 3; y < 6; y++)
+                            for (byte x = 3; x < 6; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    candidates.Add(new Candidate(y, x, candidate));
+                                }
+                            }
+                        break;
+                    case 6:
+                        for (byte y = 3; y < 6; y++)
+                            for (byte x = 6; x < 9; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    candidates.Add(new Candidate(y, x, candidate));
+                                }
+                            }
+                        break;
+                    case 7:
+                        for (byte y = 6; y < 9; y++)
+                            for (byte x = 0; x < 3; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    candidates.Add(new Candidate(y, x, candidate));
+                                }
+                            }
+                        break;
+                    case 8:
+                        for (byte y = 6; y < 9; y++)
+                            for (byte x = 3; x < 6; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    candidates.Add(new Candidate(y, x, candidate));
+                                }
+                            }
+                        break;
+                    case 9:
+                        for (byte y = 6; y < 9; y++)
+                            for (byte x = 6; x < 9; x++)
+                            {
+                                foreach (byte candidate in board.allCandidates(y, x))
+                                {
+                                    candidates.Add(new Candidate(y, x, candidate));
+                                }
+                            }
+                        break;
+                }
+                Debug.Write("\nSquare = " + square);
+                foreach (var candidate in candidates)
+                {
+                    Debug.Write("(" + candidate.Y + "," + candidate.X + "=" + candidate.Value+")");
+                }
+            }
+            return tmp;
+        }
 
     }
 }
