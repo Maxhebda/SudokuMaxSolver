@@ -1128,6 +1128,54 @@ namespace SudokuMaxSolver
             }
             return tmp;
         }
+
+        //the function checks if the candidates are twins. returns bool: null = they are not, true = horizontal, false = vertical
+        private static bool? isTwins(List<Candidate> candidates)   //true - horizontal, false - vertical, null - is no Twins
+        {
+            //if they are not brothers or there are too few or too many brothers then NULL
+            if (candidates.Count<2 || candidates.Count > 3)
+            {
+                return null;
+            }
+            if (candidates[0].Value!=candidates[1].Value)
+            {
+                return null;
+            }
+            if (candidates.Count==3)
+            {
+                if (candidates[0].Value != candidates[2].Value)
+                {
+                    return null;
+                }
+            }
+
+            //check double twins
+            if (candidates.Count==2)
+            {
+                if (candidates[0].X == candidates[1].X) //double twins horizontal
+                {
+                    return false;
+                }
+                if (candidates[0].Y == candidates[1].Y) //double twins vertical
+                {
+                    return true;
+                }
+            }
+            else                //check triple twins
+            {
+                if (candidates[0].X == candidates[1].X && candidates[1].X == candidates[2].X) //triple twins horizontal
+                {
+                    return false;
+                }
+                if (candidates[0].Y == candidates[1].Y && candidates[1].Y == candidates[2].Y) //triple twins vertical
+                {
+                    return true;
+                }
+            }
+            return null;
+        }
+
+        //the function finds "twins" and "triplets" in squares
         public static SolutionInformation ManualSolver05_TwinsInSquare(ref BoardTab board)
         {
             SolutionInformation tmp = new SolutionInformation();
@@ -1228,10 +1276,24 @@ namespace SudokuMaxSolver
                             }
                         break;
                 }
-                Debug.Write("\nSquare = " + square);
-                foreach (var candidate in candidates)
+
+                //search for twins in all candidates
+                List<Candidate> brother = new List<Candidate>();
+                bool? direction = null;
+                for (byte nr = 1; nr <= 9; nr++)
                 {
-                    Debug.Write("(" + candidate.Y + "," + candidate.X + "=" + candidate.Value+")");
+                    brother.Clear();
+                    foreach (var candidate in candidates)
+                    {
+                        if (nr == candidate.Value)
+                            brother.Add(candidate);
+                    }
+                    //check if the brothers are twins
+                    direction = isTwins(brother);
+                    if (direction!=null)
+                    {
+                        Debug.WriteLine("Found Twins in square " + square + ": " + brother[0].Value + ", " + direction);
+                    }
                 }
             }
             return tmp;
