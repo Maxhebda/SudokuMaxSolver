@@ -323,7 +323,7 @@ namespace SudokuMaxSolver
             SolutionInformation tmp = new SolutionInformation();
 
             Debug.WriteLine("Manual solving test...");  
-            /*
+            
             //test only posible
             tmp = Sudoku_AI.ManualSolver01_TheOnlyPossible(ref board);
             if (tmp.Count() > 0)
@@ -336,7 +336,7 @@ namespace SudokuMaxSolver
             
             //test single in row
             tmp.Clear();
-            tmp = Sudoku_AI.ManualSolver02_SingleCandidateInRow(ref board, new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
+            tmp = Sudoku_AI.ManualSolver02_SingleCandidateInRow(ref board);
             if (tmp.Count() > 0)
             {
                 for (int i = 0; i < tmp.Count(); i++)
@@ -347,7 +347,7 @@ namespace SudokuMaxSolver
             
             //test single in column
             tmp.Clear();
-            tmp = Sudoku_AI.ManualSolver03_SingleCandidateInColumn(ref board, new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
+            tmp = Sudoku_AI.ManualSolver03_SingleCandidateInColumn(ref board);
             if (tmp.Count()>0)
             {
                 for( int i = 0 ; i < tmp.Count(); i++)
@@ -358,7 +358,7 @@ namespace SudokuMaxSolver
             
             //test single in square
             tmp.Clear();
-            tmp = Sudoku_AI.ManualSolver04_SingleCandidateInSquare(ref board, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            tmp = Sudoku_AI.ManualSolver04_SingleCandidateInSquare(ref board);
             if (tmp.Count() > 0)
             {
                 for (int i = 0; i < tmp.Count(); i++)
@@ -366,7 +366,9 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
                 }
             }
-            */
+            
+
+
             //test twins in square
             tmp.Clear();
             tmp = Sudoku_AI.ManualSolver05_TwinsInSquare(ref board);
@@ -378,6 +380,21 @@ namespace SudokuMaxSolver
                 }
             }
 
+            /*
+            //----------------- tmp debug log ---------------------
+            string messageString = "";
+            if (tmp.Count() > 0)
+            {
+                for (int i = 0; i < tmp.Count(); i++)
+                {
+                    messageString += "\n";
+                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                }
+            }
+
+            MessageBox.Show("Log Twins", messageString);
+            //----------------- tmp debug log ---------------------
+            */
             refreshBoard();
         }
     }
