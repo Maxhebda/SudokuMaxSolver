@@ -12,57 +12,57 @@
             <MenuItem x:Name="menuProgram" Header="Program" Click="menuProgram_Click">
                 <MenuItem Header="Pusta plansza" Click="menuNowaPlansza_Click">
                     <MenuItem.Icon>
-                        <Image Source="icon_pusta.png"/>
+                        <Image Source="icon_empty.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Generuj nową planszę">
                     <MenuItem.Icon>
-                        <Image Source="icon_generuj.png"/>
+                        <Image Source="icon_generate.png"/>
                     </MenuItem.Icon>
                     <MenuItem x:Name="menuTrywialna" Header="Trywialna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
-                            <Image Source="icon_trywialna.png"/>
+                            <Image Source="icon_tryvial.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem x:Name="menuBardzoLatwa" Header="Bardzo Łatwa" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
-                            <Image Source="icon_bardzolatwa.png"/>
+                            <Image Source="icon_veryEasy.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem x:Name="menuLatwa" Header="Łatwa" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
-                            <Image Source="icon_latwa.png"/>
+                            <Image Source="icon_easy.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem x:Name="menuPrzecietna" Header="Przeciętna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
-                            <Image Source="icon_przecietna.png"/>
+                            <Image Source="icon_average.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem x:Name="menuDosycTrudna" Header="Dosyć Trudna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
-                            <Image Source="icon_dosyctrudna.png"/>
+                            <Image Source="icon_quiteHard.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem x:Name="menuTrudna" Header="Trudna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
-                            <Image Source="icon_trudna.png"/>
+                            <Image Source="icon_hard.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem x:Name="menuBardzoTrudna" Header="Bardzo Trudna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
-                            <Image Source="icon_bardzotrudna.png"/>
+                            <Image Source="icon_veryHard.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem x:Name="menuDiaboliczna" Header="Diaboliczna" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
-                            <Image Source="icon_diaboliczna.png"/>
+                            <Image Source="icon_diabolical.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
                     <MenuItem x:Name="menuNiemozliwa" Header="Niemożliwa" Click="menuGenerujNowaPlansze_Click">
                         <MenuItem.Icon>
-                            <Image Source="icon_niemozliwa.png"/>
+                            <Image Source="icon_impossible.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -71,7 +71,7 @@
             <MenuItem Header="Edycja">
                 <MenuItem Header="Wyczyść" Click="menuWyczysc_Click">
                     <MenuItem.Icon>
-                        <Image Source="icon_wyczysc.png"/>
+                        <Image Source="icon_clear.png"/>
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
                         <StackPanel ToolTipService.ShowOnDisabled="True" ToolTipService.InitialShowDelay="1000">
@@ -81,7 +81,7 @@
                 </MenuItem>
                 <MenuItem Header="Zablokuj widoczne cyfry" Click="menuZablokujWidoczne_Click">
                     <MenuItem.Icon>
-                        <Image Source="icon_zablokujWidoczne.png"/>
+                        <Image Source="icon_lockVisible.png"/>
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
                         <StackPanel ToolTipService.ShowOnDisabled="True" ToolTipService.InitialShowDelay="1000">
@@ -93,7 +93,7 @@
                 </MenuItem>
                 <MenuItem Header="Odblokuj widoczne cyfry" Click="menuOdblokujWidoczne_Click">
                     <MenuItem.Icon>
-                        <Image Source="icon_odblokujWidoczne.png"/>
+                        <Image Source="icon_unlockVisible.png"/>
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
                         <StackPanel ToolTipService.ShowOnDisabled="True" ToolTipService.InitialShowDelay="1000">

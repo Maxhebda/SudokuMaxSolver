@@ -380,22 +380,21 @@ namespace SudokuMaxSolver
                 }
             }
 
-            /*
-            //----------------- tmp debug log ---------------------
+            refreshBoard();
+
+            //----------------- temporary function to check solution results ---------------------
             string messageString = "";
             if (tmp.Count() > 0)
             {
                 for (int i = 0; i < tmp.Count(); i++)
                 {
-                    messageString += "\n";
-                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                    messageString += tmp.Get_Destription(i) + "->" + tmp.Get_Value(i)+"\n";
                 }
             }
+            MessageBox.Show(messageString, "Log Twins");
+            //----------------- temporary function to check solution results ---------------------
 
-            MessageBox.Show("Log Twins", messageString);
-            //----------------- tmp debug log ---------------------
-            */
-            refreshBoard();
+
         }
     }
 }

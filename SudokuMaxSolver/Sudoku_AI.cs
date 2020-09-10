@@ -848,7 +848,7 @@ namespace SudokuMaxSolver
                         if (candidate.Value==singleCandidate)
                         {
                             board.set(candidate.Y, candidate.X, singleCandidate);
-                            tmp.Add("Znaleziono pojedynczego kandydata w kolumnie.", candidate.Y, candidate.X, singleCandidate);
+                            tmp.Add("Znaleziono pojedynczego kandydata we wierszu", candidate.Y, candidate.X, singleCandidate);
                             break;
                         }
                     }
@@ -929,7 +929,7 @@ namespace SudokuMaxSolver
                         if (candidate.Value == singleCandidate)
                         {
                             board.set(candidate.Y, candidate.X, singleCandidate);
-                            tmp.Add("Znaleziono pojedynczego kandydata w kolumnie.", candidate.Y, candidate.X, singleCandidate);
+                            tmp.Add("Znaleziono pojedynczego kandydata w kolumnie", candidate.Y, candidate.X, singleCandidate);
                             break;
                         }
                     }
@@ -1206,12 +1206,171 @@ namespace SudokuMaxSolver
                     direction = isTwins(brother);
                     if (direction!=null)
                     {
-                        Debug.WriteLine("Found Twins in square " + square + ": " + brother[0].Value + ", " + direction);
+                        //Debug.WriteLine("Found Twins in square " + square + ": " + brother[0].Value + ", " + direction);
+                        tmp.Add("Znaleziono "+(direction==true?"poziome":"pionowe")+" bliźniaki, kwadrat:" + square + ") pozostałe :"
+
+                            //temporary listing of results
+                            + MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1)[0]
+                            + MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1)[1]
+                            //temporary listing of results
+
+                            , brother[0].Y, brother[0].X, brother[0].Value);
                     }
                 }
             }
             return tmp;
         }
 
+        //the number of the square in which the cell is located
+        private static byte nrSquare(byte y, byte x)
+        {
+            if (y < 3 && x < 3) return 1;
+            if (y < 3 && x < 6) return 2;
+            if (y < 3) return 3;
+            if (y > 5 && x < 3) return 7;
+            if (y > 5 && x < 6) return 8;
+            if (y > 5) return 9;
+            if (y > 2 && y < 6 && x < 3) return 4;
+            if (y > 2 && y < 6 && x < 6) return 5;
+            if (y > 2 && y < 6) return 6;
+            return 0;
+        }
+
+        //the function returns the numbers of ditches, columns, squares for a given solution method.
+        private static List<byte> MultiSolutionPositionsAfterFindingTheTwins(byte y, byte x, bool direction, byte nrSolution)
+        {
+            List<byte> tmp = new List<byte>();
+            byte square = nrSquare(y, x);
+
+            List<byte> FindSquares(byte square2, bool direction2)
+            {
+                List<byte> tmp2 = new List<byte>();
+                switch(square2)
+                {
+                    case 1:
+                        if (direction2)
+                        {
+                            tmp2.Add(2);
+                            tmp2.Add(3);
+                        }
+                        else
+                        {
+                            tmp2.Add(4);
+                            tmp2.Add(7);
+                        }
+                        break;
+                    case 2:
+                        if (direction2)
+                        {
+                            tmp2.Add(1);
+                            tmp2.Add(3);
+                        }
+                        else
+                        {
+                            tmp2.Add(5);
+                            tmp2.Add(8);
+                        }
+                        break;
+                    case 3:
+                        if (direction2)
+                        {
+                            tmp2.Add(1);
+                            tmp2.Add(2);
+                        }
+                        else
+                        {
+                            tmp2.Add(6);
+                            tmp2.Add(9);
+                        }
+                        break;
+                    case 4:
+                        if (direction2)
+                        {
+                            tmp2.Add(5);
+                            tmp2.Add(6);
+                        }
+                        else
+                        {
+                            tmp2.Add(1);
+                            tmp2.Add(7);
+                        }
+                        break;
+                    case 5:
+                        if (direction2)
+                        {
+                            tmp2.Add(4);
+                            tmp2.Add(6);
+                        }
+                        else
+                        {
+                            tmp2.Add(2);
+                            tmp2.Add(8);
+                        }
+                        break;
+                    case 6:
+                        if (direction2)
+                        {
+                            tmp2.Add(4);
+                            tmp2.Add(5);
+                        }
+                        else
+                        {
+                            tmp2.Add(3);
+                            tmp2.Add(9);
+                        }
+                        break;
+                    case 7:
+                        if (direction2)
+                        {
+                            tmp2.Add(8);
+                            tmp2.Add(9);
+                        }
+                        else
+                        {
+                            tmp2.Add(1);
+                            tmp2.Add(4);
+                        }
+                        break;
+                    case 8:
+                        if (direction2)
+                        {
+                            tmp2.Add(7);
+                            tmp2.Add(9);
+                        }
+                        else
+                        {
+                            tmp2.Add(2);
+                            tmp2.Add(5);
+                        }
+                        break;
+                    case 9:
+                        if (direction2)
+                        {
+                            tmp2.Add(7);
+                            tmp2.Add(8);
+                        }
+                        else
+                        {
+                            tmp2.Add(3);
+                            tmp2.Add(6);
+                        }
+                        break;
+                }
+                return tmp2;
+            }
+
+            switch(nrSolution)
+            {
+                case 1:
+                    {
+                        foreach(var i in FindSquares(square,direction))
+                        {
+                            tmp.Add(i);
+                        }
+                    }
+                    break;
+            }
+            return tmp;   
+        }
     }
 }

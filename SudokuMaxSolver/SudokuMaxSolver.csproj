@@ -117,21 +117,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon_diaboliczna.png" />
-    <Resource Include="icon_przecietna.png" />
+    <Resource Include="icon_diabolical.png" />
+    <Resource Include="icon_average.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon_niemozliwa.png" />
+    <Resource Include="icon_impossible.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon_bardzotrudna.png" />
-    <Resource Include="icon_trudna.png" />
+    <Resource Include="icon_veryHard.png" />
+    <Resource Include="icon_hard.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon_bardzolatwa.png" />
-    <Resource Include="icon_dosyctrudna.png" />
-    <Resource Include="icon_latwa.png" />
-    <Resource Include="icon_trywialna.png" />
+    <Resource Include="icon_veryEasy.png" />
+    <Resource Include="icon_quiteHard.png" />
+    <Resource Include="icon_easy.png" />
+    <Resource Include="icon_tryvial.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="sudoku.ico" />
@@ -149,20 +149,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon_generuj.png" />
+    <Resource Include="icon_generate.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon_pusta.png" />
+    <Resource Include="icon_empty.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon_wyczysc.png" />
+    <Resource Include="icon_clear.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon_bruteForce.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon_odblokujWidoczne.png" />
-    <Resource Include="icon_zablokujWidoczne.png" />
+    <Resource Include="icon_unlockVisible.png" />
+    <Resource Include="icon_lockVisible.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon_manual.png" />
