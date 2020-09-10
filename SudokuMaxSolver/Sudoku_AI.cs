@@ -769,7 +769,7 @@ namespace SudokuMaxSolver
                         if (counterPossible == 1)
                         {
                             board.set(y, x, findValue);
-                            tmp.Add("Znaleziono jedynego możliwego kandydata.", y, x, findValue);
+                            tmp.Add("Znaleziono jedynego możliwego kandydata", y, x, findValue);
                         }
                     }
                 }
@@ -1206,15 +1206,59 @@ namespace SudokuMaxSolver
                     direction = isTwins(brother);
                     if (direction!=null)
                     {
-                        //Debug.WriteLine("Found Twins in square " + square + ": " + brother[0].Value + ", " + direction);
-                        tmp.Add("Znaleziono "+(direction==true?"poziome":"pionowe")+" bliźniaki, kwadrat:" + square + ") pozostałe :"
+                        string stringTmp = (direction == true ? "Poziome" : "Pionowe")+" bliźniaki, kwadrat:" + square + ") pozostałe :";
+                        foreach (byte squareTmp in MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1))
+                        {
+                            stringTmp += squareTmp;
+                        }
+                         tmp.Add(stringTmp, brother[0].Y, brother[0].X, brother[0].Value);
+                        
 
-                            //temporary listing of results
-                            + MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1)[0]
-                            + MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1)[1]
-                            //temporary listing of results
 
-                            , brother[0].Y, brother[0].X, brother[0].Value);
+                        //-------------------------------------------------------------------------------------------------------
+
+                        //test manual solver 01 TheOnlyPossible
+                        //create new imaginary board witch imaginary value in cell
+                        BoardTab ImaginaryBoard = new BoardTab(board);
+                        ImaginaryBoard.set(brother[0].Y, brother[0].X, brother[0].Value);
+                        SolutionInformation InformationTmp = new SolutionInformation();
+                        InformationTmp = ManualSolver01_TheOnlyPossible(ref board, MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1), ImaginaryBoard);
+                        if (InformationTmp.Count() > 0)
+                        {
+                            for (int i = 0; i < InformationTmp.Count(); i++)
+                            {
+                                tmp.Add("Dzięki bliżniakom znaleziono jedynego możliwego kandydata", InformationTmp.Get_Y(i), InformationTmp.Get_X(i), InformationTmp.Get_Value(i));
+                            }
+                        }
+
+                        //test manual solver 02 SingleCandidateInRow
+                        //create new imaginary board witch imaginary value in cell
+                        ImaginaryBoard.load(board);
+                        ImaginaryBoard.set(brother[0].Y, brother[0].X, brother[0].Value);
+                        InformationTmp.Clear();
+                        InformationTmp = ManualSolver02_SingleCandidateInRow(ref board, MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 2), ImaginaryBoard);
+                        if (InformationTmp.Count() > 0)
+                        {
+                            for (int i = 0; i < InformationTmp.Count(); i++)
+                            {
+                                tmp.Add("Dzięki bliżniakom znaleziono pojedynczego kandydata we wierszu", InformationTmp.Get_Y(i), InformationTmp.Get_X(i), InformationTmp.Get_Value(i));
+                            }
+                        }
+
+                        //test manual solver 03 SingleCandidateInColumn
+                        //create new imaginary board witch imaginary value in cell
+                        ImaginaryBoard.load(board);
+                        ImaginaryBoard.set(brother[0].Y, brother[0].X, brother[0].Value);
+                        InformationTmp.Clear();
+                        InformationTmp = ManualSolver03_SingleCandidateInColumn(ref board, MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 3), ImaginaryBoard);
+                        if (InformationTmp.Count() > 0)
+                        {
+                            for (int i = 0; i < InformationTmp.Count(); i++)
+                            {
+                                tmp.Add("Dzięki bliżniakom znaleziono pojedynczego kandydata w kolumnie", InformationTmp.Get_Y(i), InformationTmp.Get_X(i), InformationTmp.Get_Value(i));
+                            }
+                        }
+                        //-------------------------------------------------------------------------------------------------------
                     }
                 }
             }
@@ -1237,122 +1281,156 @@ namespace SudokuMaxSolver
         }
 
         //the function returns the numbers of ditches, columns, squares for a given solution method.
-        private static List<byte> MultiSolutionPositionsAfterFindingTheTwins(byte y, byte x, bool direction, byte nrSolution)
+        private static byte[] MultiSolutionPositionsAfterFindingTheTwins(byte y, byte x, bool direction, byte nrSolution)
         {
-            List<byte> tmp = new List<byte>();
+            byte[] tmp;
             byte square = nrSquare(y, x);
 
-            List<byte> FindSquares(byte square2, bool direction2)
+            byte[] FindRow(bool direction2)
             {
-                List<byte> tmp2 = new List<byte>();
+                if (direction2)
+                {
+                    if (y == 0) return new byte[] { 1, 2 };
+                    if (y == 1) return new byte[] { 0, 2 };
+                    if (y == 2) return new byte[] { 0, 1 };
+                    if (y == 3) return new byte[] { 4, 5 };
+                    if (y == 4) return new byte[] { 3, 5 };
+                    if (y == 5) return new byte[] { 3, 4 };
+                    if (y == 6) return new byte[] { 7, 8 };
+                    if (y == 7) return new byte[] { 6, 8 };
+                    return             new byte[] { 6, 7 };
+                }
+                else
+                {
+                    if (y < 3) return new byte[] { 3, 4, 5, 6, 7, 8 };
+                    if (y < 6) return new byte[] { 0, 1, 2, 6, 7, 8 };
+                    return            new byte[] { 0, 1, 2, 3, 4, 5 };
+                }
+            }
+
+
+            byte[] FindColumn(bool direction2)
+            {
+                if (direction2)
+                {
+                    if (x < 3) return new byte[] { 3, 4, 5, 6, 7, 8 };
+                    if (x < 6) return new byte[] { 0, 1, 2, 6, 7, 8 };
+                    return new byte[] { 0, 1, 2, 3, 4, 5 };
+
+                }
+                else
+                {
+                    if (x == 0) return new byte[] { 1, 2 };
+                    if (x == 1) return new byte[] { 0, 2 };
+                    if (x == 2) return new byte[] { 0, 1 };
+                    if (x == 3) return new byte[] { 4, 5 };
+                    if (x == 4) return new byte[] { 3, 5 };
+                    if (x == 5) return new byte[] { 3, 4 };
+                    if (x == 6) return new byte[] { 7, 8 };
+                    if (x == 7) return new byte[] { 6, 8 };
+                    return new byte[] { 6, 7 };
+                }
+            }
+
+
+            byte[] FindSquares(byte square2, bool direction2)
+            {
+                byte[] tmp2;
                 switch(square2)
                 {
                     case 1:
                         if (direction2)
                         {
-                            tmp2.Add(2);
-                            tmp2.Add(3);
+                            tmp2 = new byte[] { 2, 3 };
                         }
                         else
                         {
-                            tmp2.Add(4);
-                            tmp2.Add(7);
+                            tmp2 = new byte[] { 4, 7 };
                         }
                         break;
                     case 2:
                         if (direction2)
                         {
-                            tmp2.Add(1);
-                            tmp2.Add(3);
+                            tmp2 = new byte[] { 1, 3 };
                         }
                         else
                         {
-                            tmp2.Add(5);
-                            tmp2.Add(8);
+                            tmp2 = new byte[] { 5, 8 };
                         }
                         break;
                     case 3:
                         if (direction2)
                         {
-                            tmp2.Add(1);
-                            tmp2.Add(2);
+                            tmp2 = new byte[] { 1, 2 };
                         }
                         else
                         {
-                            tmp2.Add(6);
-                            tmp2.Add(9);
+                            tmp2 = new byte[] { 6, 9 };
                         }
                         break;
                     case 4:
                         if (direction2)
                         {
-                            tmp2.Add(5);
-                            tmp2.Add(6);
+                            tmp2 = new byte[] { 5, 6 };
                         }
                         else
                         {
-                            tmp2.Add(1);
-                            tmp2.Add(7);
+                            tmp2 = new byte[] { 1, 7 };
                         }
                         break;
                     case 5:
                         if (direction2)
                         {
-                            tmp2.Add(4);
-                            tmp2.Add(6);
+                            tmp2 = new byte[] { 4, 6 };
                         }
                         else
                         {
-                            tmp2.Add(2);
-                            tmp2.Add(8);
+                            tmp2 = new byte[] { 2, 8 };
                         }
                         break;
                     case 6:
                         if (direction2)
                         {
-                            tmp2.Add(4);
-                            tmp2.Add(5);
+                            tmp2 = new byte[] { 4, 5 };
                         }
                         else
                         {
-                            tmp2.Add(3);
-                            tmp2.Add(9);
+                            tmp2 = new byte[] { 3, 9 };
                         }
                         break;
                     case 7:
                         if (direction2)
                         {
-                            tmp2.Add(8);
-                            tmp2.Add(9);
+                            tmp2 = new byte[] { 8, 9 };
                         }
                         else
                         {
-                            tmp2.Add(1);
-                            tmp2.Add(4);
+                            tmp2 = new byte[] { 1, 4 };
                         }
                         break;
                     case 8:
                         if (direction2)
                         {
-                            tmp2.Add(7);
-                            tmp2.Add(9);
+                            tmp2 = new byte[] { 7, 9 };
                         }
                         else
                         {
-                            tmp2.Add(2);
-                            tmp2.Add(5);
+                            tmp2 = new byte[] { 2, 5 };
                         }
                         break;
                     case 9:
                         if (direction2)
                         {
-                            tmp2.Add(7);
-                            tmp2.Add(8);
+                            tmp2 = new byte[] { 7, 8 };
                         }
                         else
                         {
-                            tmp2.Add(3);
-                            tmp2.Add(6);
+                            tmp2 = new byte[] { 3, 6 };
+                        }
+                        break;
+                    default:
+                        {
+                            tmp2 = null;
                         }
                         break;
                 }
@@ -1363,10 +1441,34 @@ namespace SudokuMaxSolver
             {
                 case 1:
                     {
-                        foreach(var i in FindSquares(square,direction))
+                        tmp = new byte[FindSquares(square, direction).Length];
+                        for(byte i = 0; i < FindSquares(square, direction).Length; i++)
                         {
-                            tmp.Add(i);
+                            tmp[i] = FindSquares(square, direction)[i];
                         }
+                    }
+                    break;
+                case 2:
+                    {
+                        tmp = new byte[FindRow(direction).Length];
+                        for (byte i = 0; i < FindRow(direction).Length; i++)
+                        {
+                            tmp[i] = FindRow(direction)[i];
+                        }
+                    }
+                    break;
+                case 3:
+                    {
+                        tmp = new byte[FindColumn(direction).Length];
+                        for (byte i = 0; i < FindColumn(direction).Length; i++)
+                        {
+                            tmp[i] = FindColumn(direction)[i];
+                        }
+                    }
+                    break;
+                default:
+                    {
+                        tmp = null;
                     }
                     break;
             }

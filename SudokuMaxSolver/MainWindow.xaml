@@ -132,6 +132,8 @@
                         </StackPanel>
                     </MenuItem.ToolTip>
                 </MenuItem>
+                <MenuItem Header="test tmp" Click="test_Click" />
+
             </MenuItem>
             <MenuItem Header="Info" IsEnabled="False"/>
         </Menu>

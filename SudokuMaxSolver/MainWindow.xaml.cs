@@ -366,8 +366,17 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
                 }
             }
-            
 
+
+            refreshBoard();
+
+        }
+
+        private void test_Click(object sender, RoutedEventArgs e)
+        {
+            SolutionInformation tmp = new SolutionInformation();
+
+            Debug.WriteLine("Twins test...");
 
             //test twins in square
             tmp.Clear();
@@ -388,13 +397,12 @@ namespace SudokuMaxSolver
             {
                 for (int i = 0; i < tmp.Count(); i++)
                 {
-                    messageString += tmp.Get_Destription(i) + "->" + tmp.Get_Value(i)+"\n";
+                    messageString += tmp.Get_Destription(i) + "->" + tmp.Get_Value(i) + "\n";
                 }
             }
             MessageBox.Show(messageString, "Log Twins");
             //----------------- temporary function to check solution results ---------------------
-
-
+            
         }
     }
 }
