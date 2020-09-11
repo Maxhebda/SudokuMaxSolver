@@ -1258,6 +1258,20 @@ namespace SudokuMaxSolver
                                 tmp.Add("Dzięki bliżniakom znaleziono pojedynczego kandydata w kolumnie", InformationTmp.Get_Y(i), InformationTmp.Get_X(i), InformationTmp.Get_Value(i));
                             }
                         }
+
+                        //test manual solver 03 SingleCandidateInColumn
+                        //create new imaginary board witch imaginary value in cell
+                        ImaginaryBoard.load(board);
+                        ImaginaryBoard.set(brother[0].Y, brother[0].X, brother[0].Value);
+                        InformationTmp.Clear();
+                        InformationTmp = ManualSolver04_SingleCandidateInSquare(ref board, MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 4), ImaginaryBoard);
+                        if (InformationTmp.Count() > 0)
+                        {
+                            for (int i = 0; i < InformationTmp.Count(); i++)
+                            {
+                                tmp.Add("Dzięki bliżniakom znaleziono pojedynczego kandydata w kwadracie", InformationTmp.Get_Y(i), InformationTmp.Get_X(i), InformationTmp.Get_Value(i));
+                            }
+                        }
                         //-------------------------------------------------------------------------------------------------------
                     }
                 }
@@ -1466,6 +1480,10 @@ namespace SudokuMaxSolver
                         }
                     }
                     break;
+                case 4:
+                    {
+                        goto case 1;
+                    }
                 default:
                     {
                         tmp = null;
