@@ -1474,5 +1474,30 @@ namespace SudokuMaxSolver
             }
             return tmp;   
         }
-    }
+
+        public static SolutionInformation ManualSolver06_XYWing(ref BoardTab board, byte[] listSquareToCheck = null, BoardTab imaginaryBoard = null)
+        {
+            if (listSquareToCheck == null)
+            {
+                listSquareToCheck = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            }
+
+            //if the imaginary board is active, we will read from the imaginaryBoard one and write it to the oryginal board
+            bool imaginaryBoardisActive;
+            if (imaginaryBoard == null)
+            {
+                imaginaryBoardisActive = false;
+            }
+            else
+            {
+                imaginaryBoardisActive = true;
+            }
+
+            SolutionInformation tmp = new SolutionInformation();
+
+
+            return tmp;
+        }
+
+     }
 }
