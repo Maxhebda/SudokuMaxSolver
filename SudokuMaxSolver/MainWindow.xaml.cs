@@ -404,5 +404,10 @@ namespace SudokuMaxSolver
             //----------------- temporary function to check solution results ---------------------
             
         }
+
+        private void testXWings_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
