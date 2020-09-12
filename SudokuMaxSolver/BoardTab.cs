@@ -2,7 +2,7 @@
 
 namespace SudokuMaxSolver
 {
-    class BoardTab
+    class BoardTab : FakeCandidatesBoard
     {
         struct boardBody
         {
@@ -230,7 +230,7 @@ namespace SudokuMaxSolver
             //searching for candidates in cell
             for (byte value = 1; value <= 9; value++)
             {
-                if (!isInColumn(y,x,value) && !isInRow(y,x,value) && !isInSquare(y,x,value))
+                if (!isInColumn(y,x,value) && !isInRow(y,x,value) && !isInSquare(y,x,value) && !ExistsFakeCandidate(y,x,value))
                 {
                     tmp.Add(value);
                 }

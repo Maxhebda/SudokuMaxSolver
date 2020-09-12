@@ -13,6 +13,7 @@ namespace SudokuMaxSolver
     {
         ToolTip toolTip = new ToolTip();
         BoardTab board = new BoardTab();
+
         Button[,] buttonMain = new Button[9, 9];        //main board
         Popup popupMain = new Popup();
 
