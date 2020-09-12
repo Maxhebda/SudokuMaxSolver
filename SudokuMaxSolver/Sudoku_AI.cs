@@ -1493,11 +1493,74 @@ namespace SudokuMaxSolver
             return tmp;   
         }
 
+        //a private function checks the row for a candidate
+        //if the candidate occurs only 2x, it returns them.  null = empty
+        private static List<Candidate> LookForDoubleCandidatesInRow(BoardTab board, byte row, byte candidate)
+        {
+            List<Candidate> list = new List<Candidate>();
+
+            for (byte x = 0; x < 9; x++)
+            {
+                if (board.get(row,x)!=0)
+                {
+                    continue;
+                }
+                foreach(byte value in board.allCandidates(row,x))
+                {
+                    if (value==candidate)
+                    {
+                        list.Add(new Candidate(row, x, value));
+                    }
+                }
+            }
+            if (list.Count==2)
+            {
+                return list;
+            }
+            return null;
+        }
+
         //searching the board for horizontal lionfish (skrzydlice) and blocking any candidates
         public static SolutionInformation ManualSolver06_XWings(ref BoardTab board)
         {
             SolutionInformation tmp = new SolutionInformation();
+            
+            //check the rows
+            for (byte y = 0; y < 9; y++)
+            {
+                //check the numbers 1..9
+                for (byte value = 1; value <=9; value++)
+                {
+                    if (LookForDoubleCandidatesInRow(board, y, value)!=null)
+                    {
+                        List<Candidate> lCanA = LookForDoubleCandidatesInRow(board, y, value);
+                        //Debug.WriteLine("lionfish (" + lCan[0].Y + "," + lCan[0].X + ")(" + lCan[1].Y + "," + lCan[1].X + "->" + lCan[0].Value);
 
+                        //look for the second lionfish
+                        byte yStart = 0;
+                        byte yStop = 0;
+                        if (y<3)
+                        {
+                            yStart = 3;
+                            yStop = 9;
+                        }
+                        else if (y>5)
+                        {
+                            yStart = 0;
+                            yStop = 6;
+                        }
+                        else
+                        {
+                            yStart = 3;
+                            yStop = 6;
+                        }
+                        //------------
+
+                        //------------
+
+                    }
+                }
+            }
 
             return tmp;
         }

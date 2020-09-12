@@ -373,7 +373,7 @@ namespace SudokuMaxSolver
 
         }
 
-        private void test_Click(object sender, RoutedEventArgs e)
+        private void testTwins_Click(object sender, RoutedEventArgs e)
         {
             SolutionInformation tmp = new SolutionInformation();
 
@@ -408,7 +408,35 @@ namespace SudokuMaxSolver
 
         private void testXWings_Click(object sender, RoutedEventArgs e)
         {
+            SolutionInformation tmp = new SolutionInformation();
 
+            Debug.WriteLine("XWings test...");
+
+            //test xWings
+            tmp.Clear();
+            tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
+            if (tmp.Count() > 0)
+            {
+                for (int i = 0; i < tmp.Count(); i++)
+                {
+                    //Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                }
+            }
+
+            refreshBoard();
+            /*
+            //----------------- temporary function to check solution results ---------------------
+            string messageString = "";
+            if (tmp.Count() > 0)
+            {
+                for (int i = 0; i < tmp.Count(); i++)
+                {
+                    messageString += tmp.Get_Destription(i) + "block(" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + "->" + tmp.Get_Value(i) + "\n";
+                }
+            }
+            MessageBox.Show(messageString, "Log Xwings");
+            //----------------- temporary function to check solution results ---------------------
+            */
         }
     }
 }
