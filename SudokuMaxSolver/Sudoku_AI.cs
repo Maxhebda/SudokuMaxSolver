@@ -1259,7 +1259,7 @@ namespace SudokuMaxSolver
                             }
                         }
 
-                        //test manual solver 03 SingleCandidateInColumn
+                        //test manual solver 04 SingleCandidateInRow
                         //create new imaginary board witch imaginary value in cell
                         ImaginaryBoard.load(board);
                         ImaginaryBoard.set(brother[0].Y, brother[0].X, brother[0].Value);
@@ -1493,29 +1493,23 @@ namespace SudokuMaxSolver
             return tmp;   
         }
 
-        public static SolutionInformation ManualSolver06_XYWing(ref BoardTab board, byte[] listSquareToCheck = null, BoardTab imaginaryBoard = null)
+        //searching the board for horizontal lionfish (skrzydlice) and blocking any candidates
+        public static SolutionInformation ManualSolver06_XWings(ref BoardTab board)
         {
-            if (listSquareToCheck == null)
-            {
-                listSquareToCheck = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            }
-
-            //if the imaginary board is active, we will read from the imaginaryBoard one and write it to the oryginal board
-            bool imaginaryBoardisActive;
-            if (imaginaryBoard == null)
-            {
-                imaginaryBoardisActive = false;
-            }
-            else
-            {
-                imaginaryBoardisActive = true;
-            }
-
             SolutionInformation tmp = new SolutionInformation();
 
 
             return tmp;
         }
 
-     }
+        //searching the board for vertical lionfish (skrzydlice) and blocking any candidates
+        public static SolutionInformation ManualSolver07_YWings(ref BoardTab board)
+        {
+            SolutionInformation tmp = new SolutionInformation();
+
+
+            return tmp;
+        }
+
+    }
 }

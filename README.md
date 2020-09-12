@@ -9,7 +9,8 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 * I saw only one of these on the website.
 * The project is created only by me and I do not use any outside help because such help does not exist.
 * I am looking for solutions and creating my own algorithms for manual Sudoku solving.
-* I am currently working on creating an algorithm using the "twins" method [1](https://www.sudokudragon.com/guidehiddentwins.htm) [2](http://dwojcik.ugu.pl/sudoku/basic/ns.php) (algorithm 80% complete)
+* Completed algorithm using the "twins" method [link1](https://www.sudokudragon.com/guidehiddentwins.htm) [link2](http://dwojcik.ugu.pl/sudoku/basic/ns.php)
+* I am currently working on creating an algorithm using the "XY-Wings" methods [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php) (algorithm 10% complete)
 * In the future, I plan to rewrite the program for android.
 
 ## The program is under construction :
@@ -21,12 +22,13 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 * brute force sudoku solution (add separate static function to be used in other projects)
 * sudoku solution (brute force)
 * sudoku solution with steps and description :
-- [x] method 01 - TheOnlyPossible [1]((http://dwojcik.ugu.pl/sudoku/basic/sp.php))
-- [x] method 02 - SingleCandidateInRow [1](http://dwojcik.ugu.pl/sudoku/basic/sc.php)
+- [x] method 01 - TheOnlyPossible [link]((http://dwojcik.ugu.pl/sudoku/basic/sp.php))
+- [x] method 02 - SingleCandidateInRow [link](http://dwojcik.ugu.pl/sudoku/basic/sc.php)
 - [x] method 03 - SingleCandidateInColumn
 - [x] method 04 - SingleCandidateInSquare
-- [ ] method 05 - Twins [1](https://www.sudokudragon.com/guidehiddentwins.htm) (algorithm 80% complete)
-- [ ] method 06 - XY-Wing [1](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
+- [x] method 05 - Twins [link](https://www.sudokudragon.com/guidehiddentwins.htm) (algorithm 80% complete)
+- [ ] method 06 - X-Wings
+- [ ] method 07 - Y-Wings [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
 ### What else needs to be done
 * board analysis (checking how many solutions there are (method is finished)), determining the degree of difficulty)
 * sudoku solution with steps and description

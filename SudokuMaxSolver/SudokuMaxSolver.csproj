@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Candidate.cs" />
+    <Compile Include="FakeCandidatesBoard.cs" />
     <Compile Include="SolutionInformation.cs" />
     <Compile Include="Sudoku_AI.cs" />
     <Page Include="MainWindow.xaml">
