@@ -1591,6 +1591,7 @@ namespace SudokuMaxSolver
                                     board.AddFakeCandidate(y3, lCanA[0].X, value);
                                     board.AddFakeCandidate(y3, lCanA[1].X, value);
                                 }
+                                tmp.Add("Znaleziono poziomą skrzydlicę A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ") i zablokowano wszystkie "+value+" w kolumnach "+ lCanA[0].X+" i "+ lCanA[1].X, 0, 0, value);
                             }
                         }
                     }
@@ -1641,6 +1642,7 @@ namespace SudokuMaxSolver
                                     board.AddFakeCandidate(lCanA[0].Y, x3, value);
                                     board.AddFakeCandidate(lCanA[1].Y, x3, value);
                                 }
+                                tmp.Add("Znaleziono pionową skrzydlicę A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ") i zablokowano wszystkie " + value + " w rzędach " + lCanA[0].Y + " i " + lCanA[1].Y, 0, 0, value);
                             }
                         }
                     }

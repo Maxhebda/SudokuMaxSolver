@@ -401,12 +401,24 @@ namespace SudokuMaxSolver
             //test xWings
             tmp.Clear();
             tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
-
+            if (tmp.Count() > 0)
+            {
+                for (int i = 0; i < tmp.Count(); i++)
+                {
+                    Debug.WriteLine("I found a solution: (" + tmp.Get_Destription(i) + ")");
+                }
+            }
 
             //test yWings
             tmp.Clear();
             tmp = Sudoku_AI.ManualSolver07_YWings(ref board);
-
+            if (tmp.Count() > 0)
+            {
+                for (int i = 0; i < tmp.Count(); i++)
+                {
+                    Debug.WriteLine("I found a solution: (" + tmp.Get_Destription(i) + ")");
+                }
+            }
 
             refreshBoard();
             /*
