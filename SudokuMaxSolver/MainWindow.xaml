@@ -132,7 +132,7 @@
                         </StackPanel>
                     </MenuItem.ToolTip>
                 </MenuItem>
-                <MenuItem Header="test Twins" Click="testTwins_Click" />
+                <MenuItem Header="test" Click="test_Click" IsEnabled="False"/>
                 <MenuItem Header="test X-Wings" Click="testXWings_Click" />
 
             </MenuItem>

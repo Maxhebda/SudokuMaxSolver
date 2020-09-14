@@ -1510,10 +1510,39 @@ namespace SudokuMaxSolver
                     if (value==candidate)
                     {
                         list.Add(new Candidate(row, x, value));
+                        break;
                     }
                 }
             }
             if (list.Count==2)
+            {
+                return list;
+            }
+            return null;
+        }
+
+        //a private function checks the column for a candidate
+        //if the candidate occurs only 2x, it returns them.  null = empty
+        private static List<Candidate> LookForDoubleCandidatesInColumn(BoardTab board, byte column, byte candidate)
+        {
+            List<Candidate> list = new List<Candidate>();
+
+            for (byte y = 0; y < 9; y++)
+            {
+                if (board.get(y, column) != 0)
+                {
+                    continue;
+                }
+                foreach (byte value in board.allCandidates(y, column))
+                {
+                    if (value == candidate)
+                    {
+                        list.Add(new Candidate(y, column, value));
+                        break;
+                    }
+                }
+            }
+            if (list.Count == 2)
             {
                 return list;
             }
@@ -1534,7 +1563,7 @@ namespace SudokuMaxSolver
                     if (LookForDoubleCandidatesInRow(board, y, value)!=null)
                     {
                         List<Candidate> lCanA = LookForDoubleCandidatesInRow(board, y, value);  //lionfish A
-                        //Debug.WriteLine("lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
+                        Debug.WriteLine("horizontal lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
 
                         //look for the second lionfish (B)
                         int yStart = y < 3 ? 3 : 6; //rows we will not check / start
@@ -1550,14 +1579,23 @@ namespace SudokuMaxSolver
                             }
                             if (lCanB[0].X==lCanA[0].X && lCanB[1].X == lCanA[1].X)
                             {
-                                Debug.WriteLine("FIND lionfish ->" + lCanA[0].Value+"  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X+") -> " + lCanA[0].Value);
-
+                                Debug.WriteLine("FIND horizontal lionfish ->" + lCanA[0].Value+"  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X+")");
+                                //blocking candidates
+                                Debug.WriteLine("blocking candidates...");
+                                for (byte y3 = 0; y3 < 9; y3++)
+                                {
+                                    if (y3 == lCanA[0].Y || y3 == lCanB[0].Y)
+                                    {
+                                        continue;
+                                    }
+                                    board.AddFakeCandidate(y3, lCanA[0].X, value);
+                                    board.AddFakeCandidate(y3, lCanA[1].X, value);
+                                }
                             }
                         }
                     }
                 }
             }
-
             return tmp;
         }
 
@@ -1566,7 +1604,48 @@ namespace SudokuMaxSolver
         {
             SolutionInformation tmp = new SolutionInformation();
 
+            //check the columns
+            for (byte x = 0; x < 6; x++)    //only 6 columns : 0,1,2,3,4,5
+            {
+                //check the numbers 1..9
+                for (byte value = 1; value <= 9; value++)
+                {
+                    if (LookForDoubleCandidatesInColumn(board, x, value) != null)
+                    {
+                        List<Candidate> lCanA = LookForDoubleCandidatesInColumn(board, x, value);  //lionfish A
+                        Debug.WriteLine("vertical lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
 
+                        //look for the second lionfish (B)
+                        int xStart = x < 3 ? 3 : 6; //rows we will not check / start
+
+                        //check the rows
+                        for (byte x2 = (byte)xStart; x2 < 9; x2++)
+                        {
+                            //check second lionfish (B)
+                            List<Candidate> lCanB = LookForDoubleCandidatesInColumn(board, x2, value);  //lionfish B
+                            if (lCanB == null)
+                            {
+                                break;
+                            }
+                            if (lCanB[0].Y == lCanA[0].Y && lCanB[1].Y == lCanA[1].Y)
+                            {
+                                Debug.WriteLine("FIND vertical lionfish ->" + lCanA[0].Value + "  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ")");
+                                //blocking candidates
+                                Debug.WriteLine("blocking candidates...");
+                                for (byte x3 = 0; x3 < 9; x3++)
+                                {
+                                    if (x3 == lCanA[0].X || x3 == lCanB[0].X)
+                                    {
+                                        continue;
+                                    }
+                                    board.AddFakeCandidate(lCanA[0].Y, x3, value);
+                                    board.AddFakeCandidate(lCanA[1].Y, x3, value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             return tmp;
         }
 
