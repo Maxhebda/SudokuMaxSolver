@@ -37,12 +37,31 @@ namespace SudokuMaxSolver
             byte deleteDigitsCounter = 0;
             byte oldDigit;
             int counterTrying=0;
-            while(deleteDigitsCounter<deleteDigits)
+
+            //list of cells to random
+            List<Candidate> randomList = new List<Candidate>();
+            for (byte yy = 0; yy < 9; yy++)         //all possible cells to be removed
             {
-                byte x = (byte)rand.Next(0, 9);
-                byte y = (byte)rand.Next(0, 9);
-                if (boardAI[y,x]!=0)
+                for (byte xx = 0; xx < 9; xx++)
                 {
+                    if (boardAI[yy,xx]!=0)
+                    {
+                        randomList.Add(new Candidate(yy, xx, 0));
+                    }
+                }
+            }
+
+            byte randCandidate; ;
+            byte x;
+            byte y;
+
+            while (deleteDigitsCounter<deleteDigits)
+            {
+                randCandidate = (byte)rand.Next(0, randomList.Count);       //randomize an item from the list
+                x = randomList[randCandidate].X;
+                y = randomList[randCandidate].Y;
+                randomList.RemoveAt(randCandidate);                         //delete an item from the list
+
                     //removing digits and checking if sudoku has only one solution
                     oldDigit = boardAI[y, x];
                     boardAI[y, x] = 0;
@@ -56,7 +75,7 @@ namespace SudokuMaxSolver
                         //if looking for a long time, stop!
                         if (counterTrying>50)
                         {
-                            //Debug.WriteLine("abortet deleting digits!");
+                            Debug.WriteLine("abortet deleting digits!");
                             return;
                         }
                     }
@@ -65,7 +84,7 @@ namespace SudokuMaxSolver
                         counterTrying = 0;
                         deleteDigitsCounter++;
                     }
-                }
+                
             }
         }
         private void generate9squareNewWay()    //generate full good board  (from 20 ready-made boards)
