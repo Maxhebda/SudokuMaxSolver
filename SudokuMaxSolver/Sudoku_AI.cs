@@ -1526,38 +1526,34 @@ namespace SudokuMaxSolver
             SolutionInformation tmp = new SolutionInformation();
             
             //check the rows
-            for (byte y = 0; y < 9; y++)
+            for (byte y = 0; y < 6; y++)    //only 6 row : 0,1,2,3,4,5
             {
                 //check the numbers 1..9
                 for (byte value = 1; value <=9; value++)
                 {
                     if (LookForDoubleCandidatesInRow(board, y, value)!=null)
                     {
-                        List<Candidate> lCanA = LookForDoubleCandidatesInRow(board, y, value);
-                        //Debug.WriteLine("lionfish (" + lCan[0].Y + "," + lCan[0].X + ")(" + lCan[1].Y + "," + lCan[1].X + "->" + lCan[0].Value);
+                        List<Candidate> lCanA = LookForDoubleCandidatesInRow(board, y, value);  //lionfish A
+                        //Debug.WriteLine("lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
 
-                        //look for the second lionfish
-                        byte yStart = 0;
-                        byte yStop = 0;
-                        if (y<3)
-                        {
-                            yStart = 3;
-                            yStop = 9;
-                        }
-                        else if (y>5)
-                        {
-                            yStart = 0;
-                            yStop = 6;
-                        }
-                        else
-                        {
-                            yStart = 3;
-                            yStop = 6;
-                        }
-                        //------------
+                        //look for the second lionfish (B)
+                        int yStart = y < 3 ? 3 : 6; //rows we will not check / start
 
-                        //------------
+                        //check the rows
+                        for (byte y2 = (byte)yStart; y2 < 9; y2++)
+                        {
+                            //check second lionfish (B)
+                            List<Candidate> lCanB = LookForDoubleCandidatesInRow(board, y2, value);  //lionfish B
+                            if (lCanB==null)
+                            {
+                                break;
+                            }
+                            if (lCanB[0].X==lCanA[0].X && lCanB[1].X == lCanA[1].X)
+                            {
+                                Debug.WriteLine("FIND lionfish ->" + lCanA[0].Value+"  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X+") -> " + lCanA[0].Value);
 
+                            }
+                        }
                     }
                 }
             }
