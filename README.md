@@ -10,7 +10,7 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 * The project is created only by me and I do not use any outside help because such help does not exist.
 * I am looking for solutions and creating my own algorithms for manual Sudoku solving.
 * Completed algorithm using the "twins" method [link1](https://www.sudokudragon.com/guidehiddentwins.htm) [link2](http://dwojcik.ugu.pl/sudoku/basic/ns.php)
-* I am currently working on creating an algorithm using the "XY-Wings" methods [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php) (algorithm 10% complete)
+* I am currently working on creating an algorithm using the "XY-Wings" methods [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php) (algorithm 80% complete)
 * In the future, I plan to rewrite the program for android.
 
 ## The program is under construction :
@@ -26,9 +26,11 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 - [x] method 02 - SingleCandidateInRow [link](http://dwojcik.ugu.pl/sudoku/basic/sc.php)
 - [x] method 03 - SingleCandidateInColumn
 - [x] method 04 - SingleCandidateInSquare
-- [x] method 05 - Twins [link](https://www.sudokudragon.com/guidehiddentwins.htm) (algorithm 80% complete)
-- [ ] method 06 - X-Wings
-- [ ] method 07 - Y-Wings [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
+- [x] method 05 - Twins [link](https://www.sudokudragon.com/guidehiddentwins.htm)
+- [ ] method 06 - X-Wings (algorithm 80% complete)
+- [ ] method 07 - Y-Wings [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php) (algorithm 80% complete)
+- [ ] method 08 - Forcing Chains [link](http://dwojcik.ugu.pl/sudoku/extreme/fchain.php)
+
 ### What else needs to be done
 * board analysis (checking how many solutions there are (method is finished)), determining the degree of difficulty)
 * sudoku solution with steps and description
