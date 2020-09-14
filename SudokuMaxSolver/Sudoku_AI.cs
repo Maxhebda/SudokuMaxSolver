@@ -51,13 +51,17 @@ namespace SudokuMaxSolver
                 }
             }
 
-            byte randCandidate; ;
+            int randCandidate;
             byte x;
             byte y;
 
             while (deleteDigitsCounter<deleteDigits)
             {
-                randCandidate = (byte)rand.Next(0, randomList.Count);       //randomize an item from the list
+                if (randomList.Count==0)
+                {
+                    break;
+                }
+                randCandidate = rand.Next(0, randomList.Count);       //randomize an item from the list
                 x = randomList[randCandidate].X;
                 y = randomList[randCandidate].Y;
                 randomList.RemoveAt(randCandidate);                         //delete an item from the list
@@ -83,8 +87,7 @@ namespace SudokuMaxSolver
                     {
                         counterTrying = 0;
                         deleteDigitsCounter++;
-                    }
-                
+                    }         
             }
         }
         private void generate9squareNewWay()    //generate full good board  (from 20 ready-made boards)
