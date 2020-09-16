@@ -9,7 +9,7 @@ namespace SudokuMaxSolver
     {
         public enum difficultyLevel
         {   // number of ready digits
-            Trywialna =48, BardzoLatwa=45, Latwa=42, Przecietna=39, DosycTrudna=36, Trudna=33, BardzoTrudna=30, Diaboliczna=28, Niemozliwa=26
+            Trywialna = 48, BardzoLatwa = 45, Latwa = 42, Przecietna = 39, DosycTrudna = 36, Trudna = 33, BardzoTrudna = 30, Diaboliczna = 28, Niemozliwa = 26
             // trivial, very easy, easy, average, quite difficult, difficult, very difficult, diabolical, impossible
         }
 
@@ -25,7 +25,7 @@ namespace SudokuMaxSolver
         {
 
             //generate full good board
-            generateBigColumnAround(); 
+            generateBigColumnAround();
             generateBigRowAround();
             generateSmallColumnAround();
             generateSmallRowAround();
@@ -33,28 +33,28 @@ namespace SudokuMaxSolver
             {
                 generateAroundNumbers();
             }
-            byte deleteDigits =(byte)(81 - level);
+            byte deleteDigits = (byte)(81 - level);
             byte deleteDigitsCounter = 0;
             byte oldDigit;
-            int counterTrying=0;
-            while(deleteDigitsCounter<deleteDigits)
+            int counterTrying = 0;
+            while (deleteDigitsCounter < deleteDigits)
             {
                 byte x = (byte)rand.Next(0, 9);
                 byte y = (byte)rand.Next(0, 9);
-                if (boardAI[y,x]!=0)
+                if (boardAI[y, x] != 0)
                 {
                     //removing digits and checking if sudoku has only one solution
                     oldDigit = boardAI[y, x];
                     boardAI[y, x] = 0;
 
                     //checking if sudoku has only one solution
-                    if (Sudoku_AI.autoSolver_numberOfSolutions(new BoardTab(boardAI))!=1)
+                    if (Sudoku_AI.autoSolver_numberOfSolutions(new BoardTab(boardAI)) != 1)
                     {
                         boardAI[y, x] = oldDigit;
                         counterTrying++;
 
                         //if looking for a long time, stop!
-                        if (counterTrying>50)
+                        if (counterTrying > 50)
                         {
                             //Debug.WriteLine("abortet deleting digits!");
                             return;
@@ -293,12 +293,12 @@ namespace SudokuMaxSolver
                 8,2,7,6,9,3,4,5,1
                 }
             };
-            byte nrTab = (byte)rand.Next(0, tab.Length/81);
+            byte nrTab = (byte)rand.Next(0, tab.Length / 81);
 
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
-                    boardAI[y, x] = tab[nrTab,y*9+x];
+                    boardAI[y, x] = tab[nrTab, y * 9 + x];
                 }
 
         }
@@ -389,12 +389,12 @@ namespace SudokuMaxSolver
                 tmp = boardAI[y, nrOfColumngroup1 * 3];
                 boardAI[y, nrOfColumngroup1 * 3] = boardAI[y, nrOfColumngroup2 * 3];
                 boardAI[y, nrOfColumngroup2 * 3] = tmp;
-                tmp = boardAI[y, nrOfColumngroup1 * 3+1];
-                boardAI[y, nrOfColumngroup1 * 3+1] = boardAI[y, nrOfColumngroup2 * 3+1];
-                boardAI[y, nrOfColumngroup2 * 3+1] = tmp;
-                tmp = boardAI[y, nrOfColumngroup1 * 3+2];
-                boardAI[y, nrOfColumngroup1 * 3+2] = boardAI[y, nrOfColumngroup2 * 3+2];
-                boardAI[y, nrOfColumngroup2 * 3+2] = tmp;
+                tmp = boardAI[y, nrOfColumngroup1 * 3 + 1];
+                boardAI[y, nrOfColumngroup1 * 3 + 1] = boardAI[y, nrOfColumngroup2 * 3 + 1];
+                boardAI[y, nrOfColumngroup2 * 3 + 1] = tmp;
+                tmp = boardAI[y, nrOfColumngroup1 * 3 + 2];
+                boardAI[y, nrOfColumngroup1 * 3 + 2] = boardAI[y, nrOfColumngroup2 * 3 + 2];
+                boardAI[y, nrOfColumngroup2 * 3 + 2] = tmp;
             }
         }
         private void generateBigRowAround()        //move the big row around
@@ -488,8 +488,8 @@ namespace SudokuMaxSolver
             //a reference function that checks all possible possibilities
             bool findGoodCell(byte yStart, byte xStart, byte NrStart, BoardTab board)
             {
-                if (board.get(yStart,xStart)==0)
-                { 
+                if (board.get(yStart, xStart) == 0)
+                {
                     // the cell is empty, we can enter the value and check
 
                     // we check if we can enter a value
@@ -528,7 +528,7 @@ namespace SudokuMaxSolver
                                 return false;
                             }
                         }
-                        else    
+                        else
                         {
 
                             // did not destroy! we move on to the next cell. we start with 1
@@ -621,7 +621,7 @@ namespace SudokuMaxSolver
                                 return false;
                             }
                         }
-                        else  
+                        else
                         {
 
                             // did not destroy! we move on to the next cell. we start with 1
@@ -635,15 +635,15 @@ namespace SudokuMaxSolver
                                 //-------
                                 if (numberOfSolution == 0)
                                 {
-                                    numberOfSolution=1;
+                                    numberOfSolution = 1;
                                     // we return the first solution to false to keep looking
                                     return false;
                                 }
                                 else
                                 {
-                                    if (numberOfSolution==1)
+                                    if (numberOfSolution == 1)
                                     {
-                                        numberOfSolution=2;
+                                        numberOfSolution = 2;
                                     }
                                     // if we find the second solution, we exit the function = set true
                                     return true;
@@ -708,7 +708,7 @@ namespace SudokuMaxSolver
             SolutionInformation tmp = new SolutionInformation();
             byte counterPossible;
             byte findValue = 0;
-            byte ystart=0, ystop=0, xstart=0, xstop=0;
+            byte ystart = 0, ystop = 0, xstart = 0, xstop = 0;
             foreach (byte square in listSquareToCheck)
             {
                 switch (square)
@@ -778,7 +778,7 @@ namespace SudokuMaxSolver
         }
         public static SolutionInformation ManualSolver02_SingleCandidateInRow(ref BoardTab board, byte[] listRowToCheck = null, BoardTab imaginaryBoard = null)
         {
-            if (listRowToCheck==null)
+            if (listRowToCheck == null)
             {
                 listRowToCheck = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
             }
@@ -809,7 +809,7 @@ namespace SudokuMaxSolver
                 //searching for candidates
                 for (byte x = 0; x < 9; x++)
                 {
-                    foreach (byte c in (imaginaryBoardisActive?imaginaryBoard.allCandidates(row, x): board.allCandidates(row, x)))
+                    foreach (byte c in (imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x) : board.allCandidates(row, x)))
                     {
                         candidates.Add(new Candidate(row, x, c));
                     }
@@ -833,7 +833,7 @@ namespace SudokuMaxSolver
                 //checking if there is a single candidate
                 for (byte i = 0; i < 9; i++)
                 {
-                    if (counterCandidate[i]==1)
+                    if (counterCandidate[i] == 1)
                     {
                         singleCandidate = (byte)(i + 1);
                         break;
@@ -841,11 +841,11 @@ namespace SudokuMaxSolver
                 }
 
                 //finding and entering a candidate
-                if (singleCandidate!=0)
+                if (singleCandidate != 0)
                 {
                     foreach (Candidate candidate in candidates)
                     {
-                        if (candidate.Value==singleCandidate)
+                        if (candidate.Value == singleCandidate)
                         {
                             board.set(candidate.Y, candidate.X, singleCandidate);
                             tmp.Add("Znaleziono pojedynczego kandydata we wierszu", candidate.Y, candidate.X, singleCandidate);
@@ -890,7 +890,7 @@ namespace SudokuMaxSolver
                 //searching for candidates
                 for (byte y = 0; y < 9; y++)
                 {
-                    foreach (byte c in (imaginaryBoardisActive?imaginaryBoard.allCandidates(y, column): board.allCandidates(y, column)))
+                    foreach (byte c in (imaginaryBoardisActive ? imaginaryBoard.allCandidates(y, column) : board.allCandidates(y, column)))
                     {
                         candidates.Add(new Candidate(y, column, c));
                     }
@@ -1001,7 +1001,7 @@ namespace SudokuMaxSolver
                 {
                     for (byte x = xstart; x < xstop; x++)
                     {
-                        foreach (byte candidate in (imaginaryBoardisActive?imaginaryBoard.allCandidates(y, x):board.allCandidates(y, x)))
+                        foreach (byte candidate in (imaginaryBoardisActive ? imaginaryBoard.allCandidates(y, x) : board.allCandidates(y, x)))
                         {
                             counterCandidate[candidate - 1]++;
                         }
@@ -1032,7 +1032,7 @@ namespace SudokuMaxSolver
                                 {
                                     //editing board
                                     board.set(y, x, singleCandidate);
-                                    tmp.Add("Znaleziono pojedynczego kandydata w kwadracie "+square+".", y, x, singleCandidate);
+                                    tmp.Add("Znaleziono pojedynczego kandydata w kwadracie " + square + ".", y, x, singleCandidate);
                                     break; //exit loop
                                 }
                             }
@@ -1047,15 +1047,15 @@ namespace SudokuMaxSolver
         private static bool? isTwins(List<Candidate> candidates)   //true - horizontal, false - vertical, null - is no Twins
         {
             //if they are not brothers or there are too few or too many brothers then NULL
-            if (candidates.Count<2 || candidates.Count > 3)
+            if (candidates.Count < 2 || candidates.Count > 3)
             {
                 return null;
             }
-            if (candidates[0].Value!=candidates[1].Value)
+            if (candidates[0].Value != candidates[1].Value)
             {
                 return null;
             }
-            if (candidates.Count==3)
+            if (candidates.Count == 3)
             {
                 if (candidates[0].Value != candidates[2].Value)
                 {
@@ -1064,7 +1064,7 @@ namespace SudokuMaxSolver
             }
 
             //check double twins
-            if (candidates.Count==2)
+            if (candidates.Count == 2)
             {
                 if (candidates[0].X == candidates[1].X) //double twins horizontal
                 {
@@ -1204,15 +1204,15 @@ namespace SudokuMaxSolver
                     }
                     //check if the brothers are twins
                     direction = isTwins(brother);
-                    if (direction!=null)
+                    if (direction != null)
                     {
-                        string stringTmp = (direction == true ? "Poziome" : "Pionowe")+" bliźniaki, kwadrat:" + square + ") pozostałe :";
+                        string stringTmp = (direction == true ? "Poziome" : "Pionowe") + " bliźniaki, kwadrat:" + square + ") pozostałe :";
                         foreach (byte squareTmp in MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1))
                         {
                             stringTmp += squareTmp;
                         }
-                         tmp.Add(stringTmp, brother[0].Y, brother[0].X, brother[0].Value);
-                        
+                        tmp.Add(stringTmp, brother[0].Y, brother[0].X, brother[0].Value);
+
 
 
                         //-------------------------------------------------------------------------------------------------------
@@ -1312,13 +1312,13 @@ namespace SudokuMaxSolver
                     if (y == 5) return new byte[] { 3, 4 };
                     if (y == 6) return new byte[] { 7, 8 };
                     if (y == 7) return new byte[] { 6, 8 };
-                    return             new byte[] { 6, 7 };
+                    return new byte[] { 6, 7 };
                 }
                 else
                 {
                     if (y < 3) return new byte[] { 3, 4, 5, 6, 7, 8 };
                     if (y < 6) return new byte[] { 0, 1, 2, 6, 7, 8 };
-                    return            new byte[] { 0, 1, 2, 3, 4, 5 };
+                    return new byte[] { 0, 1, 2, 3, 4, 5 };
                 }
             }
 
@@ -1350,7 +1350,7 @@ namespace SudokuMaxSolver
             byte[] FindSquares(byte square2, bool direction2)
             {
                 byte[] tmp2;
-                switch(square2)
+                switch (square2)
                 {
                     case 1:
                         if (direction2)
@@ -1451,12 +1451,12 @@ namespace SudokuMaxSolver
                 return tmp2;
             }
 
-            switch(nrSolution)
+            switch (nrSolution)
             {
                 case 1:
                     {
                         tmp = new byte[FindSquares(square, direction).Length];
-                        for(byte i = 0; i < FindSquares(square, direction).Length; i++)
+                        for (byte i = 0; i < FindSquares(square, direction).Length; i++)
                         {
                             tmp[i] = FindSquares(square, direction)[i];
                         }
@@ -1490,7 +1490,7 @@ namespace SudokuMaxSolver
                     }
                     break;
             }
-            return tmp;   
+            return tmp;
         }
 
         //a private function checks the row for a candidate
@@ -1501,20 +1501,20 @@ namespace SudokuMaxSolver
 
             for (byte x = 0; x < 9; x++)
             {
-                if (board.get(row,x)!=0)
+                if (board.get(row, x) != 0)
                 {
                     continue;
                 }
-                foreach(byte value in board.allCandidates(row,x))
+                foreach (byte value in board.allCandidates(row, x))
                 {
-                    if (value==candidate)
+                    if (value == candidate)
                     {
                         list.Add(new Candidate(row, x, value));
                         break;
                     }
                 }
             }
-            if (list.Count==2)
+            if (list.Count == 2)
             {
                 return list;
             }
@@ -1553,14 +1553,14 @@ namespace SudokuMaxSolver
         public static SolutionInformation ManualSolver06_XWings(ref BoardTab board)
         {
             SolutionInformation tmp = new SolutionInformation();
-            
+
             //check the rows
             for (byte y = 0; y < 6; y++)    //only 6 row : 0,1,2,3,4,5
             {
                 //check the numbers 1..9
-                for (byte value = 1; value <=9; value++)
+                for (byte value = 1; value <= 9; value++)
                 {
-                    if (LookForDoubleCandidatesInRow(board, y, value)!=null)
+                    if (LookForDoubleCandidatesInRow(board, y, value) != null)
                     {
                         List<Candidate> lCanA = LookForDoubleCandidatesInRow(board, y, value);  //lionfish A
                         Debug.WriteLine("horizontal lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
@@ -1573,13 +1573,13 @@ namespace SudokuMaxSolver
                         {
                             //check second lionfish (B)
                             List<Candidate> lCanB = LookForDoubleCandidatesInRow(board, y2, value);  //lionfish B
-                            if (lCanB==null)
+                            if (lCanB == null)
                             {
                                 break;
                             }
-                            if (lCanB[0].X==lCanA[0].X && lCanB[1].X == lCanA[1].X)
+                            if (lCanB[0].X == lCanA[0].X && lCanB[1].X == lCanA[1].X)
                             {
-                                Debug.WriteLine("FIND horizontal lionfish ->" + lCanA[0].Value+"  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X+")");
+                                Debug.WriteLine("FIND horizontal lionfish ->" + lCanA[0].Value + "  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ")");
                                 //blocking candidates
                                 Debug.WriteLine("blocking candidates...");
                                 for (byte y3 = 0; y3 < 9; y3++)
@@ -1591,7 +1591,7 @@ namespace SudokuMaxSolver
                                     board.AddFakeCandidate(y3, lCanA[0].X, value);
                                     board.AddFakeCandidate(y3, lCanA[1].X, value);
                                 }
-                                tmp.Add("Znaleziono poziomą skrzydlicę A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ") i zablokowano wszystkie "+value+" w kolumnach "+ lCanA[0].X+" i "+ lCanA[1].X, 0, 0, value);
+                                tmp.Add("Znaleziono poziomą skrzydlicę A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ") i zablokowano wszystkie " + value + " w kolumnach " + lCanA[0].X + " i " + lCanA[1].X, 0, 0, value);
                             }
                         }
                     }
@@ -1651,5 +1651,50 @@ namespace SudokuMaxSolver
             return tmp;
         }
 
-    }
+        //struct for method ForcingChains
+        struct candidateStructure
+        {
+            public candidateStructure(byte y, byte x, byte c1, byte c2, byte c3 = 0)
+            {
+                this.y = y;
+                this.x = x;
+                candidate1 = c1;
+                candidate2 = c2;
+                candidate3 = c3;
+            }
+            byte y;
+            byte x;
+            byte candidate1;
+            byte candidate2;
+            byte candidate3; //only used in the triple ForcingChains method
+        }
+
+        //the algorithm searches the arrays for candidate pairs.
+        //Then it inserts numbers and checks what's going on. 
+        //If, no matter what we put in another place, the number will always be the same, we have to enter it there.
+        public static SolutionInformation ManualSolver08_DoubleForcingChains(ref BoardTab board)
+        {
+            //create double candidates list
+            List<candidateStructure> doubleCandidate = new List<candidateStructure>();
+            for (byte y = 0; y < 9; y++)
+            {
+                for (byte x = 0; x < 9; x++)
+                {
+                    if (board.get(y,x)!=0)
+                    {
+                        if (board.allCandidates(y,x).Count==2)
+                        {
+                            doubleCandidate.Add(new candidateStructure(y,x,board.allCandidates(y,x)[0], board.allCandidates(y, x)[1]));
+                        }
+                    }
+                }
+            }
+
+            //we have a list of candidate pairs, we will check it
+
+
+
+            SolutionInformation tmp = new SolutionInformation();
+            return tmp;
+        }
 }
