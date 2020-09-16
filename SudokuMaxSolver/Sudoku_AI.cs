@@ -37,34 +37,56 @@ namespace SudokuMaxSolver
             byte deleteDigitsCounter = 0;
             byte oldDigit;
             int counterTrying = 0;
+
+            //list of cells to random
+            List<Candidate> randomList = new List<Candidate>();
+            for (byte yy = 0; yy < 9; yy++)         //all possible cells to be removed
+            {
+                for (byte xx = 0; xx < 9; xx++)
+                {
+                    if (boardAI[yy, xx] != 0)
+                    {
+                        randomList.Add(new Candidate(yy, xx, 0));
+                    }
+                }
+            }
+
+            int randCandidate;
+            byte x;
+            byte y;
+
             while (deleteDigitsCounter < deleteDigits)
             {
-                byte x = (byte)rand.Next(0, 9);
-                byte y = (byte)rand.Next(0, 9);
-                if (boardAI[y, x] != 0)
+                if (randomList.Count == 0)
                 {
-                    //removing digits and checking if sudoku has only one solution
-                    oldDigit = boardAI[y, x];
-                    boardAI[y, x] = 0;
+                    break;
+                }
+                randCandidate = rand.Next(0, randomList.Count);       //randomize an item from the list
+                x = randomList[randCandidate].X;
+                y = randomList[randCandidate].Y;
+                randomList.RemoveAt(randCandidate);                         //delete an item from the list
 
-                    //checking if sudoku has only one solution
-                    if (Sudoku_AI.autoSolver_numberOfSolutions(new BoardTab(boardAI)) != 1)
-                    {
-                        boardAI[y, x] = oldDigit;
-                        counterTrying++;
+                //removing digits and checking if sudoku has only one solution
+                oldDigit = boardAI[y, x];
+                boardAI[y, x] = 0;
 
-                        //if looking for a long time, stop!
-                        if (counterTrying > 50)
-                        {
-                            //Debug.WriteLine("abortet deleting digits!");
-                            return;
-                        }
-                    }
-                    else
+                //checking if sudoku has only one solution
+                if (Sudoku_AI.autoSolver_numberOfSolutions(new BoardTab(boardAI)) != 1)
+                {
+                    boardAI[y, x] = oldDigit;
+                    counterTrying++;
+
+                    //if looking for a long time, stop!
+                    if (counterTrying > 50)
                     {
-                        counterTrying = 0;
-                        deleteDigitsCounter++;
+                        Debug.WriteLine("abortet deleting digits!");
+                        return;
                     }
+                }
+                else
+                {
+                    counterTrying = 0;
+                    deleteDigitsCounter++;
                 }
             }
         }
@@ -1680,11 +1702,11 @@ namespace SudokuMaxSolver
             {
                 for (byte x = 0; x < 9; x++)
                 {
-                    if (board.get(y,x)!=0)
+                    if (board.get(y, x) != 0)
                     {
-                        if (board.allCandidates(y,x).Count==2)
+                        if (board.allCandidates(y, x).Count == 2)
                         {
-                            doubleCandidate.Add(new candidateStructure(y,x,board.allCandidates(y,x)[0], board.allCandidates(y, x)[1]));
+                            doubleCandidate.Add(new candidateStructure(y, x, board.allCandidates(y, x)[0], board.allCandidates(y, x)[1]));
                         }
                     }
                 }
@@ -1697,4 +1719,5 @@ namespace SudokuMaxSolver
             SolutionInformation tmp = new SolutionInformation();
             return tmp;
         }
+    }
 }
