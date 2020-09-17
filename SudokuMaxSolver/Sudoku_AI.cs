@@ -1702,11 +1702,12 @@ namespace SudokuMaxSolver
             {
                 for (byte x = 0; x < 9; x++)
                 {
-                    if (board.get(y, x) != 0)
+                    if (board.get(y, x) == 0)
                     {
                         if (board.allCandidates(y, x).Count == 2)
                         {
                             doubleCandidate.Add(new candidateStructure(y, x, board.allCandidates(y, x)[0], board.allCandidates(y, x)[1]));
+                            Debug.WriteLine("PairCandidate: (" + y + "," + x + ") " + board.allCandidates(y, x)[0] + ", " + board.allCandidates(y, x)[1]);
                         }
                     }
                 }

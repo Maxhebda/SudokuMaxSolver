@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:SudokuMaxSolver"
         mc:Ignorable="d"
         Title="SudokuMaxSolver" ResizeMode="NoResize" MaxWidth="480">
-    
-    <DockPanel x:Name="dockPanelMain" Height="520" Width="460">
+    <DockPanel x:Name="dockPanelMain" Height="520" Width="460" HorizontalAlignment="Left" Margin="2,0,0,0">
         <Menu  DockPanel.Dock="Top">
             <MenuItem x:Name="menuProgram" Header="Program" Click="menuProgram_Click">
                 <MenuItem Header="Pusta plansza" Click="menuNowaPlansza_Click">
@@ -66,7 +65,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                
+
             </MenuItem>
             <MenuItem Header="Edycja">
                 <MenuItem Header="Wyczyść" Click="menuWyczysc_Click">
@@ -132,12 +131,15 @@
                         </StackPanel>
                     </MenuItem.ToolTip>
                 </MenuItem>
-                <MenuItem Header="test" Click="test_Click" IsEnabled="False"/>
+                <MenuItem Header="test" Click="test_Click" IsEnabled="true"/>
                 <MenuItem Header="test X-Wings" Click="testXWings_Click" />
 
             </MenuItem>
             <MenuItem Header="Info" IsEnabled="False"/>
         </Menu>
-        <StackPanel x:Name="stackPanelMain" Margin="5" DockPanel.Dock="Top" Width="auto" Height="auto"/>
+        <StackPanel x:Name="stackPanelMain" Margin="5" DockPanel.Dock="Left" Width="auto" Height="auto"/>
+        <StackPanel x:Name="stackPanelMain2" Margin="5" DockPanel.Dock="Right" Width="200" Height="30">
+            <Label>tu bedzie tekst rozwiazan sudoku</Label>
+        </StackPanel>
     </DockPanel>
 </Window>

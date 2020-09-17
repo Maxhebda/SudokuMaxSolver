@@ -386,7 +386,13 @@ namespace SudokuMaxSolver
         }
 
         private void test_Click(object sender, RoutedEventArgs e)
-        {       
+        {
+            Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
+            this.ResizeMode = System.Windows.ResizeMode.CanResize;
+            this.MaxWidth = 1000;
+            this.Width = 1000;
+            this.ResizeMode = System.Windows.ResizeMode.NoResize;
+            this.dockPanelMain.Width = 980;
         }
 
         private void testXWings_Click(object sender, RoutedEventArgs e)
