@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.TextFormatting;
 using System.Windows.Shapes;
 
 namespace SudokuMaxSolver
@@ -387,7 +388,24 @@ namespace SudokuMaxSolver
 
         private void test_Click(object sender, RoutedEventArgs e)
         {
-            Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
+            //close popup if is open
+            popupMain.IsOpen = false;
+
+            SolutionInformation tmp = new SolutionInformation();
+            Debug.WriteLine("DoubleForcingChains test...");
+            tmp.Clear();
+
+            tmp = Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
+            if (tmp.Count() > 0)
+            {
+                for (int i = 0; i < tmp.Count(); i++)
+                {
+                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                }
+            }
+
+            refreshBoard();
+
             this.ResizeMode = System.Windows.ResizeMode.CanResize;
             this.MaxWidth = 1000;
             this.Width = 1000;

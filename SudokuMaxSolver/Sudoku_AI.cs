@@ -1684,11 +1684,40 @@ namespace SudokuMaxSolver
                 candidate2 = c2;
                 candidate3 = c3;
             }
-            byte y;
-            byte x;
-            byte candidate1;
-            byte candidate2;
-            byte candidate3; //only used in the triple ForcingChains method
+            public byte y;
+            public byte x;
+            public byte candidate1;
+            public byte candidate2;
+            public byte candidate3; //only used in the triple ForcingChains method
+        }
+
+        //method for checking a forced chain
+        //the method fills the cells with a chain, inserts single candidates and returns an imaginary board
+        private static BoardTab testTheCain(byte y, byte x, byte value, BoardTab board)
+        {
+            //set first value
+            board.set(y, x, value);
+            Debug.Write("start chain (" + y + "," + x + "->" + value + ") ");
+            bool NotEndTesting = true;
+            SolutionInformation tmp = new SolutionInformation();
+            SolutionInformation sum = new SolutionInformation();
+            while (NotEndTesting)
+            {
+                tmp.Clear();
+                tmp = ManualSolver01_TheOnlyPossible(ref board);
+                for (byte i = 0; i < tmp.Count(); i++)
+                {
+                    Debug.Write("(" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + "->" + tmp.Get_Value(i) + ") ");
+                }
+
+                sum.Add(tmp);
+                if (tmp.Count()==0)
+                {
+                    NotEndTesting = false;
+                }
+            }
+            Debug.WriteLine("end");
+            return board;
         }
 
         //the algorithm searches the arrays for candidate pairs.
@@ -1696,6 +1725,8 @@ namespace SudokuMaxSolver
         //If, no matter what we put in another place, the number will always be the same, we have to enter it there.
         public static SolutionInformation ManualSolver08_DoubleForcingChains(ref BoardTab board)
         {
+            SolutionInformation tmp = new SolutionInformation();
+
             //create double candidates list
             List<candidateStructure> doubleCandidate = new List<candidateStructure>();
             for (byte y = 0; y < 9; y++)
@@ -1712,12 +1743,35 @@ namespace SudokuMaxSolver
                     }
                 }
             }
-
+            
             //we have a list of candidate pairs, we will check it
+            foreach(var candidate in doubleCandidate)
+            {
+                Debug.WriteLine("Test chain (" + candidate.y + "," + candidate.x + ") dla " + candidate.candidate1 + " & " + candidate.candidate2 + ":");
+                bool exitForech = false;
+                //Debug.WriteLine("Testowanie podwójnego łancucha (" + candidate.y+ "," + candidate.x + ")=" + candidate.candidate1);
+                BoardTab chain1 = testTheCain(candidate.y, candidate.x, candidate.candidate1, new BoardTab(board));
+                //Debug.WriteLine("Testowanie podwójnego łancucha (" + candidate.y+ "," + candidate.x + ")=" + candidate.candidate2);
+                BoardTab chain2 = testTheCain(candidate.y, candidate.x, candidate.candidate2, new BoardTab(board));
 
-
-
-            SolutionInformation tmp = new SolutionInformation();
+                //look for similarities
+                for (byte y = 0; y < 9; y++)
+                {
+                    for (byte x = 0; x < 9; x++)
+                    {
+                        if (board.get(y,x)==0 && chain1.get(y,x)!=0 && chain1.get(y,x)==chain2.get(y,x))
+                        {
+                            board.set(y, x, chain1.get(y, x));
+                            tmp.Add("Łańcuch testowany: (" + candidate.y + "," + candidate.x + ") dla wartości " + candidate.candidate1 + " i " + candidate.candidate2, y, x, chain1.get(y, x));
+                            exitForech = true;
+                        }
+                    }
+                }
+                if (exitForech)
+                {
+                    break;
+                }
+            }
             return tmp;
         }
     }
