@@ -7,6 +7,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Shapes;
+using System.Collections.Generic;
 
 namespace SudokuMaxSolver
 {
@@ -324,66 +325,199 @@ namespace SudokuMaxSolver
 
             SolutionInformation tmp = new SolutionInformation();
 
-            Debug.WriteLine("Manual solving test...");  
-            
+            Debug.WriteLine("########################################################");
+            Debug.WriteLine("Manual solving test...");
+
+            Debug.WriteLine("Test [01] The only possible...");
             //test only posible
             tmp = Sudoku_AI.ManualSolver01_TheOnlyPossible(ref board);
-            if (tmp.Count() > 0)
+            if (tmp.Get_pointsChanged().Count > 0)
             {
-                for (int i = 0; i < tmp.Count(); i++)
+                Debug.Write("[01]Changes : ");
+                for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
                 {
-                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                    Debug.Write("("+tmp.Get_pointsChanged()[i].Y+","+tmp.Get_pointsChanged()[i].Y+"->" + tmp.Get_pointsChanged()[i].Value+") ");
                 }
+                Debug.WriteLine("");
             }
-            
+
+            Debug.WriteLine("Test [02] Single candidate in row...");
             //test single in row
             tmp.Clear();
             tmp = Sudoku_AI.ManualSolver02_SingleCandidateInRow(ref board);
-            if (tmp.Count() > 0)
+            if (tmp.Get_pointsChanged().Count > 0)
             {
-                for (int i = 0; i < tmp.Count(); i++)
+                Debug.Write("[02]Changes : ");
+                for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
                 {
-                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                    Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
                 }
+                Debug.WriteLine("");
             }
-            
+
+            Debug.WriteLine("Test [03] Single candidate in column...");
             //test single in column
             tmp.Clear();
             tmp = Sudoku_AI.ManualSolver03_SingleCandidateInColumn(ref board);
-            if (tmp.Count()>0)
+            if (tmp.Get_pointsChanged().Count > 0)
             {
-                for( int i = 0 ; i < tmp.Count(); i++)
+                Debug.Write("[03]Changes : ");
+                for ( int i = 0 ; i < tmp.Get_pointsChanged().Count; i++)
                 {
-                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                    Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
                 }
+                Debug.WriteLine("");
             }
-            
+
+            Debug.WriteLine("Test [04] Single candidate in square...");
             //test single in square
             tmp.Clear();
             tmp = Sudoku_AI.ManualSolver04_SingleCandidateInSquare(ref board);
-            if (tmp.Count() > 0)
+            if (tmp.Get_pointsChanged().Count > 0)
             {
-                for (int i = 0; i < tmp.Count(); i++)
+                Debug.Write("[04]Changes : ");
+                for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
                 {
-                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                    Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
                 }
+                Debug.WriteLine("");
             }
 
-
+            Debug.WriteLine("Test [05] Twins in square...");
             //test twins in square
-            Debug.WriteLine("Twins test...");
-            tmp.Clear();
-            tmp = Sudoku_AI.ManualSolver05_TwinsInSquare(ref board);
-            if (tmp.Count() > 0)
+            List<SolutionInformation> listTmp = new List<SolutionInformation>(); 
+            listTmp = Sudoku_AI.ManualSolver05_TwinsInSquare(ref board);
+            if (listTmp.Count > 0)
             {
-                for (int i = 0; i < tmp.Count(); i++)
+                foreach (var item in listTmp)
                 {
-                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                    switch(item.Get_typeOfSolution())
+                    {
+                        case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method01_TheOnlyPossible:
+                            {
+                                if (item.Get_pointsChanged().Count > 0)
+                                {
+                                    Debug.WriteLine("Test [05] The only possible...");
+                                    Debug.Write("[05]Brothers : ");
+                                    foreach (var item2 in item.Get_pointsDetected())
+                                    {
+                                        Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                    }
+                                    Debug.WriteLine("");
+                                    Debug.Write("[05]Changes : ");
+                                    foreach (var item2 in item.Get_pointsChanged())
+                                    {
+                                        Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                    }
+                                    Debug.WriteLine("");
+                                }
+                            }
+                            break;
+                        case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method02_SingleCandidateInRow:
+                            {
+                                if (item.Get_pointsChanged().Count > 0)
+                                {
+                                    Debug.WriteLine("Test [05] Single candidate in row...");
+                                    Debug.Write("[05]Brothers : ");
+                                    foreach (var item2 in item.Get_pointsDetected())
+                                    {
+                                        Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                    }
+                                    Debug.WriteLine("");
+                                    Debug.Write("[05]Changes : ");
+                                    foreach (var item2 in item.Get_pointsChanged())
+                                    {
+                                        Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                    }
+                                    Debug.WriteLine("");
+                                }
+                            }
+                            break;
+                        case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method03_SingleCandidateInColumn:
+                            {
+                                if (item.Get_pointsChanged().Count > 0)
+                                {
+                                    Debug.WriteLine("Test [05] Single Candidate in column...");
+                                    Debug.Write("[05]Brothers : ");
+                                    foreach (var item2 in item.Get_pointsDetected())
+                                    {
+                                        Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                    }
+                                    Debug.WriteLine("");
+                                    Debug.Write("[05]Changes : ");
+                                    foreach (var item2 in item.Get_pointsChanged())
+                                    {
+                                        Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                    }
+                                    Debug.WriteLine("");
+                                }
+                            }
+                            break;
+                        case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method04_SingleCandidateInSquare:
+                            {
+                                if (item.Get_pointsChanged().Count > 0)
+                                {
+                                    Debug.WriteLine("Test [05] Single candidate in square...");
+                                    Debug.Write("[05]Brothers : ");
+                                    foreach (var item2 in item.Get_pointsDetected())
+                                    {
+                                        Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                    }
+                                    Debug.WriteLine("");
+                                    Debug.Write("[05]Changes : ");
+                                    foreach (var item2 in item.Get_pointsChanged())
+                                    {
+                                        Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                    }
+                                    Debug.WriteLine("");
+                                }
+                            }
+                            break;
+                    }
                 }
             }
+            
+            Debug.WriteLine("Test [06] X Wings...");
+            //test X Wings
+            tmp.Clear();
+            tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
+            if (tmp.Get_pointsChanged().Count > 0)
+            {
+                Debug.Write("[06]XWings pos : ");
+                for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                {
+                    Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].Y + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                }
+                Debug.WriteLine("");
+                Debug.Write("[06]Blocked : ");
+                for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                {
+                    Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                }
+                Debug.WriteLine("");
+            }
 
+            Debug.WriteLine("Test [07] Y Wings...");
+            //test Y Wings
+            tmp.Clear();
+            tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
+            if (tmp.Get_pointsChanged().Count > 0)
+            {
+                Debug.Write("[07]YWings pos : ");
+                for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                {
+                    Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].Y + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                }
+                Debug.WriteLine("");
+                Debug.Write("[07]Blocked : ");
+                for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                {
+                    Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                }
+                Debug.WriteLine("");
+            }
+            
             refreshBoard();
-
         }
 
         private void test_Click(object sender, RoutedEventArgs e)
@@ -392,16 +526,25 @@ namespace SudokuMaxSolver
             popupMain.IsOpen = false;
 
             SolutionInformation tmp = new SolutionInformation();
-            Debug.WriteLine("DoubleForcingChains test...");
-            tmp.Clear();
 
+            Debug.WriteLine("Test [08] Double Forcing Chains...");
+            //test Y Wings
+            tmp.Clear();
             tmp = Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
-            if (tmp.Count() > 0)
+            if (tmp.Get_pointsChanged().Count > 0)
             {
-                for (int i = 0; i < tmp.Count(); i++)
+                Debug.Write("[08]Start Chain pos : ");
+                for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
                 {
-                    Debug.WriteLine("I found a solution: (" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + ")->" + tmp.Get_Value(i) + " (" + tmp.Get_Destription(i) + ")");
+                    Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].Y + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
                 }
+                Debug.WriteLine("");
+                Debug.Write("[08]Changes : ");
+                for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                {
+                    Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                }
+                Debug.WriteLine("");
             }
 
             refreshBoard();
@@ -415,6 +558,7 @@ namespace SudokuMaxSolver
 
         private void testXWings_Click(object sender, RoutedEventArgs e)
         {
+            /*
             //close popup if is open
             popupMain.IsOpen = false;
 

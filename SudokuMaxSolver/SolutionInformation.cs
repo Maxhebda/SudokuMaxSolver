@@ -6,37 +6,80 @@ using System.Threading.Tasks;
 
 namespace SudokuMaxSolver
 {
-    struct InfoStruct
-    {
-        public InfoStruct(String destription, byte y, byte x, byte value)
-        {
-            this.destription = destription;
-            this.y = y;
-            this.x = x;
-            this.value = value;
-        }
-        public string destription;
-        public byte y;
-        public byte x;
-        public byte value;
-    }
-    //  storing basic information about a single manual solution
     class SolutionInformation
     {
-        List<InfoStruct> dataSolutionInformation;
+        public enum TypeOfSolution
+        {
+            Unknown,
+            Method01_TheOnlyPossible,
+            Method02_SingleCandidateInRow,
+            Method03_SingleCandidateInColumn,
+            Method04_SingleCandidateInSquare,
+            Method05_Twins_for_Method01_TheOnlyPossible,
+            Method05_Twins_for_Method02_SingleCandidateInRow,
+            Method05_Twins_for_Method03_SingleCandidateInColumn,
+            Method05_Twins_for_Method04_SingleCandidateInSquare,
+            Method06_XWings,
+            Method07_YWings,
+            Method08_DoubleForcingChains
+        }
+        string destription;
+        List<Candidate> pointsDetected;
+        List<Candidate> pointsChanged;
+        TypeOfSolution typeOfSolution;
         public SolutionInformation()
         {
-            dataSolutionInformation = new List<InfoStruct>();
+            pointsDetected = new List<Candidate>();
+            pointsChanged = new List<Candidate>();
+            destription = "";
+            typeOfSolution = TypeOfSolution.Unknown;
         }
-        public SolutionInformation(String destription, byte y, byte x, byte value)
+        public SolutionInformation(String destription, TypeOfSolution typeOfSolution)
         {
-            dataSolutionInformation = new List<InfoStruct>();
-            dataSolutionInformation.Add(new InfoStruct(destription, y, x, value));
+            pointsDetected = new List<Candidate>();
+            pointsChanged = new List<Candidate>();
+            this.destription = destription;
+            this.typeOfSolution = typeOfSolution;
         }
-        public void Add(String destription, byte y, byte x, byte value)
+        public SolutionInformation(TypeOfSolution typeOfSolution)
         {
-            dataSolutionInformation.Add(new InfoStruct(destription, y, x, value));
+            pointsDetected = new List<Candidate>();
+            pointsChanged = new List<Candidate>();
+            this.typeOfSolution = typeOfSolution;
         }
+        public SolutionInformation(String destription, List<Candidate> pointsChanged, List<Candidate> pointsDetected, TypeOfSolution typeOfSolution)
+        {
+            this.typeOfSolution = typeOfSolution;
+            this.destription = destription;
+            this.pointsDetected = new List<Candidate>();
+            foreach (var item in pointsDetected)
+            {
+                this.pointsDetected.Add(item);
+            }
+            pointsChanged = new List<Candidate>();
+            foreach (var item in pointsChanged)
+            {
+                this.pointsChanged.Add(item);
+            }
+        }
+        public void Add(List<Candidate> pointsChanged, List<Candidate> pointsDetected)
+        {
+            if (pointsDetected != null)
+            {
+                foreach (var item in pointsDetected)
+                {
+                    this.pointsDetected.Add(item);
+                }
+            }
+            if (pointsChanged != null)
+            {
+                foreach (var item in pointsChanged)
+                {
+                    this.pointsChanged.Add(item);
+                }
+            }
+        }
+        /*
         public void Add(SolutionInformation oldSolutionInformation)
         {
             InfoStruct tmp;
@@ -49,29 +92,35 @@ namespace SudokuMaxSolver
                 dataSolutionInformation.Add(tmp);
             }
         }
+        */
         public void Clear()
         {
-            dataSolutionInformation.Clear();
+            destription = "";
+            pointsChanged.Clear();
+            pointsDetected.Clear();
+            typeOfSolution = TypeOfSolution.Unknown;
         }
+        /*
         public int Count()
         {
             return dataSolutionInformation.Count();
         }
-        public string Get_Destription(int index)
+        */
+        public string Get_destription()
         {
-            return dataSolutionInformation[index].destription;
+            return destription;
         }
-        public byte Get_Y(int index)
+        public List<Candidate> Get_pointsDetected()
         {
-            return dataSolutionInformation[index].y;
+            return pointsDetected;
         }
-        public byte Get_X(int index)
+        public List<Candidate> Get_pointsChanged()
         {
-            return dataSolutionInformation[index].x;
+            return pointsChanged;
         }
-        public byte Get_Value(int index)
+        public TypeOfSolution Get_typeOfSolution()
         {
-            return dataSolutionInformation[index].value;
+            return typeOfSolution;
         }
     }
 }

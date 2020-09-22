@@ -727,7 +727,7 @@ namespace SudokuMaxSolver
                 imaginaryBoardisActive = true;
             }
 
-            SolutionInformation tmp = new SolutionInformation();
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method01_TheOnlyPossible);
             byte counterPossible;
             byte findValue = 0;
             byte ystart = 0, ystop = 0, xstart = 0, xstop = 0;
@@ -791,7 +791,9 @@ namespace SudokuMaxSolver
                         if (counterPossible == 1)
                         {
                             board.set(y, x, findValue);
-                            tmp.Add("Znaleziono jedynego możliwego kandydata", y, x, findValue);
+                            List<Candidate> candidatesTmp = new List<Candidate>();
+                            candidatesTmp.Add(new Candidate(y, x, findValue));
+                            tmp.Add(candidatesTmp,candidatesTmp);
                         }
                     }
                 }
@@ -816,7 +818,7 @@ namespace SudokuMaxSolver
                 imaginaryBoardisActive = true;
             }
 
-            SolutionInformation tmp = new SolutionInformation();
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method02_SingleCandidateInRow);
             List<Candidate> candidates = new List<Candidate>();
             byte[] counterCandidate = new byte[9];
             byte singleCandidate = 0;
@@ -870,7 +872,9 @@ namespace SudokuMaxSolver
                         if (candidate.Value == singleCandidate)
                         {
                             board.set(candidate.Y, candidate.X, singleCandidate);
-                            tmp.Add("Znaleziono pojedynczego kandydata we wierszu", candidate.Y, candidate.X, singleCandidate);
+                            List<Candidate> candidatesTmp = new List<Candidate>();
+                            candidatesTmp.Add(candidate);
+                            tmp.Add(candidatesTmp,candidatesTmp);
                             break;
                         }
                     }
@@ -897,7 +901,7 @@ namespace SudokuMaxSolver
                 imaginaryBoardisActive = true;
             }
 
-            SolutionInformation tmp = new SolutionInformation();
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method03_SingleCandidateInColumn);
             List<Candidate> candidates = new List<Candidate>();
             byte[] counterCandidate = new byte[9];
             byte singleCandidate = 0;
@@ -951,7 +955,9 @@ namespace SudokuMaxSolver
                         if (candidate.Value == singleCandidate)
                         {
                             board.set(candidate.Y, candidate.X, singleCandidate);
-                            tmp.Add("Znaleziono pojedynczego kandydata w kolumnie", candidate.Y, candidate.X, singleCandidate);
+                            List<Candidate> candidatesTmp = new List<Candidate>();
+                            candidatesTmp.Add(candidate);
+                            tmp.Add(candidatesTmp, candidatesTmp);
                             break;
                         }
                     }
@@ -978,7 +984,7 @@ namespace SudokuMaxSolver
                 imaginaryBoardisActive = true;
             }
 
-            SolutionInformation tmp = new SolutionInformation();
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method04_SingleCandidateInSquare);
             byte[] counterCandidate = new byte[9];
             byte singleCandidate;
             byte square;
@@ -1041,7 +1047,7 @@ namespace SudokuMaxSolver
                     }
                 }
 
-                //looking for a candidate in a row
+                //looking for a candidate in a square
                 if (singleCandidate != 0)
                 {
 
@@ -1054,7 +1060,9 @@ namespace SudokuMaxSolver
                                 {
                                     //editing board
                                     board.set(y, x, singleCandidate);
-                                    tmp.Add("Znaleziono pojedynczego kandydata w kwadracie " + square + ".", y, x, singleCandidate);
+                                    List<Candidate> candidatesTmp = new List<Candidate>();
+                                    candidatesTmp.Add(new Candidate(y, x, singleCandidate));
+                                    tmp.Add(candidatesTmp, candidatesTmp);
                                     break; //exit loop
                                 }
                             }
@@ -1112,9 +1120,9 @@ namespace SudokuMaxSolver
         }
 
         //the function finds "twins" and "triplets" in squares
-        public static SolutionInformation ManualSolver05_TwinsInSquare(ref BoardTab board)
+        public static List<SolutionInformation> ManualSolver05_TwinsInSquare(ref BoardTab board)
         {
-            SolutionInformation tmp = new SolutionInformation();
+            List<SolutionInformation> listSolutionTmp = new List<SolutionInformation>();
             List<Candidate> candidates = new List<Candidate>();
             for (var square = 1; square <= 9; square++)
             {
@@ -1228,12 +1236,12 @@ namespace SudokuMaxSolver
                     direction = isTwins(brother);
                     if (direction != null)
                     {
-                        string stringTmp = (direction == true ? "Poziome" : "Pionowe") + " bliźniaki, kwadrat:" + square + ") pozostałe :";
-                        foreach (byte squareTmp in MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1))
-                        {
-                            stringTmp += squareTmp;
-                        }
-                        tmp.Add(stringTmp, brother[0].Y, brother[0].X, brother[0].Value);
+                        //string stringTmp = (direction == true ? "Poziome" : "Pionowe") + " bliźniaki, kwadrat:" + square + ") pozostałe :";
+                        //foreach (byte squareTmp in MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1))
+                        //{
+                        //    stringTmp += squareTmp;
+                        //}
+                        //tmp.Add(stringTmp, brother[0].Y, brother[0].X, brother[0].Value);
 
 
 
@@ -1245,12 +1253,20 @@ namespace SudokuMaxSolver
                         ImaginaryBoard.set(brother[0].Y, brother[0].X, brother[0].Value);
                         SolutionInformation InformationTmp = new SolutionInformation();
                         InformationTmp = ManualSolver01_TheOnlyPossible(ref board, MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 1), ImaginaryBoard);
-                        if (InformationTmp.Count() > 0)
+                        if (InformationTmp.Get_pointsChanged().Count > 0)
                         {
-                            for (int i = 0; i < InformationTmp.Count(); i++)
+                            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method05_Twins_for_Method01_TheOnlyPossible);
+                            List<Candidate> listBrotherTmp = new List<Candidate>();
+                            foreach (var item in brother)
                             {
-                                tmp.Add("Dzięki bliżniakom znaleziono jedynego możliwego kandydata", InformationTmp.Get_Y(i), InformationTmp.Get_X(i), InformationTmp.Get_Value(i));
+                                listBrotherTmp.Add(new Candidate(item.Y, item.X, item.Value));
                             }
+                            tmp.Add(null, listBrotherTmp);
+                            for (int i = 0; i < InformationTmp.Get_pointsChanged().Count; i++)
+                            {
+                                tmp.Add(InformationTmp.Get_pointsChanged(), null);
+                            }
+                            listSolutionTmp.Add(tmp);
                         }
 
                         //test manual solver 02 SingleCandidateInRow
@@ -1259,12 +1275,20 @@ namespace SudokuMaxSolver
                         ImaginaryBoard.set(brother[0].Y, brother[0].X, brother[0].Value);
                         InformationTmp.Clear();
                         InformationTmp = ManualSolver02_SingleCandidateInRow(ref board, MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 2), ImaginaryBoard);
-                        if (InformationTmp.Count() > 0)
+                        if (InformationTmp.Get_pointsChanged().Count > 0)
                         {
-                            for (int i = 0; i < InformationTmp.Count(); i++)
+                            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method05_Twins_for_Method02_SingleCandidateInRow);
+                            List<Candidate> listBrotherTmp = new List<Candidate>();
+                            foreach (var item in brother)
                             {
-                                tmp.Add("Dzięki bliżniakom znaleziono pojedynczego kandydata we wierszu", InformationTmp.Get_Y(i), InformationTmp.Get_X(i), InformationTmp.Get_Value(i));
+                                listBrotherTmp.Add(new Candidate(item.Y, item.X, item.Value));
                             }
+                            tmp.Add(null, listBrotherTmp);
+                            for (int i = 0; i < InformationTmp.Get_pointsChanged().Count; i++)
+                            {
+                                tmp.Add(InformationTmp.Get_pointsChanged(), null);
+                            }
+                            listSolutionTmp.Add(tmp);
                         }
 
                         //test manual solver 03 SingleCandidateInColumn
@@ -1273,32 +1297,48 @@ namespace SudokuMaxSolver
                         ImaginaryBoard.set(brother[0].Y, brother[0].X, brother[0].Value);
                         InformationTmp.Clear();
                         InformationTmp = ManualSolver03_SingleCandidateInColumn(ref board, MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 3), ImaginaryBoard);
-                        if (InformationTmp.Count() > 0)
+                        if (InformationTmp.Get_pointsChanged().Count > 0)
                         {
-                            for (int i = 0; i < InformationTmp.Count(); i++)
+                            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method05_Twins_for_Method03_SingleCandidateInColumn);
+                            List<Candidate> listBrotherTmp = new List<Candidate>();
+                            foreach (var item in brother)
                             {
-                                tmp.Add("Dzięki bliżniakom znaleziono pojedynczego kandydata w kolumnie", InformationTmp.Get_Y(i), InformationTmp.Get_X(i), InformationTmp.Get_Value(i));
+                                listBrotherTmp.Add(new Candidate(item.Y, item.X, item.Value));
                             }
+                            tmp.Add(null, listBrotherTmp);
+                            for (int i = 0; i < InformationTmp.Get_pointsChanged().Count; i++)
+                            {
+                                tmp.Add(InformationTmp.Get_pointsChanged(), null);
+                            }
+                            listSolutionTmp.Add(tmp);
                         }
 
-                        //test manual solver 04 SingleCandidateInRow
+                        //test manual solver 04 SingleCandidateInSquare
                         //create new imaginary board witch imaginary value in cell
                         ImaginaryBoard.load(board);
                         ImaginaryBoard.set(brother[0].Y, brother[0].X, brother[0].Value);
                         InformationTmp.Clear();
                         InformationTmp = ManualSolver04_SingleCandidateInSquare(ref board, MultiSolutionPositionsAfterFindingTheTwins(brother[0].Y, brother[0].X, direction == true ? true : false, 4), ImaginaryBoard);
-                        if (InformationTmp.Count() > 0)
+                        if (InformationTmp.Get_pointsChanged().Count > 0)
                         {
-                            for (int i = 0; i < InformationTmp.Count(); i++)
+                            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method05_Twins_for_Method04_SingleCandidateInSquare);
+                            List<Candidate> listBrotherTmp = new List<Candidate>();
+                            foreach (var item in brother)
                             {
-                                tmp.Add("Dzięki bliżniakom znaleziono pojedynczego kandydata w kwadracie", InformationTmp.Get_Y(i), InformationTmp.Get_X(i), InformationTmp.Get_Value(i));
+                                listBrotherTmp.Add(new Candidate(item.Y, item.X, item.Value));
                             }
+                            tmp.Add(null, listBrotherTmp);
+                            for (int i = 0; i < InformationTmp.Get_pointsChanged().Count; i++)
+                            {
+                                tmp.Add(InformationTmp.Get_pointsChanged(), null);
+                            }
+                            listSolutionTmp.Add(tmp);
                         }
                         //-------------------------------------------------------------------------------------------------------
                     }
                 }
             }
-            return tmp;
+            return listSolutionTmp;
         }
 
         //the number of the square in which the cell is located
@@ -1574,7 +1614,7 @@ namespace SudokuMaxSolver
         //searching the board for horizontal lionfish (skrzydlice) and blocking any candidates
         public static SolutionInformation ManualSolver06_XWings(ref BoardTab board)
         {
-            SolutionInformation tmp = new SolutionInformation();
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method06_XWings);
 
             //check the rows
             for (byte y = 0; y < 6; y++)    //only 6 row : 0,1,2,3,4,5
@@ -1585,7 +1625,7 @@ namespace SudokuMaxSolver
                     if (LookForDoubleCandidatesInRow(board, y, value) != null)
                     {
                         List<Candidate> lCanA = LookForDoubleCandidatesInRow(board, y, value);  //lionfish A
-                        Debug.WriteLine("horizontal lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
+                        //Debug.WriteLine("horizontal lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
 
                         //look for the second lionfish (B)
                         int yStart = y < 3 ? 3 : 6; //rows we will not check / start
@@ -1601,9 +1641,10 @@ namespace SudokuMaxSolver
                             }
                             if (lCanB[0].X == lCanA[0].X && lCanB[1].X == lCanA[1].X)
                             {
-                                Debug.WriteLine("FIND horizontal lionfish ->" + lCanA[0].Value + "  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ")");
+                                //Debug.WriteLine("FIND horizontal lionfish ->" + lCanA[0].Value + "  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ")");
                                 //blocking candidates
-                                Debug.WriteLine("blocking candidates...");
+                                //Debug.WriteLine("blocking candidates...");
+                                List<Candidate> listPointOfBlocking = new List<Candidate>();
                                 for (byte y3 = 0; y3 < 9; y3++)
                                 {
                                     if (y3 == lCanA[0].Y || y3 == lCanB[0].Y)
@@ -1612,8 +1653,15 @@ namespace SudokuMaxSolver
                                     }
                                     board.AddFakeCandidate(y3, lCanA[0].X, value);
                                     board.AddFakeCandidate(y3, lCanA[1].X, value);
+                                    listPointOfBlocking.Add(new Candidate(y3, lCanA[0].X, value));
+                                    listPointOfBlocking.Add(new Candidate(y3, lCanA[1].X, value));
                                 }
-                                tmp.Add("Znaleziono poziomą skrzydlicę A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ") i zablokowano wszystkie " + value + " w kolumnach " + lCanA[0].X + " i " + lCanA[1].X, 0, 0, value);
+                                List<Candidate> listPointOfLionfish = new List<Candidate>();
+                                listPointOfLionfish.Add(new Candidate(lCanA[0].Y, lCanA[0].X, lCanA[0].Value));
+                                listPointOfLionfish.Add(new Candidate(lCanA[1].Y, lCanA[1].X, lCanA[0].Value));
+                                listPointOfLionfish.Add(new Candidate(lCanB[0].Y, lCanB[0].X, lCanA[0].Value));
+                                listPointOfLionfish.Add(new Candidate(lCanB[1].Y, lCanB[1].X, lCanA[0].Value));
+                                tmp.Add(listPointOfBlocking, listPointOfLionfish);
                             }
                         }
                     }
@@ -1625,7 +1673,7 @@ namespace SudokuMaxSolver
         //searching the board for vertical lionfish (skrzydlice) and blocking any candidates
         public static SolutionInformation ManualSolver07_YWings(ref BoardTab board)
         {
-            SolutionInformation tmp = new SolutionInformation();
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method07_YWings);
 
             //check the columns
             for (byte x = 0; x < 6; x++)    //only 6 columns : 0,1,2,3,4,5
@@ -1636,7 +1684,7 @@ namespace SudokuMaxSolver
                     if (LookForDoubleCandidatesInColumn(board, x, value) != null)
                     {
                         List<Candidate> lCanA = LookForDoubleCandidatesInColumn(board, x, value);  //lionfish A
-                        Debug.WriteLine("vertical lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
+                        //Debug.WriteLine("vertical lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
 
                         //look for the second lionfish (B)
                         int xStart = x < 3 ? 3 : 6; //rows we will not check / start
@@ -1652,9 +1700,10 @@ namespace SudokuMaxSolver
                             }
                             if (lCanB[0].Y == lCanA[0].Y && lCanB[1].Y == lCanA[1].Y)
                             {
-                                Debug.WriteLine("FIND vertical lionfish ->" + lCanA[0].Value + "  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ")");
+                                //Debug.WriteLine("FIND vertical lionfish ->" + lCanA[0].Value + "  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ")");
                                 //blocking candidates
-                                Debug.WriteLine("blocking candidates...");
+                                //Debug.WriteLine("blocking candidates...");
+                                List<Candidate> listPointOfBlocking = new List<Candidate>();
                                 for (byte x3 = 0; x3 < 9; x3++)
                                 {
                                     if (x3 == lCanA[0].X || x3 == lCanB[0].X)
@@ -1663,8 +1712,15 @@ namespace SudokuMaxSolver
                                     }
                                     board.AddFakeCandidate(lCanA[0].Y, x3, value);
                                     board.AddFakeCandidate(lCanA[1].Y, x3, value);
+                                    listPointOfBlocking.Add(new Candidate(lCanA[0].Y, x3, value));
+                                    listPointOfBlocking.Add(new Candidate(lCanA[1].Y, x3, value));
                                 }
-                                tmp.Add("Znaleziono pionową skrzydlicę A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ") i zablokowano wszystkie " + value + " w rzędach " + lCanA[0].Y + " i " + lCanA[1].Y, 0, 0, value);
+                                List<Candidate> listPointOfLionfish = new List<Candidate>();
+                                listPointOfLionfish.Add(new Candidate(lCanA[0].Y, lCanA[0].X, lCanA[0].Value));
+                                listPointOfLionfish.Add(new Candidate(lCanA[1].Y, lCanA[1].X, lCanA[0].Value));
+                                listPointOfLionfish.Add(new Candidate(lCanB[0].Y, lCanB[0].X, lCanA[0].Value));
+                                listPointOfLionfish.Add(new Candidate(lCanB[1].Y, lCanB[1].X, lCanA[0].Value));
+                                tmp.Add(listPointOfBlocking, listPointOfLionfish);
                             }
                         }
                     }
@@ -1697,26 +1753,23 @@ namespace SudokuMaxSolver
         {
             //set first value
             board.set(y, x, value);
-            Debug.Write("start chain (" + y + "," + x + "->" + value + ") ");
+            //Debug.Write("start chain (" + y + "," + x + "->" + value + ") ");
             bool NotEndTesting = true;
             SolutionInformation tmp = new SolutionInformation();
-            SolutionInformation sum = new SolutionInformation();
             while (NotEndTesting)
             {
                 tmp.Clear();
                 tmp = ManualSolver01_TheOnlyPossible(ref board);
-                for (byte i = 0; i < tmp.Count(); i++)
-                {
-                    Debug.Write("(" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + "->" + tmp.Get_Value(i) + ") ");
-                }
-
-                sum.Add(tmp);
-                if (tmp.Count()==0)
+                //for (byte i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                //{
+                //     Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                //}
+                if (tmp.Get_pointsChanged().Count == 0)
                 {
                     NotEndTesting = false;
                 }
             }
-            Debug.WriteLine("end");
+            //Debug.WriteLine("end");
             return board;
         }
 
@@ -1725,7 +1778,7 @@ namespace SudokuMaxSolver
         //If, no matter what we put in another place, the number will always be the same, we have to enter it there.
         public static SolutionInformation ManualSolver08_DoubleForcingChains(ref BoardTab board)
         {
-            SolutionInformation tmp = new SolutionInformation();
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method08_DoubleForcingChains);
 
             //create double candidates list
             List<candidateStructure> doubleCandidate = new List<candidateStructure>();
@@ -1738,7 +1791,7 @@ namespace SudokuMaxSolver
                         if (board.allCandidates(y, x).Count == 2)
                         {
                             doubleCandidate.Add(new candidateStructure(y, x, board.allCandidates(y, x)[0], board.allCandidates(y, x)[1]));
-                            Debug.WriteLine("PairCandidate: (" + y + "," + x + ") " + board.allCandidates(y, x)[0] + ", " + board.allCandidates(y, x)[1]);
+                            //Debug.WriteLine("PairCandidate: (" + y + "," + x + ") " + board.allCandidates(y, x)[0] + ", " + board.allCandidates(y, x)[1]);
                         }
                     }
                 }
@@ -1747,12 +1800,16 @@ namespace SudokuMaxSolver
             //we have a list of candidate pairs, we will check it
             foreach(var candidate in doubleCandidate)
             {
-                Debug.WriteLine("Test chain (" + candidate.y + "," + candidate.x + ") dla " + candidate.candidate1 + " & " + candidate.candidate2 + ":");
+                //Debug.WriteLine("Test chain (" + candidate.y + "," + candidate.x + ") dla " + candidate.candidate1 + " & " + candidate.candidate2 + ":");
                 bool exitForech = false;
                 //Debug.WriteLine("Testowanie podwójnego łancucha (" + candidate.y+ "," + candidate.x + ")=" + candidate.candidate1);
                 BoardTab chain1 = testTheCain(candidate.y, candidate.x, candidate.candidate1, new BoardTab(board));
                 //Debug.WriteLine("Testowanie podwójnego łancucha (" + candidate.y+ "," + candidate.x + ")=" + candidate.candidate2);
                 BoardTab chain2 = testTheCain(candidate.y, candidate.x, candidate.candidate2, new BoardTab(board));
+
+                List<Candidate> chainDetected = new List<Candidate>();
+                chainDetected.Add(new Candidate(candidate.y, candidate.x, candidate.candidate1));
+                chainDetected.Add(new Candidate(candidate.y, candidate.x, candidate.candidate2));
 
                 //look for similarities
                 for (byte y = 0; y < 9; y++)
@@ -1762,13 +1819,16 @@ namespace SudokuMaxSolver
                         if (board.get(y,x)==0 && chain1.get(y,x)!=0 && chain1.get(y,x)==chain2.get(y,x))
                         {
                             board.set(y, x, chain1.get(y, x));
-                            tmp.Add("Łańcuch testowany: (" + candidate.y + "," + candidate.x + ") dla wartości " + candidate.candidate1 + " i " + candidate.candidate2, y, x, chain1.get(y, x));
+                            List<Candidate> chainChanged = new List<Candidate>();
+                            chainChanged.Add(new Candidate(y, x, chain1.get(y, x)));
+                            tmp.Add(chainChanged, null);
                             exitForech = true;
                         }
                     }
                 }
                 if (exitForech)
                 {
+                    tmp.Add(null, chainDetected);
                     break;
                 }
             }
