@@ -41,6 +41,7 @@ namespace SudokuMaxSolver
                     board[y, x].value = 0;
                     board[y, x].readOnly = false;
                 }
+            ClearFakeCandidateBoard();
         }
         public void set(byte y, byte x, byte value)
         {

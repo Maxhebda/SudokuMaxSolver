@@ -13,13 +13,7 @@ namespace SudokuMaxSolver
         //create an empty board "lists of fake candidates"
         public FakeCandidatesBoard()
         {
-            for (byte y = 0; y < 9; y++)
-            {
-                for (byte x = 0; x < 9; x++)
-                {
-                    fakeCandidateBoard[y, x] = new List<byte>();
-                }
-            }
+            ClearFakeCandidateBoard();
         }
 
         //add a false candidate to the list if it does not exist
@@ -46,6 +40,17 @@ namespace SudokuMaxSolver
                 }
             }
             return false;
+        }
+
+        public void ClearFakeCandidateBoard()
+        {
+            for (byte y = 0; y < 9; y++)
+            {
+                for (byte x = 0; x < 9; x++)
+                {
+                    fakeCandidateBoard[y, x] = new List<byte>();
+                }
+            }
         }
     }
 }
