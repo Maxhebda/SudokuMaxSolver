@@ -132,7 +132,7 @@
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <MenuItem Header="test" Click="test_Click" IsEnabled="true"/>
-                <MenuItem Header="test X-Wings" Click="testXWings_Click" />
+                <MenuItem Header="test X-Wings" Click="testXWings_Click" IsEnabled="False"/>
 
             </MenuItem>
             <MenuItem Header="Info" IsEnabled="False"/>
