@@ -547,6 +547,27 @@ namespace SudokuMaxSolver
                 Debug.WriteLine("");
             }
 
+            //--- triple forcing chain
+            Debug.WriteLine("Test [09] Triple Forcing Chains...");
+            //test Y Wings
+            tmp.Clear();
+            tmp = Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
+            if (tmp.Get_pointsChanged().Count > 0)
+            {
+                Debug.Write("[09]Start Chain pos : ");
+                for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                {
+                    Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].Y + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                }
+                Debug.WriteLine("");
+                Debug.Write("[09]Changes : ");
+                for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                {
+                    Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                }
+                Debug.WriteLine("");
+            }
+
             refreshBoard();
 
             this.ResizeMode = System.Windows.ResizeMode.CanResize;

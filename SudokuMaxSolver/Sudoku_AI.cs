@@ -1834,5 +1834,66 @@ namespace SudokuMaxSolver
             }
             return tmp;
         }
+
+        //the algorithm searches the arrays for candidate threes.
+        //is similar to the double chain algorithm (08)
+        public static SolutionInformation ManualSolver09_TripleForcingChains(ref BoardTab board)
+        {
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method09_TripleForcingChains);
+
+            //create triple candidates list
+            List<candidateStructure> tripleCandidate = new List<candidateStructure>();
+            for (byte y = 0; y < 9; y++)
+            {
+                for (byte x = 0; x < 9; x++)
+                {
+                    if (board.get(y, x) == 0)
+                    {
+                        if (board.allCandidates(y, x).Count == 3)   //if is triple
+                        {
+                            tripleCandidate.Add(new candidateStructure(y, x, board.allCandidates(y, x)[0], board.allCandidates(y, x)[1], board.allCandidates(y, x)[2]));
+                        }
+                    }
+                }
+            }
+
+            //we have a list of candidate triple, we will check it
+            foreach (var candidate in tripleCandidate)
+            {
+
+                bool exitForech = false;
+
+                BoardTab chain1 = testTheCain(candidate.y, candidate.x, candidate.candidate1, new BoardTab(board));
+                BoardTab chain2 = testTheCain(candidate.y, candidate.x, candidate.candidate2, new BoardTab(board));
+                BoardTab chain3 = testTheCain(candidate.y, candidate.x, candidate.candidate3, new BoardTab(board));
+
+                List<Candidate> chainDetected = new List<Candidate>();
+                chainDetected.Add(new Candidate(candidate.y, candidate.x, candidate.candidate1));
+                chainDetected.Add(new Candidate(candidate.y, candidate.x, candidate.candidate2));
+                chainDetected.Add(new Candidate(candidate.y, candidate.x, candidate.candidate3));
+
+                //look for similarities
+                for (byte y = 0; y < 9; y++)
+                {
+                    for (byte x = 0; x < 9; x++)
+                    {
+                        if (board.get(y, x) == 0 && chain1.get(y, x) != 0 && chain1.get(y, x) == chain2.get(y, x) && chain1.get(y, x) == chain3.get(y, x))
+                        {
+                            board.set(y, x, chain1.get(y, x));
+                            List<Candidate> chainChanged = new List<Candidate>();
+                            chainChanged.Add(new Candidate(y, x, chain1.get(y, x)));
+                            tmp.Add(chainChanged, null);
+                            exitForech = true;
+                        }
+                    }
+                }
+                if (exitForech)
+                {
+                    tmp.Add(null, chainDetected);
+                    break;
+                }
+            }
+            return tmp;
+        }
     }
 }
