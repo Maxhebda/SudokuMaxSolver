@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Shapes;
 using System.Collections.Generic;
+using System.Windows.Threading;
+using System;
 
 namespace SudokuMaxSolver
 {
@@ -168,7 +170,10 @@ namespace SudokuMaxSolver
             }
 
             // close old popup if is open
-            if (popupMain.IsOpen == true) popupMain.IsOpen = false;
+            if (popupMain.IsOpen == true)
+            {
+                popupMain.IsOpen = false;
+            }
 
             //if button is read only then do not open it
             if (!board.getReadOnly(y,x))
@@ -292,7 +297,7 @@ namespace SudokuMaxSolver
         {
             //close popup if is open
             popupMain.IsOpen = false;
-
+ 
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
@@ -579,50 +584,38 @@ namespace SudokuMaxSolver
 
         private void testXWings_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            //close popup if is open
+
+        }
+
+        private void MenuInfo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //hide popup if the menu click
+        public void PreviewMouseLeftButtonDownInMenu_Click(object sender, EventArgs e)
+        {
+            // working :
+            // - windows PreviewMouseRightButtonDown
+            // - menu Edycja PreviewMouseLeftButtonDown
+            // - windows Deactivated
+            // - windows LocationChanged
+            // - menu Program PreviewMouseLeftButtonDown
+            // - menu Info PreviewMouseLeftButtonDown
+
+            // hidden popup
             popupMain.IsOpen = false;
+        }
 
-            SolutionInformation tmp = new SolutionInformation();
-
-            Debug.WriteLine("XWings test...");
-
-            //test xWings
-            tmp.Clear();
-            tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
-            if (tmp.Count() > 0)
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (popupMain.IsOpen)
             {
-                for (int i = 0; i < tmp.Count(); i++)
-                {
-                    Debug.WriteLine("I found a solution: (" + tmp.Get_Destription(i) + ")");
-                }
+                // number y and x on the our main button
+                byte y = byte.Parse((popupMain).Name[1] + "");
+                byte x = byte.Parse((popupMain).Name[2] + "");
+                Debug.WriteLine("key ="+e.Key+", wsp [yx]="+y+", "+x);
             }
-
-            //test yWings
-            tmp.Clear();
-            tmp = Sudoku_AI.ManualSolver07_YWings(ref board);
-            if (tmp.Count() > 0)
-            {
-                for (int i = 0; i < tmp.Count(); i++)
-                {
-                    Debug.WriteLine("I found a solution: (" + tmp.Get_Destription(i) + ")");
-                }
-            }
-
-            refreshBoard();
-            /*
-            //----------------- temporary function to check solution results ---------------------
-            string messageString = "";
-            if (tmp.Count() > 0)
-            {
-                for (int i = 0; i < tmp.Count(); i++)
-                {
-                    messageString += tmp.Get_Destription(i) + "block(" + tmp.Get_Y(i) + "," + tmp.Get_X(i) + "->" + tmp.Get_Value(i) + "\n";
-                }
-            }
-            MessageBox.Show(messageString, "Log Xwings");
-            //----------------- temporary function to check solution results ---------------------
-            */
         }
     }
 }

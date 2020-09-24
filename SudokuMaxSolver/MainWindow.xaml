@@ -5,10 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SudokuMaxSolver"
         mc:Ignorable="d"
-        Title="SudokuMaxSolver" ResizeMode="NoResize" MaxWidth="480">
+        Title="SudokuMaxSolver" ResizeMode="NoResize" MaxWidth="480"
+        KeyDown="Window_KeyDown"
+        Deactivated="PreviewMouseLeftButtonDownInMenu_Click"   
+        PreviewMouseRightButtonDown="PreviewMouseLeftButtonDownInMenu_Click"    
+        LocationChanged="PreviewMouseLeftButtonDownInMenu_Click">
+    <!-- PreviewMouseLeftButtonDownInMenu_Click = on hide popup -->
+    
+    
     <DockPanel x:Name="dockPanelMain" Height="520" Width="460" HorizontalAlignment="Left" Margin="2,0,0,0">
         <Menu  DockPanel.Dock="Top">
-            <MenuItem x:Name="menuProgram" Header="Program" Click="menuProgram_Click">
+            <MenuItem x:Name="menuProgram" Header="Program" Click="menuProgram_Click"  PreviewMouseLeftButtonDown="PreviewMouseLeftButtonDownInMenu_Click">
                 <MenuItem Header="Pusta plansza" Click="menuNowaPlansza_Click">
                     <MenuItem.Icon>
                         <Image Source="icon_empty.png"/>
@@ -67,7 +74,7 @@
                 </MenuItem>
 
             </MenuItem>
-            <MenuItem Header="Edycja">
+            <MenuItem Header="Edycja" PreviewMouseLeftButtonDown="PreviewMouseLeftButtonDownInMenu_Click">
                 <MenuItem Header="Wyczyść" Click="menuWyczysc_Click">
                     <MenuItem.Icon>
                         <Image Source="icon_clear.png"/>
@@ -135,7 +142,7 @@
                 <MenuItem Header="test X-Wings" Click="testXWings_Click" IsEnabled="False"/>
 
             </MenuItem>
-            <MenuItem Header="Info" IsEnabled="False"/>
+            <MenuItem Header="Info" IsEnabled="true" Click="MenuInfo_Click"  PreviewMouseLeftButtonDown="PreviewMouseLeftButtonDownInMenu_Click"/>
         </Menu>
         <StackPanel x:Name="stackPanelMain" Margin="5" DockPanel.Dock="Left" Width="auto" Height="auto"/>
         <StackPanel x:Name="stackPanelMain2" Margin="5" DockPanel.Dock="Right" Width="200" Height="30">
