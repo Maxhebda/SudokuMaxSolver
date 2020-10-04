@@ -291,6 +291,7 @@ namespace SudokuMaxSolver
         }
         public void load(Sudoku_AI sudoku)
         {
+            clear();
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
@@ -308,6 +309,7 @@ namespace SudokuMaxSolver
 
         public void load(BoardTab oldBoard)
         {
+            clear();
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
