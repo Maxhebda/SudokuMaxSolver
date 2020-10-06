@@ -10,6 +10,7 @@ using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Windows.Threading;
 using System;
+using System.Windows.Input;
 
 namespace SudokuMaxSolver
 {
@@ -28,6 +29,7 @@ namespace SudokuMaxSolver
         Button[] buttonPopup = new Button[9];           //small board popup
 
         bool lookForSolutions = true;   //variable to look for solutions by all means in the loop
+        bool lookForSolutionsAfterCandidatesBlocked = false;   //variable to look for a solution after candidates are blocked
 
         public MainWindow()
         {
@@ -204,11 +206,18 @@ namespace SudokuMaxSolver
 
         private void menuProgram_Click(object sender, RoutedEventArgs e)
         {
-           popupMain.IsOpen = false;
+            //close right stackpanel with solutions
+            showRightStackPanelWithSolutions(false);
+
+            popupMain.IsOpen = false;
         }
 
         private void menuGenerujNowaPlansze_Click(object sender, RoutedEventArgs e)
         {
+            //close right stackpanel with solutions
+            showRightStackPanelWithSolutions(false);
+
+            this.Cursor = Cursors.Wait;
             Sudoku_AI newSudoku = new Sudoku_AI();
             switch (((MenuItem)sender).Name)
             {
@@ -250,10 +259,14 @@ namespace SudokuMaxSolver
             }
             board.load(newSudoku);
             refreshBoard();
+            this.Cursor = Cursors.Arrow;
         }
 
         private void menuNowaPlansza_Click(object sender, RoutedEventArgs e)
         {
+            //close right stackpanel with solutions
+            showRightStackPanelWithSolutions(false);
+
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
@@ -265,6 +278,9 @@ namespace SudokuMaxSolver
 
         private void menuWyczysc_Click(object sender, RoutedEventArgs e)
         {
+            //close right stackpanel with solutions
+            showRightStackPanelWithSolutions(false);
+
             //close popup if is open
             popupMain.IsOpen = false;
 
@@ -281,6 +297,9 @@ namespace SudokuMaxSolver
 
         private void menuRozwiazBrutalnie_Click(object sender, RoutedEventArgs e)
         {
+            //close right stackpanel with solutions
+            showRightStackPanelWithSolutions(false);
+
             Debug.WriteLine("Number od solutions : " + Sudoku_AI.autoSolver_numberOfSolutions(board));
 
             if (Sudoku_AI.autoSolver_brutal(ref board))
@@ -297,13 +316,20 @@ namespace SudokuMaxSolver
 
         private void menuZablokujWidoczne_Click(object sender, RoutedEventArgs e)
         {
+            //close right stackpanel with solutions
+            showRightStackPanelWithSolutions(false);
+
             //close popup if is open
             popupMain.IsOpen = false;
+
             blockVisible();
             refreshBoard();
         }
         private void blockVisible()
         {
+            //close right stackpanel with solutions
+            showRightStackPanelWithSolutions(false);
+
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
@@ -315,6 +341,9 @@ namespace SudokuMaxSolver
         }
         private void menuOdblokujWidoczne_Click(object sender, RoutedEventArgs e)
         {
+            //close right stackpanel with solutions
+            showRightStackPanelWithSolutions(false);
+
             //close popup if is open
             popupMain.IsOpen = false;
 
@@ -334,6 +363,7 @@ namespace SudokuMaxSolver
             popupMain.IsOpen = false;
             blockVisible();
             lookForSolutions = true;
+            lookForSolutionsAfterCandidatesBlocked = true;
 
             List<SolutionInformation> listManualSolution = new List<SolutionInformation>();
             SolutionInformation tmp = new SolutionInformation();
@@ -358,6 +388,7 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
                     lookForSolutions = true;
+                    lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
                 Debug.WriteLine("Test [02] Single candidate in row...");
@@ -374,6 +405,7 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
                     lookForSolutions = true;
+                    lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
                 Debug.WriteLine("Test [03] Single candidate in column...");
@@ -390,6 +422,7 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
                     lookForSolutions = true;
+                    lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
                 Debug.WriteLine("Test [04] Single candidate in square...");
@@ -406,6 +439,7 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
                     lookForSolutions = true;
+                    lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
                 Debug.WriteLine("Test [05] Twins in square...");
@@ -505,6 +539,53 @@ namespace SudokuMaxSolver
                         listManualSolution.Add(iter);
                     }
                     lookForSolutions = true;
+                    lookForSolutionsAfterCandidatesBlocked = true;
+                }
+
+                Debug.WriteLine("Test [08] Double Forcing Chains...");
+                //test Double Forcing Chains
+                tmp.Clear();
+                tmp = Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
+                if (tmp.Get_pointsChanged().Count > 0)
+                {
+                    Debug.Write("[08]Start Chain pos : ");
+                    for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                    {
+                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                    }
+                    Debug.WriteLine("");
+                    Debug.Write("[08]Changes : ");
+                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                    {
+                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                    }
+                    Debug.WriteLine("");
+                    listManualSolution.Add(tmp);
+                    lookForSolutions = true;
+                    lookForSolutionsAfterCandidatesBlocked = true;
+                }
+
+                Debug.WriteLine("Test [09] Triple Forcing Chains...");
+                //test Triple Forcing Chains
+                tmp.Clear();
+                tmp = Sudoku_AI.ManualSolver09_TripleForcingChains(ref board);
+                if (tmp.Get_pointsChanged().Count > 0)
+                {
+                    Debug.Write("[09]Start Chain pos : ");
+                    for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                    {
+                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                    }
+                    Debug.WriteLine("");
+                    Debug.Write("[09]Changes : ");
+                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                    {
+                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                    }
+                    Debug.WriteLine("");
+                    listManualSolution.Add(tmp);
+                    lookForSolutions = true;
+                    lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
                 Debug.WriteLine("Test [06] X Wings...");
@@ -526,7 +607,12 @@ namespace SudokuMaxSolver
                     }
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
-                    lookForSolutions = true;
+
+                    if (lookForSolutions==false && lookForSolutionsAfterCandidatesBlocked==true)
+                    {
+                        lookForSolutions = true;
+                        lookForSolutionsAfterCandidatesBlocked = false;
+                    }
                 }
 
                 Debug.WriteLine("Test [07] Y Wings...");
@@ -548,55 +634,17 @@ namespace SudokuMaxSolver
                     }
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
-                    lookForSolutions = true;
-                }
 
-                Debug.WriteLine("Test [08] Double Forcing Chains...");
-                //test Double Forcing Chains
-                tmp.Clear();
-                tmp = Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
-                if (tmp.Get_pointsChanged().Count > 0)
-                {
-                    Debug.Write("[08]Start Chain pos : ");
-                    for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                    if (lookForSolutions == false && lookForSolutionsAfterCandidatesBlocked == true)
                     {
-                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].Y + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                        lookForSolutions = true;
+                        lookForSolutionsAfterCandidatesBlocked = false;
                     }
-                    Debug.WriteLine("");
-                    Debug.Write("[08]Changes : ");
-                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
-                    {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
-                    }
-                    Debug.WriteLine("");
-                    listManualSolution.Add(tmp);
-                    lookForSolutions = true;
-                }
-
-                Debug.WriteLine("Test [09] Triple Forcing Chains...");
-                //test Triple Forcing Chains
-                tmp.Clear();
-                tmp = Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
-                if (tmp.Get_pointsChanged().Count > 0)
-                {
-                    Debug.Write("[09]Start Chain pos : ");
-                    for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
-                    {
-                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].Y + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
-                    }
-                    Debug.WriteLine("");
-                    Debug.Write("[09]Changes : ");
-                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
-                    {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
-                    }
-                    Debug.WriteLine("");
-                    listManualSolution.Add(tmp);
-                    lookForSolutions = true;
                 }
             }   //--- stop while
 
             refreshBoard();
+            showRightStackPanelWithSolutions(true);
             Debug.WriteLine("Ilosc rozwiazan na liscie : " + listManualSolution.Count);
         }
 
@@ -605,7 +653,7 @@ namespace SudokuMaxSolver
             //close popup if is open
             popupMain.IsOpen = false;
 
-            showRightStackPanelWithSolutions(true);
+            showRightStackPanelWithSolutions(false);
             //RightlistBoxSolutions.Items.Add("sss");
         }
 

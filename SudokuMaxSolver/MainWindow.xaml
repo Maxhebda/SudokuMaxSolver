@@ -9,6 +9,7 @@
         KeyDown="Window_KeyDown"
         Deactivated="PreviewMouseLeftButtonDownInMenu_Click"   
         PreviewMouseRightButtonDown="PreviewMouseLeftButtonDownInMenu_Click"    
+        Cursor="Arrow"
         LocationChanged="PreviewMouseLeftButtonDownInMenu_Click">
     <!-- PreviewMouseLeftButtonDownInMenu_Click = on hide popup -->
     

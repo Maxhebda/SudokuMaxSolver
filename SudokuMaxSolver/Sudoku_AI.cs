@@ -1625,7 +1625,7 @@ namespace SudokuMaxSolver
                     if (LookForDoubleCandidatesInRow(board, y, value) != null)
                     {
                         List<Candidate> lCanA = LookForDoubleCandidatesInRow(board, y, value);  //lionfish A
-                        //Debug.WriteLine("horizontal lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
+                        Debug.WriteLine("horizontal lionfishA (" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ")->" + lCanA[0].Value);
 
                         //look for the second lionfish (B)
                         int yStart = y < 3 ? 3 : 6; //rows we will not check / start
@@ -1639,9 +1639,10 @@ namespace SudokuMaxSolver
                             {
                                 break;
                             }
+                            Debug.WriteLine("horizontal lionfishB (" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ")->" + lCanB[0].Value);
                             if (lCanB[0].X == lCanA[0].X && lCanB[1].X == lCanA[1].X)
                             {
-                                //Debug.WriteLine("FIND horizontal lionfish ->" + lCanA[0].Value + "  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ")");
+                                Debug.WriteLine("FIND horizontal lionfish ->" + lCanA[0].Value + "  A(" + lCanA[0].Y + "," + lCanA[0].X + ")(" + lCanA[1].Y + "," + lCanA[1].X + ") B(" + lCanB[0].Y + "," + lCanB[0].X + ")(" + lCanB[1].Y + "," + lCanB[1].X + ")");
                                 //blocking candidates
                                 //Debug.WriteLine("blocking candidates...");
                                 List<Candidate> listPointOfBlocking = new List<Candidate>();
