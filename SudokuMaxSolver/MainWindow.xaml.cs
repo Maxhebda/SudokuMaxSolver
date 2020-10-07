@@ -377,13 +377,15 @@ namespace SudokuMaxSolver
                 lookForSolutions = false;
                 Debug.WriteLine("Test [01] The only possible...");
                 //test only posible
+                tmp.Clear();
                 tmp = Sudoku_AI.ManualSolver01_TheOnlyPossible(ref board);
+
                 if (tmp.Get_pointsChanged().Count > 0)
                 {
                     Debug.Write("[01]Changes : ");
                     for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
                     {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
                     }
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
@@ -400,7 +402,7 @@ namespace SudokuMaxSolver
                     Debug.Write("[02]Changes : ");
                     for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
                     {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
                     }
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
@@ -417,7 +419,7 @@ namespace SudokuMaxSolver
                     Debug.Write("[03]Changes : ");
                     for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
                     {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
                     }
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
@@ -434,7 +436,7 @@ namespace SudokuMaxSolver
                     Debug.Write("[04]Changes : ");
                     for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
                     {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
                     }
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
@@ -460,13 +462,13 @@ namespace SudokuMaxSolver
                                         Debug.Write("[05]Brothers : ");
                                         foreach (var item2 in item.Get_pointsDetected())
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
                                         }
                                         Debug.WriteLine("");
                                         Debug.Write("[05]Changes : ");
                                         foreach (var item2 in item.Get_pointsChanged())
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
                                         }
                                         Debug.WriteLine("");
                                     }
@@ -480,13 +482,13 @@ namespace SudokuMaxSolver
                                         Debug.Write("[05]Brothers : ");
                                         foreach (var item2 in item.Get_pointsDetected())
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
                                         }
                                         Debug.WriteLine("");
                                         Debug.Write("[05]Changes : ");
                                         foreach (var item2 in item.Get_pointsChanged())
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
                                         }
                                         Debug.WriteLine("");
                                     }
@@ -500,13 +502,13 @@ namespace SudokuMaxSolver
                                         Debug.Write("[05]Brothers : ");
                                         foreach (var item2 in item.Get_pointsDetected())
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
                                         }
                                         Debug.WriteLine("");
                                         Debug.Write("[05]Changes : ");
                                         foreach (var item2 in item.Get_pointsChanged())
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
                                         }
                                         Debug.WriteLine("");
                                     }
@@ -520,13 +522,13 @@ namespace SudokuMaxSolver
                                         Debug.Write("[05]Brothers : ");
                                         foreach (var item2 in item.Get_pointsDetected())
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
                                         }
                                         Debug.WriteLine("");
                                         Debug.Write("[05]Changes : ");
                                         foreach (var item2 in item.Get_pointsChanged())
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.Y + "->" + item2.Value + ") ");
+                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
                                         }
                                         Debug.WriteLine("");
                                     }
@@ -597,13 +599,13 @@ namespace SudokuMaxSolver
                     Debug.Write("[06]XWings pos : ");
                     for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
                     {
-                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].Y + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
                     }
                     Debug.WriteLine("");
                     Debug.Write("[06]Blocked : ");
                     for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
                     {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
                     }
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
@@ -624,13 +626,13 @@ namespace SudokuMaxSolver
                     Debug.Write("[07]YWings pos : ");
                     for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
                     {
-                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].Y + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
                     }
                     Debug.WriteLine("");
                     Debug.Write("[07]Blocked : ");
                     for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
                     {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].Y + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
                     }
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
@@ -643,9 +645,39 @@ namespace SudokuMaxSolver
                 }
             }   //--- stop while
 
-            refreshBoard();
             showRightStackPanelWithSolutions(true);
             Debug.WriteLine("Ilosc rozwiazan na liscie : " + listManualSolution.Count);
+
+            //--- right stackpanel clear
+            RightStackPanel_Clear();
+
+            //--- right stackpanel adding
+            string descriptionTmp="";
+            string changedTmp = "";
+            foreach (SolutionInformation item in listManualSolution)
+            {
+                changedTmp = "";
+                changedTmp += "ilosc zmian="+item.Get_pointsChanged().Count+"  ";
+
+                if (item.Get_pointsChanged()!=null)
+                foreach (var itemChanged in item.Get_pointsChanged())
+                {
+                    changedTmp += $"({itemChanged.Y}, {itemChanged.X})->{itemChanged.Value} ";
+                }
+
+                RightStackPanel_Add(descriptionTmp + changedTmp);
+            }
+            refreshBoard();
+        }
+
+        private void RightStackPanel_Clear()
+        {
+            RightlistBoxSolutions.Items.Clear();
+        }
+
+        private void RightStackPanel_Add(String item)
+        {
+            RightlistBoxSolutions.Items.Add($"{RightlistBoxSolutions.Items.Count + 1,3}. " + item);
         }
 
         private void test_Click(object sender, RoutedEventArgs e)

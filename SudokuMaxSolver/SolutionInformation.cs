@@ -10,7 +10,7 @@ namespace SudokuMaxSolver
     {
         public enum TypeOfSolution
         {
-            Unknown,
+            Unknown=0,
             Method01_TheOnlyPossible,
             Method02_SingleCandidateInRow,
             Method03_SingleCandidateInColumn,
@@ -44,6 +44,7 @@ namespace SudokuMaxSolver
         }
         public SolutionInformation(TypeOfSolution typeOfSolution)
         {
+            destription = "";
             pointsDetected = new List<Candidate>();
             pointsChanged = new List<Candidate>();
             this.typeOfSolution = typeOfSolution;
