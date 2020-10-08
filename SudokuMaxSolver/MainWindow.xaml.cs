@@ -143,6 +143,9 @@ namespace SudokuMaxSolver
             // hidden popup
             popupMain.IsOpen = false;
 
+            // hidden right stackpanel
+            showRightStackPanelWithSolutions(false);
+
             // number y and x on the our main button and number popup to change
             byte y = byte.Parse(((Button)sender).Name[3] + "");
             byte x = byte.Parse(((Button)sender).Name[4] + "");
@@ -366,7 +369,7 @@ namespace SudokuMaxSolver
             lookForSolutionsAfterCandidatesBlocked = true;
 
             List<SolutionInformation> listManualSolution = new List<SolutionInformation>();
-            SolutionInformation tmp = new SolutionInformation();
+            SolutionInformation tmp;
 
             Debug.WriteLine("########################################################");
             Debug.WriteLine("Manual solving test...");
@@ -377,7 +380,7 @@ namespace SudokuMaxSolver
                 lookForSolutions = false;
                 Debug.WriteLine("Test [01] The only possible...");
                 //test only posible
-                tmp.Clear();
+                tmp = new SolutionInformation();
                 tmp = Sudoku_AI.ManualSolver01_TheOnlyPossible(ref board);
 
                 if (tmp.Get_pointsChanged().Count > 0)
@@ -389,13 +392,14 @@ namespace SudokuMaxSolver
                     }
                     Debug.WriteLine("");
                     listManualSolution.Add(tmp);
+                    Debug.WriteLine("z listy po dodaniu : ilosc =" + listManualSolution[listManualSolution.Count-1].Get_pointsChanged().Count);
                     lookForSolutions = true;
                     lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
                 Debug.WriteLine("Test [02] Single candidate in row...");
                 //test single in row
-                tmp.Clear();
+                tmp = new SolutionInformation();
                 tmp = Sudoku_AI.ManualSolver02_SingleCandidateInRow(ref board);
                 if (tmp.Get_pointsChanged().Count > 0)
                 {
@@ -412,7 +416,7 @@ namespace SudokuMaxSolver
 
                 Debug.WriteLine("Test [03] Single candidate in column...");
                 //test single in column
-                tmp.Clear();
+                tmp = new SolutionInformation();
                 tmp = Sudoku_AI.ManualSolver03_SingleCandidateInColumn(ref board);
                 if (tmp.Get_pointsChanged().Count > 0)
                 {
@@ -429,7 +433,7 @@ namespace SudokuMaxSolver
 
                 Debug.WriteLine("Test [04] Single candidate in square...");
                 //test single in square
-                tmp.Clear();
+                tmp = new SolutionInformation();
                 tmp = Sudoku_AI.ManualSolver04_SingleCandidateInSquare(ref board);
                 if (tmp.Get_pointsChanged().Count > 0)
                 {
@@ -546,7 +550,7 @@ namespace SudokuMaxSolver
 
                 Debug.WriteLine("Test [08] Double Forcing Chains...");
                 //test Double Forcing Chains
-                tmp.Clear();
+                tmp = new SolutionInformation();
                 tmp = Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
                 if (tmp.Get_pointsChanged().Count > 0)
                 {
@@ -569,7 +573,7 @@ namespace SudokuMaxSolver
 
                 Debug.WriteLine("Test [09] Triple Forcing Chains...");
                 //test Triple Forcing Chains
-                tmp.Clear();
+                tmp = new SolutionInformation();
                 tmp = Sudoku_AI.ManualSolver09_TripleForcingChains(ref board);
                 if (tmp.Get_pointsChanged().Count > 0)
                 {
@@ -590,59 +594,59 @@ namespace SudokuMaxSolver
                     lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
-                Debug.WriteLine("Test [06] X Wings...");
-                //test X Wings
-                tmp.Clear();
-                tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
-                if (tmp.Get_pointsChanged().Count > 0)
+                //do lionfish only when NO solutions are found
+                if (lookForSolutions == false && lookForSolutionsAfterCandidatesBlocked)
                 {
-                    Debug.Write("[06]XWings pos : ");
-                    for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                    Debug.WriteLine("Test [06] X Wings...");
+                    //test X Wings
+                    tmp = new SolutionInformation();
+                    tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
+                    if (tmp.Get_pointsChanged().Count > 0)
                     {
-                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
-                    }
-                    Debug.WriteLine("");
-                    Debug.Write("[06]Blocked : ");
-                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
-                    {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
-                    }
-                    Debug.WriteLine("");
-                    listManualSolution.Add(tmp);
+                        Debug.Write("[06]XWings pos : ");
+                        for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                        {
+                            Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                        }
+                        Debug.WriteLine("");
+                        Debug.Write("[06]Blocked : ");
+                        for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                        {
+                            Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        }
+                        Debug.WriteLine("");
+                        listManualSolution.Add(tmp);
 
-                    if (lookForSolutions==false && lookForSolutionsAfterCandidatesBlocked==true)
-                    {
                         lookForSolutions = true;
                         lookForSolutionsAfterCandidatesBlocked = false;
                     }
-                }
 
-                Debug.WriteLine("Test [07] Y Wings...");
-                //test Y Wings
-                tmp.Clear();
-                tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
-                if (tmp.Get_pointsChanged().Count > 0)
-                {
-                    Debug.Write("[07]YWings pos : ");
-                    for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                    Debug.WriteLine("Test [07] Y Wings...");
+                    //test Y Wings
+                    tmp = new SolutionInformation();
+                    tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
+                    if (tmp.Get_pointsChanged().Count > 0)
                     {
-                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
-                    }
-                    Debug.WriteLine("");
-                    Debug.Write("[07]Blocked : ");
-                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
-                    {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
-                    }
-                    Debug.WriteLine("");
-                    listManualSolution.Add(tmp);
+                        Debug.Write("[07]YWings pos : ");
+                        for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                        {
+                            Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                        }
+                        Debug.WriteLine("");
+                        Debug.Write("[07]Blocked : ");
+                        for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                        {
+                            Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        }
+                        Debug.WriteLine("");
+                        listManualSolution.Add(tmp);
 
-                    if (lookForSolutions == false && lookForSolutionsAfterCandidatesBlocked == true)
-                    {
                         lookForSolutions = true;
                         lookForSolutionsAfterCandidatesBlocked = false;
+                        
                     }
                 }
+
             }   //--- stop while
 
             showRightStackPanelWithSolutions(true);
@@ -652,21 +656,118 @@ namespace SudokuMaxSolver
             RightStackPanel_Clear();
 
             //--- right stackpanel adding
-            string descriptionTmp="";
-            string changedTmp = "";
-            foreach (SolutionInformation item in listManualSolution)
+            string descriptionTmp;
+            string changedTmp;
+            foreach (var item in listManualSolution)
             {
+                descriptionTmp = "";
                 changedTmp = "";
-                changedTmp += "ilosc zmian="+item.Get_pointsChanged().Count+"  ";
-
-                if (item.Get_pointsChanged()!=null)
-                foreach (var itemChanged in item.Get_pointsChanged())
+                switch(item.Get_typeOfSolution())
                 {
-                    changedTmp += $"({itemChanged.Y}, {itemChanged.X})->{itemChanged.Value} ";
+                    case SolutionInformation.TypeOfSolution.Method01_TheOnlyPossible:
+                        {
+                            descriptionTmp = "Jedyna możliwa cyfra jaką możesz wpisać w pole : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method02_SingleCandidateInRow:
+                        {
+                            descriptionTmp = "Pojedynczy kandydat w rzędzie : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method03_SingleCandidateInColumn:
+                        {
+                            descriptionTmp = "Pojedynczy kandydat w kolumnie : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method04_SingleCandidateInSquare:
+                        {
+                            descriptionTmp = "Pojedynczy kandydat w kwadracie : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method01_TheOnlyPossible:
+                        {
+                            descriptionTmp = "Bliźniaki '" + item.Get_pointsDetected()[0].Value + "' w polach ";
+                            foreach (var itemDetected in item.Get_pointsDetected())
+                            {
+                                descriptionTmp += $"({itemDetected.Y}, {itemDetected.X}) ";
+                            }
+                            descriptionTmp += "pozwoliły znaleźć jedyną możliwą cyfrę w polach : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method02_SingleCandidateInRow:
+                        {
+                            descriptionTmp = "Bliźniaki '" + item.Get_pointsDetected()[0].Value + "' w polach ";
+                            foreach (var itemDetected in item.Get_pointsDetected())
+                            {
+                                descriptionTmp += $"({itemDetected.Y}, {itemDetected.X}) ";
+                            }
+                            descriptionTmp += "pozwoliły znaleźć pojedynczego kandydata w rzędzie : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method03_SingleCandidateInColumn:
+                        {
+                            descriptionTmp = "Bliźniaki '" + item.Get_pointsDetected()[0].Value + "' w polach ";
+                            foreach (var itemDetected in item.Get_pointsDetected())
+                            {
+                                descriptionTmp += $"({itemDetected.Y}, {itemDetected.X}) ";
+                            }
+                            descriptionTmp += "pozwoliły znaleźć pojedynczego kandydata w kolumnie : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method04_SingleCandidateInSquare:
+                        {
+                            descriptionTmp = "Bliźniaki '" + item.Get_pointsDetected()[0].Value + "' w polach ";
+                            foreach (var itemDetected in item.Get_pointsDetected())
+                            {
+                                descriptionTmp += $"({itemDetected.Y},{itemDetected.X}) ";
+                            }
+                            descriptionTmp += "pozwoliły znaleźć pojedynczego kandydata w kwadracie : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method06_XWings:
+                        {
+                            descriptionTmp = "Pozioma Skrzydlica '" + item.Get_pointsDetected()[0].Value + "' w polach ";
+                            foreach (var itemDetected in item.Get_pointsDetected())
+                            {
+                                descriptionTmp += $"({itemDetected.Y},{itemDetected.X}) ";
+                            }
+                            descriptionTmp += "zablokowała '"+ item.Get_pointsDetected()[0].Value + "' w kolumnach : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method07_YWings:
+                        {
+                            descriptionTmp = "Pionowa Skrzydlica '" + item.Get_pointsDetected()[0].Value + "' w polach ";
+                            foreach (var itemDetected in item.Get_pointsDetected())
+                            {
+                                descriptionTmp += $"({itemDetected.Y},{itemDetected.X}) ";
+                            }
+                            descriptionTmp += "zablokowała '" + item.Get_pointsDetected()[0].Value + "' w rzędach : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method08_DoubleForcingChains:
+                        {
+                            descriptionTmp = "Forsowny podwójny łańcuch " + item.Get_pointsDetected()[0].Value + "," + item.Get_pointsDetected()[1].Value + " w polu (" + item.Get_pointsDetected()[0].Y + "," + item.Get_pointsDetected()[0].X + ") pozwolił wpisać nam : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method09_TripleForcingChains:
+                        {
+                            descriptionTmp = "Forsowny potrójny łańcuch " + item.Get_pointsDetected()[0].Value + "," + item.Get_pointsDetected()[1].Value + "," + item.Get_pointsDetected()[2].Value + " w polu (" + item.Get_pointsDetected()[0].Y + "," + item.Get_pointsDetected()[0].X + ") pozwolił wpisać nam : ";
+                        }
+                        break;
+                }
+
+                if (item.Get_pointsChanged() != null)
+                {
+                    foreach (var itemChanged in item.Get_pointsChanged())
+                    {
+                        changedTmp += $"({itemChanged.Y},{itemChanged.X})->{itemChanged.Value} ";
+                    }
                 }
 
                 RightStackPanel_Add(descriptionTmp + changedTmp);
+                
             }
+
             refreshBoard();
         }
 
@@ -677,7 +778,7 @@ namespace SudokuMaxSolver
 
         private void RightStackPanel_Add(String item)
         {
-            RightlistBoxSolutions.Items.Add($"{RightlistBoxSolutions.Items.Count + 1,3}. " + item);
+            RightlistBoxSolutions.Items.Add($"{RightlistBoxSolutions.Items.Count + 1,3}" + '\t' + item);
         }
 
         private void test_Click(object sender, RoutedEventArgs e)

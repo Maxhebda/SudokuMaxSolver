@@ -791,9 +791,9 @@ namespace SudokuMaxSolver
                         if (counterPossible == 1)
                         {
                             board.set(y, x, findValue);
-                            List<Candidate> candidatesTmp = new List<Candidate>();
-                            candidatesTmp.Add(new Candidate(y, x, findValue));
-                            tmp.Add(candidatesTmp,candidatesTmp);
+                            List<Candidate> changeTmp = new List<Candidate>();
+                            changeTmp.Add(new Candidate(y, x, findValue));
+                            tmp.Add(changeTmp,changeTmp);
                         }
                     }
                 }
