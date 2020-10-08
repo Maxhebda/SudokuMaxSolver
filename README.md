@@ -1,7 +1,7 @@
 # SudokuMaxSolver
-Project written in c # Visual Studio / C# / WPF
+Project written in c # Visual Studio / WPF
 
-<img src="./projectScreenImage/SudokuMaxSolver2.png" width=300/>
+<img src="./projectScreenImage/SudokuMaxSolver4.png" width=600/>
 
 Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/SudokuMaxSolver.exe)
 
@@ -13,6 +13,8 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 * Completed algorithm using the "XY-Wings" methods [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
 * I am currently working on creating an algorithm using the "Double Forcing Chains" methods [link](http://hodoku.sourceforge.net/en/tech_chains.php) (algorithm 60% complete)
 * In the future, I plan to rewrite the program for android.
+
+<img src="./projectScreenImage/SudokuMaxSolver2.png" width=300/>
 
 ## The program is under construction :
 ### Was completed
