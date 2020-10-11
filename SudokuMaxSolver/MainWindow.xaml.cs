@@ -833,7 +833,66 @@ namespace SudokuMaxSolver
                 byte y = byte.Parse((popupMain).Name[1] + "");
                 byte x = byte.Parse((popupMain).Name[2] + "");
                 Debug.WriteLine("key ="+e.Key+", wsp [yx]="+y+", "+x);
+
+                //esc = close popup
+                if (e.Key == System.Windows.Input.Key.Escape)
+                {
+                    popupMain.IsOpen = false;
+                    return;
+                }
+
+                byte keyPressed;
+                if (KeyEventArgsToByte(e) != null)
+                {
+                    keyPressed = (byte)KeyEventArgsToByte(e);
+
+                    if (keyPressed==0 && board.get(y,x)!=0 && board.getReadOnly(y,x)==false)
+                    {
+                        board.set(y, x, 0);
+                        buttonMain[y, x].Content = "";
+
+                        // hidden popup
+                        popupMain.IsOpen = false;
+
+                        // hidden right stackpanel
+                        showRightStackPanelWithSolutions(false);
+                    }
+                    if (board.isInColumn(y,x,keyPressed) || board.isInRow(y,x,keyPressed) || board.isInSquare(y,y,keyPressed))
+                    {
+                        // do nothing
+                    }
+                    else
+                    {
+                        board.set(y, x, keyPressed);
+                        buttonMain[y, x].Content = (keyPressed == 0) ? "" : "" + keyPressed;
+                        Debug.WriteLine(keyPressed);
+
+                        // hidden popup
+                        popupMain.IsOpen = false;
+
+                        // hidden right stackpanel
+                        showRightStackPanelWithSolutions(false);
+                    }
+                }
             }
+        }
+
+        //method converts key to byte               null = do nothing
+        private byte? KeyEventArgsToByte(KeyEventArgs key)
+        {
+            if (key.Key == System.Windows.Input.Key.D1 || key.Key == System.Windows.Input.Key.NumPad1) return 1;
+            if (key.Key == System.Windows.Input.Key.D2 || key.Key == System.Windows.Input.Key.NumPad2) return 2;
+            if (key.Key == System.Windows.Input.Key.D3 || key.Key == System.Windows.Input.Key.NumPad3) return 3;
+            if (key.Key == System.Windows.Input.Key.D4 || key.Key == System.Windows.Input.Key.NumPad4) return 4;
+            if (key.Key == System.Windows.Input.Key.D5 || key.Key == System.Windows.Input.Key.NumPad5) return 5;
+            if (key.Key == System.Windows.Input.Key.D6 || key.Key == System.Windows.Input.Key.NumPad6) return 6;
+            if (key.Key == System.Windows.Input.Key.D7 || key.Key == System.Windows.Input.Key.NumPad7) return 7;
+            if (key.Key == System.Windows.Input.Key.D8 || key.Key == System.Windows.Input.Key.NumPad8) return 8;
+            if (key.Key == System.Windows.Input.Key.D9 || key.Key == System.Windows.Input.Key.NumPad9) return 9;
+            if (key.Key == System.Windows.Input.Key.D0 || key.Key == System.Windows.Input.Key.NumPad0 || key.Key == System.Windows.Input.Key.X) return 0;
+
+            //null = do nothing
+            return null;
         }
 
         private void Button_Zwin_Click(object sender, RoutedEventArgs e)
