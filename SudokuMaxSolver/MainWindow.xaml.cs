@@ -88,7 +88,7 @@ namespace SudokuMaxSolver
             grid.Columns = 3;
             grid.Width = 100;
             grid.Height = 100;
-            grid.Background = Brushes.White;
+            grid.Background = Brushes.LightCyan;
             grid.MouseRightButtonDown += bPopup_RightClick;     //close popup if you click right mouse
             for (byte iPopup = 0; iPopup < 9; iPopup++)
             {
@@ -143,6 +143,9 @@ namespace SudokuMaxSolver
             // hidden popup
             popupMain.IsOpen = false;
 
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
+
             // hidden right stackpanel
             showRightStackPanelWithSolutions(false);
 
@@ -160,6 +163,9 @@ namespace SudokuMaxSolver
         {
             // hidden popup
             popupMain.IsOpen = false;
+
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
         }
 
         private void bMain_Click(object sender, RoutedEventArgs e)
@@ -173,21 +179,48 @@ namespace SudokuMaxSolver
             {
                 popupMain.IsOpen = false;
                 popupMain.Name = "p";
+
+                // hidden selected cell in mainboard
+                buttonMainDeSelect();
                 return;
             }
 
             // close old popup if is open
             if (popupMain.IsOpen == true)
             {
+                // hidden popup
                 popupMain.IsOpen = false;
+
+                // hidden selected cell in mainboard
+                buttonMainDeSelect();
             }
 
             //if button is read only then do not open it
             if (!board.getReadOnly(y,x))
             {
                 generatePopup(y, x);    //show the popup after clicking the button
+                buttonMainSelect(y, x);
             }
         }
+        private void buttonMainSelect(byte y, byte x)   //select (check) cell
+        {
+            buttonMain[y, x].Background = Brushes.DarkGray;
+        }
+
+        private void buttonMainDeSelect()       //deselect all cells
+        {
+            for (byte y = 0; y < 9; y++)
+            { 
+                for (byte x = 0; x < 9; x++)
+                {
+                    if (buttonMain[y, x].Background == Brushes.DarkGray)
+                    {
+                        buttonMain[y, x].Background = Brushes.White;
+                    }
+                }
+            }
+        }
+
         private void refreshBoard()     //show board
         {
             for (byte y = 0; y < 9; y++)
@@ -212,7 +245,11 @@ namespace SudokuMaxSolver
             //close right stackpanel with solutions
             showRightStackPanelWithSolutions(false);
 
+            // hidden popup
             popupMain.IsOpen = false;
+
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
         }
 
         private void menuGenerujNowaPlansze_Click(object sender, RoutedEventArgs e)
@@ -287,6 +324,9 @@ namespace SudokuMaxSolver
             //close popup if is open
             popupMain.IsOpen = false;
 
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
+
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
@@ -325,6 +365,9 @@ namespace SudokuMaxSolver
             //close popup if is open
             popupMain.IsOpen = false;
 
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
+
             blockVisible();
             refreshBoard();
         }
@@ -350,6 +393,9 @@ namespace SudokuMaxSolver
             //close popup if is open
             popupMain.IsOpen = false;
 
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
+
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
@@ -364,6 +410,10 @@ namespace SudokuMaxSolver
         {
             //close popup if is open
             popupMain.IsOpen = false;
+
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
+
             blockVisible();
             lookForSolutions = true;
             lookForSolutionsAfterCandidatesBlocked = true;
@@ -786,6 +836,9 @@ namespace SudokuMaxSolver
             //close popup if is open
             popupMain.IsOpen = false;
 
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
+
             showRightStackPanelWithSolutions(false);
             //RightlistBoxSolutions.Items.Add("sss");
         }
@@ -803,7 +856,11 @@ namespace SudokuMaxSolver
         //hide popup if the menu click
         public void PreviewMouseLeftButtonDownInMenu_Click(object sender, EventArgs e)
         {
+            //close popup if is open
             popupMain.IsOpen = false;
+
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
         }
 
         private void showRightStackPanelWithSolutions(bool OnOff)
@@ -837,7 +894,12 @@ namespace SudokuMaxSolver
                 //esc = close popup
                 if (e.Key == System.Windows.Input.Key.Escape)
                 {
+                    //close popup if is open
                     popupMain.IsOpen = false;
+
+                    // hidden selected cell in mainboard
+                    buttonMainDeSelect();
+
                     return;
                 }
 
@@ -854,21 +916,28 @@ namespace SudokuMaxSolver
                         // hidden popup
                         popupMain.IsOpen = false;
 
+                        // hidden selected cell in mainboard
+                        buttonMainDeSelect();
+
                         // hidden right stackpanel
                         showRightStackPanelWithSolutions(false);
                     }
-                    if (board.isInColumn(y,x,keyPressed) || board.isInRow(y,x,keyPressed) || board.isInSquare(y,y,keyPressed))
+                    if (board.isInColumn(y,x,keyPressed) || board.isInRow(y,x,keyPressed) || board.isInSquare(y,x,keyPressed))
                     {
                         // do nothing
+                        Debug.WriteLine("digit " + keyPressed + " cannot be entered!");
                     }
                     else
                     {
                         board.set(y, x, keyPressed);
                         buttonMain[y, x].Content = (keyPressed == 0) ? "" : "" + keyPressed;
-                        Debug.WriteLine(keyPressed);
+                        Debug.WriteLine("key is = " + keyPressed);
 
                         // hidden popup
                         popupMain.IsOpen = false;
+
+                        // hidden selected cell in mainboard
+                        buttonMainDeSelect();
 
                         // hidden right stackpanel
                         showRightStackPanelWithSolutions(false);
