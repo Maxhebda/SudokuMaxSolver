@@ -1,5 +1,5 @@
 # SudokuMaxSolver
-Project written in c # Visual Studio / WPF
+Project written in c# Visual Studio / WPF
 
 <img src="./projectScreenImage/SudokuMaxSolver4.png" width=600/>
 
@@ -11,7 +11,7 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 * I am looking for solutions and creating my own algorithms for manual Sudoku solving.
 * Completed algorithm using the "twins" method [link1](https://www.sudokudragon.com/guidehiddentwins.htm) [link2](http://dwojcik.ugu.pl/sudoku/basic/ns.php)
 * Completed algorithm using the "XY-Wings" methods [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
-* I am currently working on creating an algorithm using the "Double Forcing Chains" methods [link](http://hodoku.sourceforge.net/en/tech_chains.php) (algorithm 60% complete)
+* I am currently working on creating an algorithm using the "Double Forcing Chains" methods [link](http://hodoku.sourceforge.net/en/tech_chains.php) (algorithm complete)
 * In the future, I plan to rewrite the program for android.
 
 <img src="./projectScreenImage/SudokuMaxSolver2.png" width=300/>
@@ -32,8 +32,8 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 - [x] method 05 - Twins [link](https://www.sudokudragon.com/guidehiddentwins.htm)
 - [x] method 06 - X-Wings
 - [x] method 07 - Y-Wings [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
-- [ ] method 08 - Double Forcing Chains [link](http://dwojcik.ugu.pl/sudoku/extreme/fchain.php) (algorithm 60% complete)
-- [ ] method 09 - Triple Forcing Chains [link](http://hodoku.sourceforge.net/en/tech_chains.php)
+- [x] method 08 - Double Forcing Chains [link](http://dwojcik.ugu.pl/sudoku/extreme/fchain.php)
+- [x] method 09 - Triple Forcing Chains [link](http://hodoku.sourceforge.net/en/tech_chains.php)
 
 Forcing chanin method example :
 <img src="./projectScreenImage/forcingChainExample.png" width=200/>
@@ -43,5 +43,5 @@ Forcing chanin method example :
 * sudoku solution with steps and description
 * I have to come up with new methods for solving difficult SUDOKU and then develop algorithms
 
-## Screen from 04.09.2020 :
+## Screen from 23.10.2020 :
 <img src="./projectScreenImage/SudokuMaxSolver1.png" width=250/> <img src="./projectScreenImage/SudokuMaxSolver3.png" width=250/>

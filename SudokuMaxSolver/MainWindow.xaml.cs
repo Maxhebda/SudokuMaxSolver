@@ -18,7 +18,10 @@ namespace SudokuMaxSolver
     {
         ToolTip toolTip = new ToolTip();
         BoardTab board = new BoardTab();
-        BoardTab boardTemp = new BoardTab();            //temporary array to hold the original array in the right panel
+
+        //to the right panel
+        BoardTab boardTemp_originalToRightPanel = new BoardTab();            //temporary array to hold the original array in the right panel
+        List<SolutionInformation> listManualSolution;   //to the right panel
 
         Button[,] buttonMain = new Button[9, 9];        //main board
         Popup popupMain = new Popup();
@@ -241,6 +244,48 @@ namespace SudokuMaxSolver
                 }
         }
 
+        // overloaded method displaying the board.
+        // displays the boards in the argument board.
+        // list of found cells for a different color, list of changed cells to a different color.
+        private void refreshBoard(BoardTab board2, List<Candidate> colorDetected, List<Candidate> colorChanged)     //show other board
+        {
+            for (byte y = 0; y < 9; y++)
+                for (byte x = 0; x < 9; x++)
+                {
+                    buttonMain[y, x].Content = (board2.get(y, x) == 0) ? "" : "" + board2.get(y, x);
+                    if (board2.getReadOnly(y, x))
+                    {
+                        buttonMain[y, x].FontWeight = FontWeights.Bold;
+                        buttonMain[y, x].Background = Brushes.Aqua;
+                    }
+                    else
+                    {
+                        buttonMain[y, x].FontWeight = FontWeights.Regular;
+                        buttonMain[y, x].Background = Brushes.AliceBlue;
+                    }
+
+                    // check colorDetected
+                    foreach (var colorF in colorDetected)
+                    {
+                        if (colorF.Y == y && colorF.X == x)
+                        {
+                            buttonMain[y, x].Background = Brushes.YellowGreen;
+                        }
+                    }
+
+                    // check colorChanged
+                    foreach (var colorCh in colorChanged)
+                    {
+                        if (colorCh.Y == y && colorCh.X == x)
+                        {
+                            buttonMain[y, x].Background = Brushes.Red;
+                        }
+                    }
+
+                }
+            Debug.WriteLine("Refreshing board on right panel");
+        }
+
         private void menuProgram_Click(object sender, RoutedEventArgs e)
         {
             //close right stackpanel with solutions
@@ -413,7 +458,7 @@ namespace SudokuMaxSolver
             popupMain.IsOpen = false;
 
             //create a copy of the original board
-            boardTemp = new BoardTab(board);            //(to the right panel with the solution)
+            boardTemp_originalToRightPanel = new BoardTab(board);            //(to the right panel with the solution)
 
             // hidden selected cell in mainboard
             buttonMainDeSelect();
@@ -422,7 +467,7 @@ namespace SudokuMaxSolver
             lookForSolutions = true;
             lookForSolutionsAfterCandidatesBlocked = true;
 
-            List<SolutionInformation> listManualSolution = new List<SolutionInformation>();
+            listManualSolution = new List<SolutionInformation>();
             SolutionInformation tmp;
 
             Debug.WriteLine("########################################################");
@@ -978,6 +1023,32 @@ namespace SudokuMaxSolver
             // get the number of the clicked item
             int theNumberOfTheClickedItem = (sender as ListBox).SelectedIndex;
             Debug.WriteLine("select the number of the clicked item = " + theNumberOfTheClickedItem);
+
+            //select last position
+            if (theNumberOfTheClickedItem==-1)
+            {
+                theNumberOfTheClickedItem = listManualSolution.Count - 1;
+            }
+
+            BoardTab boardTemp = new BoardTab(boardTemp_originalToRightPanel);
+            for (var itemRightPanel = 0; itemRightPanel < theNumberOfTheClickedItem + 1; itemRightPanel++)
+            {
+                if (listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method06_XWings || listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method07_YWings)
+                {
+                    foreach (var cellChanged in listManualSolution[itemRightPanel].Get_pointsChanged())
+                    {
+                        boardTemp.set(cellChanged.Y, cellChanged.X, cellChanged.Value);
+                    }
+                }
+                else
+                {
+                    foreach (var cellChanged in listManualSolution[itemRightPanel].Get_pointsChanged())
+                    {
+                        boardTemp.AddFakeCandidate(cellChanged.Y, cellChanged.X, cellChanged.Value);
+                    }
+                }
+            }
+            refreshBoard(boardTemp,listManualSolution[theNumberOfTheClickedItem].Get_pointsDetected(), listManualSolution[theNumberOfTheClickedItem].Get_pointsChanged());
         }
     }
 }
