@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Automation.Peers;
 
 namespace SudokuMaxSolver
 {
@@ -22,6 +23,9 @@ namespace SudokuMaxSolver
                 {
                     board[y, x].value = boardOld.get(y, x);
                     board[y, x].readOnly = boardOld.getReadOnly(y, x);
+
+                    //copy fake candidate
+                    fakeCandidateBoard[y, x] = boardOld.fakeCandidateBoard[y, x];
                 }
         }
         public BoardTab(byte[,] boardAI)  //create copy at BoardAI 

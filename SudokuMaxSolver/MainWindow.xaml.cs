@@ -18,6 +18,7 @@ namespace SudokuMaxSolver
     {
         ToolTip toolTip = new ToolTip();
         BoardTab board = new BoardTab();
+        BoardTab boardTemp = new BoardTab();            //temporary array to hold the original array in the right panel
 
         Button[,] buttonMain = new Button[9, 9];        //main board
         Popup popupMain = new Popup();
@@ -410,6 +411,9 @@ namespace SudokuMaxSolver
         {
             //close popup if is open
             popupMain.IsOpen = false;
+
+            //create a copy of the original board
+            boardTemp = new BoardTab(board);            //(to the right panel with the solution)
 
             // hidden selected cell in mainboard
             buttonMainDeSelect();
@@ -967,6 +971,13 @@ namespace SudokuMaxSolver
         private void Button_Zwin_Click(object sender, RoutedEventArgs e)
         {
             showRightStackPanelWithSolutions(false);
+        }
+
+        private void RightlistBoxSolutions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // get the number of the clicked item
+            int theNumberOfTheClickedItem = (sender as ListBox).SelectedIndex;
+            Debug.WriteLine("select the number of the clicked item = " + theNumberOfTheClickedItem);
         }
     }
 }
