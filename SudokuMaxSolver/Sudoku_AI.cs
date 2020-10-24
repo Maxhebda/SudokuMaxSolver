@@ -1267,6 +1267,7 @@ namespace SudokuMaxSolver
                                 tmp.Add(InformationTmp.Get_pointsChanged(), null);
                             }
                             listSolutionTmp.Add(tmp);
+                            return listSolutionTmp;
                         }
 
                         //test manual solver 02 SingleCandidateInRow
@@ -1289,6 +1290,7 @@ namespace SudokuMaxSolver
                                 tmp.Add(InformationTmp.Get_pointsChanged(), null);
                             }
                             listSolutionTmp.Add(tmp);
+                            return listSolutionTmp;
                         }
 
                         //test manual solver 03 SingleCandidateInColumn
@@ -1311,6 +1313,7 @@ namespace SudokuMaxSolver
                                 tmp.Add(InformationTmp.Get_pointsChanged(), null);
                             }
                             listSolutionTmp.Add(tmp);
+                            return listSolutionTmp;
                         }
 
                         //test manual solver 04 SingleCandidateInSquare
@@ -1333,6 +1336,7 @@ namespace SudokuMaxSolver
                                 tmp.Add(InformationTmp.Get_pointsChanged(), null);
                             }
                             listSolutionTmp.Add(tmp);
+                            return listSolutionTmp;
                         }
                         //-------------------------------------------------------------------------------------------------------
                     }

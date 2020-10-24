@@ -88,6 +88,7 @@ namespace SudokuMaxSolver
         }
         void generatePopup(byte yMain, byte xMain)
         {
+            refreshBoard();
             UniformGrid grid = new UniformGrid();
             grid.Columns = 3;
             grid.Width = 100;
@@ -247,12 +248,14 @@ namespace SudokuMaxSolver
         // overloaded method displaying the board.
         // displays the boards in the argument board.
         // list of found cells for a different color, list of changed cells to a different color.
-        private void refreshBoard(BoardTab board2, List<Candidate> colorDetected, List<Candidate> colorChanged)     //show other board
+        // other digits = displaying e.g. twins
+        private void refreshBoard(BoardTab board2, List<Candidate> colorDetected, List<Candidate> colorChanged, List<Candidate> otherDigits)     //show other board
         {
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
                     buttonMain[y, x].Content = (board2.get(y, x) == 0) ? "" : "" + board2.get(y, x);
+                    buttonMain[y, x].Foreground = Brushes.Black;
                     if (board2.getReadOnly(y, x))
                     {
                         buttonMain[y, x].FontWeight = FontWeights.Bold;
@@ -282,6 +285,23 @@ namespace SudokuMaxSolver
                         }
                     }
 
+                    // check other digits / twins
+                    if (otherDigits != null)
+                    {
+                        foreach (var otherD in otherDigits)
+                        {
+                            if (otherD.Y == y && otherD.X == x)
+                            {
+                                if (buttonMain[y, x].Content.ToString() != "")
+                                {
+                                    buttonMain[y, x].Content += ",";
+                                }
+                                buttonMain[y, x].Content+= otherD.Value.ToString();
+                                buttonMain[y, x].Foreground = Brushes.White;
+                            }
+                        }
+                    }
+                
                 }
             Debug.WriteLine("Refreshing board on right panel");
         }
@@ -386,6 +406,9 @@ namespace SudokuMaxSolver
 
         private void menuRozwiazBrutalnie_Click(object sender, RoutedEventArgs e)
         {
+            this.Cursor = Cursors.Wait;
+            refreshBoard();
+
             //close right stackpanel with solutions
             showRightStackPanelWithSolutions(false);
 
@@ -400,7 +423,7 @@ namespace SudokuMaxSolver
             {
                 Debug.WriteLine("\nnot solved");
             }
-
+            this.Cursor = Cursors.Arrow;
         }
 
         private void menuZablokujWidoczne_Click(object sender, RoutedEventArgs e)
@@ -454,6 +477,10 @@ namespace SudokuMaxSolver
         }
         private void menuRozwiazManualnie_Click(object sender, RoutedEventArgs e)
         {
+            blockVisible();
+            refreshBoard();
+            showRightStackPanelWithSolutions(false);
+
             //close popup if is open
             popupMain.IsOpen = false;
 
@@ -463,7 +490,6 @@ namespace SudokuMaxSolver
             // hidden selected cell in mainboard
             buttonMainDeSelect();
 
-            blockVisible();
             lookForSolutions = true;
             lookForSolutionsAfterCandidatesBlocked = true;
 
@@ -1018,8 +1044,15 @@ namespace SudokuMaxSolver
             showRightStackPanelWithSolutions(false);
         }
 
+        // click and changed (list)item in right soluctions panel
         private void RightlistBoxSolutions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // hidden popup
+            popupMain.IsOpen = false;
+
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
+
             // get the number of the clicked item
             int theNumberOfTheClickedItem = (sender as ListBox).SelectedIndex;
             Debug.WriteLine("select the number of the clicked item = " + theNumberOfTheClickedItem);
@@ -1027,13 +1060,20 @@ namespace SudokuMaxSolver
             //select last position
             if (theNumberOfTheClickedItem==-1)
             {
-                theNumberOfTheClickedItem = listManualSolution.Count - 1;
+                    theNumberOfTheClickedItem = listManualSolution.Count - 1;
             }
+
+            if (listManualSolution.Count == 0)
+            {
+                Debug.WriteLine("Brak rozwiązań na liście");
+                return;
+            }
+
 
             BoardTab boardTemp = new BoardTab(boardTemp_originalToRightPanel);
             for (var itemRightPanel = 0; itemRightPanel < theNumberOfTheClickedItem + 1; itemRightPanel++)
             {
-                if (listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method06_XWings || listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method07_YWings)
+                if (listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method06_XWings && listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method07_YWings)
                 {
                     foreach (var cellChanged in listManualSolution[itemRightPanel].Get_pointsChanged())
                     {
@@ -1048,7 +1088,30 @@ namespace SudokuMaxSolver
                     }
                 }
             }
-            refreshBoard(boardTemp,listManualSolution[theNumberOfTheClickedItem].Get_pointsDetected(), listManualSolution[theNumberOfTheClickedItem].Get_pointsChanged());
+            refreshBoard(boardTemp,
+                listManualSolution[theNumberOfTheClickedItem].Get_pointsDetected(), 
+                listManualSolution[theNumberOfTheClickedItem].Get_pointsChanged(), 
+                (
+                listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution()==SolutionInformation.TypeOfSolution.Method05_Twins_for_Method01_TheOnlyPossible || 
+                 listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method05_Twins_for_Method02_SingleCandidateInRow || 
+                 listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method05_Twins_for_Method03_SingleCandidateInColumn || 
+                 listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method05_Twins_for_Method04_SingleCandidateInSquare || 
+                 listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method08_DoubleForcingChains || 
+                 listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method09_TripleForcingChains
+                 )
+                 ? listManualSolution[theNumberOfTheClickedItem].Get_pointsDetected():null);
+            board.load(boardTemp);
         }
+
+        // click (list)item in right soluctions panel
+        private void RightlistBoxSolutions_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // hidden popup
+            popupMain.IsOpen = false;
+
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
+        }
+
     }
 }

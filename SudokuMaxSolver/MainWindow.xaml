@@ -149,7 +149,7 @@
         <StackPanel DockPanel.Dock="Right" x:Name="stackPanelMain2ManualSudokuSolution" Margin="5"  Width="Auto">
             <DockPanel LastChildFill="False">
                 <Label DockPanel.Dock="Top">Lista poszczególnych kroków prowadzących do rozwiązania :</Label>
-                <ListBox x:Name="RightlistBoxSolutions" DockPanel.Dock="Top" SelectionMode="Single" Height="395" SelectionChanged="RightlistBoxSolutions_SelectionChanged">
+                <ListBox x:Name="RightlistBoxSolutions" DockPanel.Dock="Top" SelectionMode="Single" Height="395" SelectionChanged="RightlistBoxSolutions_SelectionChanged" MouseDown="RightlistBoxSolutions_MouseDown">
                 </ListBox>
 
                 <!-- manual sudoku solution -->
