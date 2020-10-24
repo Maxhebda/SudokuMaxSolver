@@ -44,4 +44,4 @@ Forcing chanin method example :
 * I have to come up with new methods for solving difficult SUDOKU and then develop algorithms
 
 ## Screen from 23.10.2020 :
-<img src="./projectScreenImage/SudokuMaxSolver1.png" width=250/> <img src="./projectScreenImage/SudokuMaxSolver3.png" width=250/>
+<img src="./projectScreenImage/SudokuMaxSolver1.png" width=250/> | <img src="./projectScreenImage/SudokuMaxSolver3.png" width=250/> | <img src="./projectScreenImage/SudokuMaxSolver3.png" width=500/>
