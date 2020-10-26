@@ -30,10 +30,13 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 - [x] method 03 - SingleCandidateInColumn
 - [x] method 04 - SingleCandidateInSquare
 - [x] method 05 - Twins [link](https://www.sudokudragon.com/guidehiddentwins.htm)
-- [x] method 06 - X-Wings
-- [x] method 07 - Y-Wings [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
+- [x] method 06 - X-Wings (blocking candidates)
+- [x] method 07 - Y-Wings (blocking candidates) [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
 - [x] method 08 - Double Forcing Chains [link](http://dwojcik.ugu.pl/sudoku/extreme/fchain.php)
 - [x] method 09 - Triple Forcing Chains [link](http://hodoku.sourceforge.net/en/tech_chains.php)
+- [ ] method 10 - Naked pairs in row (blocking candidates)
+- [ ] method 11 - Naked pairs in column (blocking candidates)
+- [ ] method 12 - Naked pairs in square (blocking candidates)
 
 Forcing chanin method example :
 <img src="./projectScreenImage/forcingChainExample.png" width=200/>

@@ -249,11 +249,12 @@ namespace SudokuMaxSolver
         // displays the boards in the argument board.
         // list of found cells for a different color, list of changed cells to a different color.
         // other digits = displaying e.g. twins
-        private void refreshBoard(BoardTab board2, List<Candidate> colorDetected, List<Candidate> colorChanged, List<Candidate> otherDigits)     //show other board
+        private void refreshBoard(BoardTab board2, List<Candidate> colorDetected, List<Candidate> colorChanged, List<Candidate> otherDigits, SolutionInformation.TypeOfSolution typeOfSolution)     //show other board
         {
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
+                    buttonMain[y, x].FontSize = 14;
                     buttonMain[y, x].Content = (board2.get(y, x) == 0) ? "" : "" + board2.get(y, x);
                     buttonMain[y, x].Foreground = Brushes.Black;
                     if (board2.getReadOnly(y, x))
@@ -281,7 +282,12 @@ namespace SudokuMaxSolver
                     {
                         if (colorCh.Y == y && colorCh.X == x)
                         {
-                            buttonMain[y, x].Background = Brushes.Red;
+                            if (typeOfSolution == SolutionInformation.TypeOfSolution.Method06_XWings || typeOfSolution == SolutionInformation.TypeOfSolution.Method07_YWings)
+                            {
+                                buttonMain[y, x].Content = "-" + colorCh.Value.ToString();
+                                buttonMain[y, x].FontSize = 10;
+                            }
+                                buttonMain[y, x].Background = Brushes.Red;
                         }
                     }
 
@@ -300,8 +306,7 @@ namespace SudokuMaxSolver
                                 buttonMain[y, x].Foreground = Brushes.White;
                             }
                         }
-                    }
-                
+                    }                
                 }
             Debug.WriteLine("Refreshing board on right panel");
         }
@@ -573,150 +578,162 @@ namespace SudokuMaxSolver
                     lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
-                Debug.WriteLine("Test [05] Twins in square...");
-                //test twins in square
-                List<SolutionInformation> listTmp = new List<SolutionInformation>();
-                listTmp = Sudoku_AI.ManualSolver05_TwinsInSquare(ref board);
-                if (listTmp.Count > 0)
+                //only look for twins when there are no other solutions.
+                if (lookForSolutions == false)
                 {
-                    foreach (var item in listTmp)
+                    Debug.WriteLine("Test [05] Twins in square...");
+                    //test twins in square
+                    List<SolutionInformation> listTmp = new List<SolutionInformation>();
+                    listTmp = Sudoku_AI.ManualSolver05_TwinsInSquare(ref board);
+                    if (listTmp.Count > 0)
                     {
-                        switch (item.Get_typeOfSolution())
+                        foreach (var item in listTmp)
                         {
-                            case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method01_TheOnlyPossible:
-                                {
-                                    if (item.Get_pointsChanged().Count > 0)
+                            switch (item.Get_typeOfSolution())
+                            {
+                                case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method01_TheOnlyPossible:
                                     {
-                                        Debug.WriteLine("Test [05] The only possible...");
-                                        Debug.Write("[05]Brothers : ");
-                                        foreach (var item2 in item.Get_pointsDetected())
+                                        if (item.Get_pointsChanged().Count > 0)
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            Debug.WriteLine("Test [05] The only possible...");
+                                            Debug.Write("[05]Brothers : ");
+                                            foreach (var item2 in item.Get_pointsDetected())
+                                            {
+                                                Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            }
+                                            Debug.WriteLine("");
+                                            Debug.Write("[05]Changes : ");
+                                            foreach (var item2 in item.Get_pointsChanged())
+                                            {
+                                                Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            }
+                                            Debug.WriteLine("");
                                         }
-                                        Debug.WriteLine("");
-                                        Debug.Write("[05]Changes : ");
-                                        foreach (var item2 in item.Get_pointsChanged())
-                                        {
-                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
-                                        }
-                                        Debug.WriteLine("");
                                     }
-                                }
-                                break;
-                            case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method02_SingleCandidateInRow:
-                                {
-                                    if (item.Get_pointsChanged().Count > 0)
+                                    break;
+                                case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method02_SingleCandidateInRow:
                                     {
-                                        Debug.WriteLine("Test [05] Single candidate in row...");
-                                        Debug.Write("[05]Brothers : ");
-                                        foreach (var item2 in item.Get_pointsDetected())
+                                        if (item.Get_pointsChanged().Count > 0)
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            Debug.WriteLine("Test [05] Single candidate in row...");
+                                            Debug.Write("[05]Brothers : ");
+                                            foreach (var item2 in item.Get_pointsDetected())
+                                            {
+                                                Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            }
+                                            Debug.WriteLine("");
+                                            Debug.Write("[05]Changes : ");
+                                            foreach (var item2 in item.Get_pointsChanged())
+                                            {
+                                                Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            }
+                                            Debug.WriteLine("");
                                         }
-                                        Debug.WriteLine("");
-                                        Debug.Write("[05]Changes : ");
-                                        foreach (var item2 in item.Get_pointsChanged())
-                                        {
-                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
-                                        }
-                                        Debug.WriteLine("");
                                     }
-                                }
-                                break;
-                            case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method03_SingleCandidateInColumn:
-                                {
-                                    if (item.Get_pointsChanged().Count > 0)
+                                    break;
+                                case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method03_SingleCandidateInColumn:
                                     {
-                                        Debug.WriteLine("Test [05] Single Candidate in column...");
-                                        Debug.Write("[05]Brothers : ");
-                                        foreach (var item2 in item.Get_pointsDetected())
+                                        if (item.Get_pointsChanged().Count > 0)
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            Debug.WriteLine("Test [05] Single Candidate in column...");
+                                            Debug.Write("[05]Brothers : ");
+                                            foreach (var item2 in item.Get_pointsDetected())
+                                            {
+                                                Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            }
+                                            Debug.WriteLine("");
+                                            Debug.Write("[05]Changes : ");
+                                            foreach (var item2 in item.Get_pointsChanged())
+                                            {
+                                                Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            }
+                                            Debug.WriteLine("");
                                         }
-                                        Debug.WriteLine("");
-                                        Debug.Write("[05]Changes : ");
-                                        foreach (var item2 in item.Get_pointsChanged())
-                                        {
-                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
-                                        }
-                                        Debug.WriteLine("");
                                     }
-                                }
-                                break;
-                            case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method04_SingleCandidateInSquare:
-                                {
-                                    if (item.Get_pointsChanged().Count > 0)
+                                    break;
+                                case SolutionInformation.TypeOfSolution.Method05_Twins_for_Method04_SingleCandidateInSquare:
                                     {
-                                        Debug.WriteLine("Test [05] Single candidate in square...");
-                                        Debug.Write("[05]Brothers : ");
-                                        foreach (var item2 in item.Get_pointsDetected())
+                                        if (item.Get_pointsChanged().Count > 0)
                                         {
-                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            Debug.WriteLine("Test [05] Single candidate in square...");
+                                            Debug.Write("[05]Brothers : ");
+                                            foreach (var item2 in item.Get_pointsDetected())
+                                            {
+                                                Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            }
+                                            Debug.WriteLine("");
+                                            Debug.Write("[05]Changes : ");
+                                            foreach (var item2 in item.Get_pointsChanged())
+                                            {
+                                                Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
+                                            }
+                                            Debug.WriteLine("");
                                         }
-                                        Debug.WriteLine("");
-                                        Debug.Write("[05]Changes : ");
-                                        foreach (var item2 in item.Get_pointsChanged())
-                                        {
-                                            Debug.Write("(" + item2.Y + "," + item2.X + "->" + item2.Value + ") ");
-                                        }
-                                        Debug.WriteLine("");
                                     }
-                                }
-                                break;
+                                    break;
+                            }
                         }
+                        foreach (SolutionInformation iter in listTmp)
+                        {
+                            listManualSolution.Add(iter);
+                        }
+                        lookForSolutions = true;
+                        lookForSolutionsAfterCandidatesBlocked = true;
                     }
-                    foreach (SolutionInformation iter in listTmp)
-                    {
-                        listManualSolution.Add(iter);
-                    }
-                    lookForSolutions = true;
-                    lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
-                Debug.WriteLine("Test [08] Double Forcing Chains...");
-                //test Double Forcing Chains
-                tmp = new SolutionInformation();
-                tmp = Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
-                if (tmp.Get_pointsChanged().Count > 0)
+                //only look for double forcing chains when there are no other solutions.
+                if (lookForSolutions == false)
                 {
-                    Debug.Write("[08]Start Chain pos : ");
-                    for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                    Debug.WriteLine("Test [08] Double Forcing Chains...");
+                    //test Double Forcing Chains
+                    tmp = new SolutionInformation();
+                    tmp = Sudoku_AI.ManualSolver08_DoubleForcingChains(ref board);
+                    if (tmp.Get_pointsChanged().Count > 0)
                     {
-                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                        Debug.Write("[08]Start Chain pos : ");
+                        for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                        {
+                            Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                        }
+                        Debug.WriteLine("");
+                        Debug.Write("[08]Changes : ");
+                        for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                        {
+                            Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        }
+                        Debug.WriteLine("");
+                        listManualSolution.Add(tmp);
+                        lookForSolutions = true;
+                        lookForSolutionsAfterCandidatesBlocked = true;
                     }
-                    Debug.WriteLine("");
-                    Debug.Write("[08]Changes : ");
-                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
-                    {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
-                    }
-                    Debug.WriteLine("");
-                    listManualSolution.Add(tmp);
-                    lookForSolutions = true;
-                    lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
-                Debug.WriteLine("Test [09] Triple Forcing Chains...");
-                //test Triple Forcing Chains
-                tmp = new SolutionInformation();
-                tmp = Sudoku_AI.ManualSolver09_TripleForcingChains(ref board);
-                if (tmp.Get_pointsChanged().Count > 0)
+                //only look for triple forcing chains when there are no other solutions.
+                if (lookForSolutions == false)
                 {
-                    Debug.Write("[09]Start Chain pos : ");
-                    for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                    Debug.WriteLine("Test [09] Triple Forcing Chains...");
+                    //test Triple Forcing Chains
+                    tmp = new SolutionInformation();
+                    tmp = Sudoku_AI.ManualSolver09_TripleForcingChains(ref board);
+                    if (tmp.Get_pointsChanged().Count > 0)
                     {
-                        Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                        Debug.Write("[09]Start Chain pos : ");
+                        for (int i = 0; i < tmp.Get_pointsDetected().Count; i++)
+                        {
+                            Debug.Write("(" + tmp.Get_pointsDetected()[i].Y + "," + tmp.Get_pointsDetected()[i].X + "->" + tmp.Get_pointsDetected()[i].Value + ") ");
+                        }
+                        Debug.WriteLine("");
+                        Debug.Write("[09]Changes : ");
+                        for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                        {
+                            Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        }
+                        Debug.WriteLine("");
+                        listManualSolution.Add(tmp);
+                        lookForSolutions = true;
+                        lookForSolutionsAfterCandidatesBlocked = true;
                     }
-                    Debug.WriteLine("");
-                    Debug.Write("[09]Changes : ");
-                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
-                    {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
-                    }
-                    Debug.WriteLine("");
-                    listManualSolution.Add(tmp);
-                    lookForSolutions = true;
-                    lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
                 //do lionfish only when NO solutions are found
@@ -1099,7 +1116,8 @@ namespace SudokuMaxSolver
                  listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method08_DoubleForcingChains || 
                  listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method09_TripleForcingChains
                  )
-                 ? listManualSolution[theNumberOfTheClickedItem].Get_pointsDetected():null);
+                 ? listManualSolution[theNumberOfTheClickedItem].Get_pointsDetected():null,
+                listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution());
             board.load(boardTemp);
         }
 
