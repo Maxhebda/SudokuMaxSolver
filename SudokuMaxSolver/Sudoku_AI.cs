@@ -800,6 +800,7 @@ namespace SudokuMaxSolver
             }
             return tmp;
         }
+
         public static SolutionInformation ManualSolver02_SingleCandidateInRow(ref BoardTab board, byte[] listRowToCheck = null, BoardTab imaginaryBoard = null)
         {
             if (listRowToCheck == null)
@@ -1920,5 +1921,70 @@ namespace SudokuMaxSolver
             }
             return tmp;
         }
+
+        private struct pairCandidate
+        {
+            public byte c1;
+            public byte c2;
+        }
+        public static SolutionInformation ManualSolver10_NakedPairsInRow(ref BoardTab board, byte[] listRowToCheck = null, BoardTab imaginaryBoard = null)
+        {
+            if (listRowToCheck == null)
+            {
+                listRowToCheck = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+            }
+
+            //if the imaginary board is active, we will read from the imaginaryBoard one and write it to the oryginal board
+            bool imaginaryBoardisActive;
+            if (imaginaryBoard == null)
+            {
+                imaginaryBoardisActive = false;
+            }
+            else
+            {
+                imaginaryBoardisActive = true;
+            }
+
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method10_NakedPairsInRow);
+
+            pairCandidate[] pairsCandidates = new pairCandidate[9];
+            byte row;
+            for (byte lrow = 0; lrow < listRowToCheck.Length; lrow++)
+            {
+                row = listRowToCheck[lrow];
+
+                //only search for a pair of candidates
+                for (byte x = 0; x < 9; x++)
+                {
+                    if ((imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x).Count : board.allCandidates(row, x).Count) == 2) //only pairs
+                    {
+                        Debug.WriteLine("Tutaj dwoje kandydatów:");
+                        pairsCandidates[x].c1 = imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x)[0] : board.allCandidates(row, x)[0];
+                        pairsCandidates[x].c2 = imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x)[1] : board.allCandidates(row, x)[1];
+                        Debug.WriteLine("Dodano do ewentualnej nagiej pary : y=" + row + ", x=" + x + "->" + pairsCandidates[x].c1 + " i " + pairsCandidates[x].c2);
+                    }
+                    else
+                    {
+                        pairsCandidates[x].c1 = 0;
+                        pairsCandidates[x].c2 = 0;
+                    }
+                }
+
+                //looking for the naked
+                for (var x1 = 0; x1 < 8; x1++)
+                {
+                    for (var x2 = x1 + 1; x2 < 9; x2++)
+                    {
+                        if (pairsCandidates[x1].c1 != 0 && pairsCandidates[x1].c1 == pairsCandidates[x2].c1 && pairsCandidates[x1].c2 == pairsCandidates[x2].c2)
+                        {
+                            Debug.WriteLine("Znaleziono nagą parę w rzędzie : y=" + row + ", x1=" + x1 + "->" + pairsCandidates[x1].c1 + " i " + pairsCandidates[x1].c2 + ", x2=" + x2 + "->" + pairsCandidates[x2].c1 + " i " + pairsCandidates[x2].c2);
+                        }
+                    }
+                }
+
+            }
+            return tmp;
+        }
+
     }
 }

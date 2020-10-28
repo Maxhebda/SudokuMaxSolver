@@ -515,6 +515,7 @@ namespace SudokuMaxSolver
             while (lookForSolutions)
             {
                 lookForSolutions = false;
+                /*
                 Debug.WriteLine("Test [01] The only possible...");
                 //test only posible
                 tmp = new SolutionInformation();
@@ -585,6 +586,26 @@ namespace SudokuMaxSolver
                     lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
+                */
+                Debug.WriteLine("Test [10] Naked pairs in row...");
+                //test single in square
+                tmp = new SolutionInformation();
+                tmp = Sudoku_AI.ManualSolver10_NakedPairsInRow(ref board);
+                if (tmp.Get_pointsChanged().Count > 0)
+                {
+                    Debug.Write("[04]Changes : ");
+                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                    {
+                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                    }
+                    Debug.WriteLine("");
+                    listManualSolution.Add(tmp);
+                    lookForSolutions = true;
+                    lookForSolutionsAfterCandidatesBlocked = true;
+                }
+
+                /*
+                 
                 //only look for twins when there are no other solutions.
                 if (lookForSolutions == false)
                 {
@@ -795,6 +816,7 @@ namespace SudokuMaxSolver
                         
                     }
                 }
+                */
 
             }   //--- stop while
 
