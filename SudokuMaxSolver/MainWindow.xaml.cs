@@ -284,8 +284,8 @@ namespace SudokuMaxSolver
                     {
                         if (colorCh.Y == y && colorCh.X == x)
                         {
-                            // if it is a lionfish, display for example "-3"
-                            if (typeOfSolution == SolutionInformation.TypeOfSolution.Method06_XWings || typeOfSolution == SolutionInformation.TypeOfSolution.Method07_YWings)
+                            // if it is a lionfish/naked pairs in row, display for example "-3"
+                            if (typeOfSolution == SolutionInformation.TypeOfSolution.Method06_XWings || typeOfSolution == SolutionInformation.TypeOfSolution.Method07_YWings || typeOfSolution == SolutionInformation.TypeOfSolution.Method10_NakedPairsInRow)
                             {
                                 if (board2.get(colorCh.Y, colorCh.X) == 0 && !board2.isInColumn(colorCh.Y, colorCh.X, colorCh.Value) && !board2.isInRow(colorCh.Y, colorCh.X, colorCh.Value) && !board2.isInSquare(colorCh.Y, colorCh.X, colorCh.Value))
                                 {
@@ -294,7 +294,7 @@ namespace SudokuMaxSolver
                                     buttonMain[y, x].Foreground = Brushes.Blue;
                                 }
                             }
-                                buttonMain[y, x].Background = Brushes.Red;
+                            buttonMain[y, x].Background = Brushes.Red;
                         }
                     }
 
@@ -385,10 +385,20 @@ namespace SudokuMaxSolver
             //close right stackpanel with solutions
             showRightStackPanelWithSolutions(false);
 
+            //close popup if is open
+            popupMain.IsOpen = false;
+
+            // hidden selected cell in mainboard
+            buttonMainDeSelect();
+
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
                     buttonMain[y, x].Content = "";
+                    buttonMain[y, x].FontSize = 14;
+                    buttonMain[y, x].Foreground = Brushes.Black;
+                    buttonMain[y, x].FontWeight = FontWeights.Regular;
+                    buttonMain[y, x].Background = Brushes.AliceBlue;
                 }
             board.clear();
             refreshBoard();
@@ -515,7 +525,7 @@ namespace SudokuMaxSolver
             while (lookForSolutions)
             {
                 lookForSolutions = false;
-                /*
+                
                 Debug.WriteLine("Test [01] The only possible...");
                 //test only posible
                 tmp = new SolutionInformation();
@@ -586,25 +596,28 @@ namespace SudokuMaxSolver
                     lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
-                */
-                Debug.WriteLine("Test [10] Naked pairs in row...");
-                //test single in square
-                tmp = new SolutionInformation();
-                tmp = Sudoku_AI.ManualSolver10_NakedPairsInRow(ref board);
-                if (tmp.Get_pointsChanged().Count > 0)
+                //only look for naked pairs when there are no other solutions.
+                if (lookForSolutions == false)
                 {
-                    Debug.Write("[04]Changes : ");
-                    for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                    Debug.WriteLine("Test [10] Naked pairs in row...");
+                    //test single in square
+                    tmp = new SolutionInformation();
+                    tmp = Sudoku_AI.ManualSolver10_NakedPairsInRow(ref board);
+                    if (tmp.Get_pointsChanged().Count > 0)
                     {
-                        Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        Debug.Write("[10]Changes : ");
+                        for (int i = 0; i < tmp.Get_pointsChanged().Count; i++)
+                        {
+                            Debug.Write("(" + tmp.Get_pointsChanged()[i].Y + "," + tmp.Get_pointsChanged()[i].X + "->" + tmp.Get_pointsChanged()[i].Value + ") ");
+                        }
+                        Debug.WriteLine("");
+                        listManualSolution.Add(tmp);
+                        lookForSolutions = true;
+                        lookForSolutionsAfterCandidatesBlocked = true;
                     }
-                    Debug.WriteLine("");
-                    listManualSolution.Add(tmp);
-                    lookForSolutions = true;
-                    lookForSolutionsAfterCandidatesBlocked = true;
                 }
 
-                /*
+                
                  
                 //only look for twins when there are no other solutions.
                 if (lookForSolutions == false)
@@ -816,7 +829,7 @@ namespace SudokuMaxSolver
                         
                     }
                 }
-                */
+                
 
             }   //--- stop while
 
@@ -923,6 +936,13 @@ namespace SudokuMaxSolver
                     case SolutionInformation.TypeOfSolution.Method09_TripleForcingChains:
                         {
                             descriptionTmp = "Forsowny potrójny łańcuch " + item.Get_pointsDetected()[0].Value + "," + item.Get_pointsDetected()[1].Value + "," + item.Get_pointsDetected()[2].Value + " w polu (" + item.Get_pointsDetected()[0].Y + "," + item.Get_pointsDetected()[0].X + ") pozwolił wpisać nam : ";
+                        }
+                        break;
+                    case SolutionInformation.TypeOfSolution.Method10_NakedPairsInRow:
+                        {
+                            descriptionTmp = "Goła para '" + item.Get_pointsDetected()[0].Value + ","+ item.Get_pointsDetected()[1].Value + "' w polach ";
+                            descriptionTmp += $"({item.Get_pointsDetected()[0].Y},{item.Get_pointsDetected()[0].X}),({item.Get_pointsDetected()[2].Y},{item.Get_pointsDetected()[2].X}) ";
+                            descriptionTmp += "zablokowała kandydata : ";
                         }
                         break;
                 }
@@ -1119,7 +1139,7 @@ namespace SudokuMaxSolver
             BoardTab boardTemp = new BoardTab(boardTemp_originalToRightPanel);
             for (var itemRightPanel = 0; itemRightPanel < theNumberOfTheClickedItem + 1; itemRightPanel++)
             {
-                if (listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method06_XWings && listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method07_YWings)
+                if (listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method06_XWings && listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method07_YWings && listManualSolution[itemRightPanel].Get_typeOfSolution() != SolutionInformation.TypeOfSolution.Method10_NakedPairsInRow)
                 {
                     foreach (var cellChanged in listManualSolution[itemRightPanel].Get_pointsChanged())
                     {
@@ -1143,7 +1163,8 @@ namespace SudokuMaxSolver
                  listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method05_Twins_for_Method03_SingleCandidateInColumn || 
                  listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method05_Twins_for_Method04_SingleCandidateInSquare || 
                  listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method08_DoubleForcingChains || 
-                 listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method09_TripleForcingChains
+                 listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method09_TripleForcingChains ||
+                 listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution() == SolutionInformation.TypeOfSolution.Method10_NakedPairsInRow
                  )
                  ? listManualSolution[theNumberOfTheClickedItem].Get_pointsDetected():null,
                 listManualSolution[theNumberOfTheClickedItem].Get_typeOfSolution());

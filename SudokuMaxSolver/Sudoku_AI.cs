@@ -1949,6 +1949,9 @@ namespace SudokuMaxSolver
 
             pairCandidate[] pairsCandidates = new pairCandidate[9];
             byte row;
+            List<Candidate> listPointOfDetected = new List<Candidate>();
+            List<Candidate> listPointOfBlocked = new List<Candidate>();
+
             for (byte lrow = 0; lrow < listRowToCheck.Length; lrow++)
             {
                 row = listRowToCheck[lrow];
@@ -1958,10 +1961,10 @@ namespace SudokuMaxSolver
                 {
                     if ((imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x).Count : board.allCandidates(row, x).Count) == 2) //only pairs
                     {
-                        Debug.WriteLine("Tutaj dwoje kandydatów:");
+                        //Debug.WriteLine("Tutaj dwoje kandydatów:");
                         pairsCandidates[x].c1 = imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x)[0] : board.allCandidates(row, x)[0];
                         pairsCandidates[x].c2 = imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x)[1] : board.allCandidates(row, x)[1];
-                        Debug.WriteLine("Dodano do ewentualnej nagiej pary : y=" + row + ", x=" + x + "->" + pairsCandidates[x].c1 + " i " + pairsCandidates[x].c2);
+                        //Debug.WriteLine("Dodano do ewentualnej nagiej pary : y=" + row + ", x=" + x + "->" + pairsCandidates[x].c1 + " i " + pairsCandidates[x].c2);
                     }
                     else
                     {
@@ -1971,18 +1974,58 @@ namespace SudokuMaxSolver
                 }
 
                 //looking for the naked
-                for (var x1 = 0; x1 < 8; x1++)
+                bool endOfSearch = false;
+                for (byte x1 = 0; x1 < 8; x1++)
                 {
-                    for (var x2 = x1 + 1; x2 < 9; x2++)
+                    for (byte x2 = (byte)(x1 + 1); x2 < 9; x2++)
                     {
                         if (pairsCandidates[x1].c1 != 0 && pairsCandidates[x1].c1 == pairsCandidates[x2].c1 && pairsCandidates[x1].c2 == pairsCandidates[x2].c2)
                         {
                             Debug.WriteLine("Znaleziono nagą parę w rzędzie : y=" + row + ", x1=" + x1 + "->" + pairsCandidates[x1].c1 + " i " + pairsCandidates[x1].c2 + ", x2=" + x2 + "->" + pairsCandidates[x2].c1 + " i " + pairsCandidates[x2].c2);
+
+                            //blocking candidates in the row
+                            for (byte x = 0; x < 9; x++)
+                            {
+                                if ( x != x1 && x != x2 && board.isACandidate(row, x, pairsCandidates[x1].c1))
+                                {
+                                    board.AddFakeCandidate(row, x, pairsCandidates[x1].c1);
+                                    listPointOfBlocked.Add(new Candidate(row, x, pairsCandidates[x1].c1));
+                                    Debug.WriteLine($"add fake candidate : ({row},{x})->{pairsCandidates[x1].c1}");
+
+                                    //if something has changed, we exit (break)
+                                    endOfSearch = true;
+                                }
+                                if (x != x1 && x != x2 && board.isACandidate(row, x, pairsCandidates[x1].c2))
+                                {
+                                    board.AddFakeCandidate(row, x, pairsCandidates[x1].c2);
+                                    listPointOfBlocked.Add(new Candidate(row, x, pairsCandidates[x1].c2));
+                                    Debug.WriteLine($"add fake candidate : ({row},{x})->{pairsCandidates[x1].c2}");
+
+                                    //if something has changed, we exit (break)
+                                    endOfSearch = true;
+                                }
+                            }
+                        }
+                        if (endOfSearch)
+                        {
+                            listPointOfDetected.Add(new Candidate(row, x1, pairsCandidates[x1].c1));
+                            listPointOfDetected.Add(new Candidate(row, x1, pairsCandidates[x1].c2));
+                            listPointOfDetected.Add(new Candidate(row, x2, pairsCandidates[x2].c1));
+                            listPointOfDetected.Add(new Candidate(row, x2, pairsCandidates[x2].c2));
+                            break;
                         }
                     }
+                    if (endOfSearch)
+                    {
+                        break;
+                    }
                 }
-
+                if (endOfSearch)
+                {
+                    break;
+                }
             }
+            tmp.Add(listPointOfBlocked, listPointOfDetected);
             return tmp;
         }
 

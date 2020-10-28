@@ -12,6 +12,22 @@ namespace SudokuMaxSolver
         }
         boardBody[,] board = new boardBody[9, 9];
 
+        //  square number square number based on the coordinates
+        static byte squareNumber(byte y, byte x)
+        {
+            if (y < 3 && x < 3) return 1;
+            if (y < 3 && x > 2 && x < 6) return 2;
+            if (y < 3 && x > 5) return 3;
+
+            if (y > 2 && y < 6 && x < 3) return 4;
+            if (y > 2 && y < 6 && x > 2 && x < 6) return 5;
+            if (y > 2 && y < 6 && x > 5) return 6;
+
+            if (y > 5 && x < 3) return 7;
+            if (y > 5 && x > 2 && x < 6) return 8;
+            return 9;
+        }
+
         public BoardTab()
         {
             clear();
@@ -222,17 +238,7 @@ namespace SudokuMaxSolver
 
         public List<byte> valuesInSquare(byte y, byte x)     //all values in the square 1..9
         {
-            if (y < 3 && x < 3) return valuesInSquare(1);
-            if (y < 3 && x > 2 && x < 6) return valuesInSquare(2);
-            if (y < 3 && x > 5) return valuesInSquare(3);
-
-            if (y > 2 && y < 6 && x < 3) return valuesInSquare(4);
-            if (y > 2 && y < 6 && x > 2 && x < 6) return valuesInSquare(5);
-            if (y > 2 && y < 6 && x > 5) return valuesInSquare(6);
-
-            if (y > 5 && x < 3) return valuesInSquare(7);
-            if (y > 5 && x > 2 && x < 6) return valuesInSquare(8);
-            return valuesInSquare(9);
+            return valuesInSquare(squareNumber( y , x ));
         }
 
         public List<byte> allCandidates(byte y, byte x)     //all possible candidates who can be entered in the cell
