@@ -1656,10 +1656,20 @@ namespace SudokuMaxSolver
                                     {
                                         continue;
                                     }
-                                    board.AddFakeCandidate(y3, lCanA[0].X, value);
-                                    board.AddFakeCandidate(y3, lCanA[1].X, value);
-                                    listPointOfBlocking.Add(new Candidate(y3, lCanA[0].X, value));
-                                    listPointOfBlocking.Add(new Candidate(y3, lCanA[1].X, value));
+
+                                    // only block existing candidates
+                                    if (board.isACandidate(y3, lCanA[0].X, value))
+                                    {
+                                        board.AddFakeCandidate(y3, lCanA[0].X, value);
+                                        listPointOfBlocking.Add(new Candidate(y3, lCanA[0].X, value));
+                                    }
+
+                                    // only block existing candidates
+                                    if (board.isACandidate(y3, lCanA[1].X, value))
+                                    {
+                                        board.AddFakeCandidate(y3, lCanA[1].X, value);
+                                        listPointOfBlocking.Add(new Candidate(y3, lCanA[1].X, value));
+                                    }
                                 }
                                 List<Candidate> listPointOfLionfish = new List<Candidate>();
                                 listPointOfLionfish.Add(new Candidate(lCanA[0].Y, lCanA[0].X, lCanA[0].Value));
@@ -1715,10 +1725,20 @@ namespace SudokuMaxSolver
                                     {
                                         continue;
                                     }
-                                    board.AddFakeCandidate(lCanA[0].Y, x3, value);
-                                    board.AddFakeCandidate(lCanA[1].Y, x3, value);
-                                    listPointOfBlocking.Add(new Candidate(lCanA[0].Y, x3, value));
-                                    listPointOfBlocking.Add(new Candidate(lCanA[1].Y, x3, value));
+
+                                    // only block existing candidates
+                                    if (board.isACandidate(lCanA[0].Y, x3, value))
+                                    {
+                                        board.AddFakeCandidate(lCanA[0].Y, x3, value);
+                                        listPointOfBlocking.Add(new Candidate(lCanA[0].Y, x3, value));
+                                    }
+
+                                    // only block existing candidates
+                                    if (board.isACandidate(lCanA[1].Y, x3, value))
+                                    {
+                                        board.AddFakeCandidate(lCanA[1].Y, x3, value);
+                                        listPointOfBlocking.Add(new Candidate(lCanA[1].Y, x3, value));
+                                    }
                                 }
                                 List<Candidate> listPointOfLionfish = new List<Candidate>();
                                 listPointOfLionfish.Add(new Candidate(lCanA[0].Y, lCanA[0].X, lCanA[0].Value));

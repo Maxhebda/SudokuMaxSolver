@@ -162,6 +162,8 @@ namespace SudokuMaxSolver
             //change of number on the main board
             board.set(y, x, p);
             buttonMain[y, x].Content = (p == 0) ? "" : "" + p;
+            buttonMain[y, x].FontSize = 14;
+            buttonMain[y, x].Foreground = Brushes.Black;
             //Debug.WriteLine(((Button)sender).Name);
         }
         private void bPopup_RightClick(object sender, RoutedEventArgs e)
@@ -282,10 +284,15 @@ namespace SudokuMaxSolver
                     {
                         if (colorCh.Y == y && colorCh.X == x)
                         {
+                            // if it is a lionfish, display for example "-3"
                             if (typeOfSolution == SolutionInformation.TypeOfSolution.Method06_XWings || typeOfSolution == SolutionInformation.TypeOfSolution.Method07_YWings)
                             {
-                                buttonMain[y, x].Content = "-" + colorCh.Value.ToString();
-                                buttonMain[y, x].FontSize = 10;
+                                if (board2.get(colorCh.Y, colorCh.X) == 0 && !board2.isInColumn(colorCh.Y, colorCh.X, colorCh.Value) && !board2.isInRow(colorCh.Y, colorCh.X, colorCh.Value) && !board2.isInSquare(colorCh.Y, colorCh.X, colorCh.Value))
+                                {
+                                    buttonMain[y, x].Content = "-" + colorCh.Value.ToString();
+                                    buttonMain[y, x].FontSize = 10;
+                                    buttonMain[y, x].Foreground = Brushes.Blue;
+                                }
                             }
                                 buttonMain[y, x].Background = Brushes.Red;
                         }
@@ -766,7 +773,7 @@ namespace SudokuMaxSolver
                     Debug.WriteLine("Test [07] Y Wings...");
                     //test Y Wings
                     tmp = new SolutionInformation();
-                    tmp = Sudoku_AI.ManualSolver06_XWings(ref board);
+                    tmp = Sudoku_AI.ManualSolver07_YWings(ref board);
                     if (tmp.Get_pointsChanged().Count > 0)
                     {
                         Debug.Write("[07]YWings pos : ");
@@ -873,7 +880,7 @@ namespace SudokuMaxSolver
                             {
                                 descriptionTmp += $"({itemDetected.Y},{itemDetected.X}) ";
                             }
-                            descriptionTmp += "zablokowała '"+ item.Get_pointsDetected()[0].Value + "' w kolumnach : ";
+                            descriptionTmp += "zablokowała kandydata '"+ item.Get_pointsDetected()[0].Value + "' w kolumnach : ";
                         }
                         break;
                     case SolutionInformation.TypeOfSolution.Method07_YWings:
@@ -883,7 +890,7 @@ namespace SudokuMaxSolver
                             {
                                 descriptionTmp += $"({itemDetected.Y},{itemDetected.X}) ";
                             }
-                            descriptionTmp += "zablokowała '" + item.Get_pointsDetected()[0].Value + "' w rzędach : ";
+                            descriptionTmp += "zablokowała kandydata '" + item.Get_pointsDetected()[0].Value + "' w rzędach : ";
                         }
                         break;
                     case SolutionInformation.TypeOfSolution.Method08_DoubleForcingChains:

@@ -16,6 +16,7 @@ namespace SudokuMaxSolver
         {
             clear();
         }
+
         public BoardTab(BoardTab boardOld)  //create copy
         {
             for (byte y = 0; y < 9; y++)
@@ -28,6 +29,7 @@ namespace SudokuMaxSolver
                     fakeCandidateBoard[y, x] = boardOld.fakeCandidateBoard[y, x];
                 }
         }
+
         public BoardTab(byte[,] boardAI)  //create copy at BoardAI 
         {
             for (byte y = 0; y < 9; y++)
@@ -37,6 +39,7 @@ namespace SudokuMaxSolver
                     board[y, x].readOnly = false;
                 }
         }
+
         public void clear()
         {
             for (byte y = 0; y < 9; y++)
@@ -47,23 +50,28 @@ namespace SudokuMaxSolver
                 }
             ClearFakeCandidateBoard();
         }
+
         public void set(byte y, byte x, byte value)
         {
             if (x > 9 || y > 9) return;
             board[y, x].value = value;
         }
+
         public byte get(byte y, byte x)
         {
             return board[y, x].value;
         }
+
         public bool getReadOnly(byte y, byte x)
         {
             return board[y, x].readOnly;
         }
+
         public void setReadOnly(byte y, byte x, bool value)
         {
             board[y, x].readOnly = value;
         }
+
         public List<byte> valuesInRow(byte row)     //all values in the row (+1 overload)
         {
             List<byte> list = new List<byte>();
@@ -78,10 +86,12 @@ namespace SudokuMaxSolver
             }
             return list;
         }
+
         public List<byte> valuesInRow(byte y, byte x)     //all values in the row
         {
             return valuesInRow(y);
         }
+
         public List<byte> valuesInColumn(byte column)     //all values in the column (+1 overload)
         {
             List<byte> list = new List<byte>();
@@ -96,6 +106,7 @@ namespace SudokuMaxSolver
             }
             return list;
         }
+
         public List<byte> valuesInColumn(byte y, byte x)  //all values in the column
         {
             return valuesInColumn(x);
@@ -208,6 +219,7 @@ namespace SudokuMaxSolver
             }
             return list;
         }
+
         public List<byte> valuesInSquare(byte y, byte x)     //all values in the square 1..9
         {
             if (y < 3 && x < 3) return valuesInSquare(1);
@@ -222,6 +234,7 @@ namespace SudokuMaxSolver
             if (y > 5 && x > 2 && x < 6) return valuesInSquare(8);
             return valuesInSquare(9);
         }
+
         public List<byte> allCandidates(byte y, byte x)     //all possible candidates who can be entered in the cell
         {
             List<byte> tmp = new List<byte>();
@@ -243,6 +256,18 @@ namespace SudokuMaxSolver
             return tmp;
         }
 
+        public bool isACandidate(byte y, byte x, byte candidateChecked)   //is In The Set Of Candidates
+        {
+            foreach (var candidate in allCandidates(y,x))
+            {
+                if (candidate == candidateChecked)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public bool isInColumn(byte column, byte nr)        //check if the number is in the column (+1 overload)
         {
             for (byte y = 0; y < 9; y++)
@@ -252,10 +277,12 @@ namespace SudokuMaxSolver
             }
             return false;
         }
+
         public bool isInColumn(byte y, byte x, byte nr)     //check if the number is in the column
         {
             return isInColumn(x, nr);
         }
+
         public bool isInRow(byte row, byte nr)              //check if the number is in the row (+1 overload)
         {
             for (byte x = 0; x < 9; x++)
@@ -265,10 +292,12 @@ namespace SudokuMaxSolver
             }
             return false;
         }
+
         public bool isInRow(byte y, byte x, byte nr)        //check if the number is in the row
         {
             return isInRow(y, nr);
         }
+
         public bool isInSquare(byte square, byte nr)        //check if the number is in the square (+1 overload)
         {
             List<byte> l = valuesInSquare(square);
@@ -281,6 +310,7 @@ namespace SudokuMaxSolver
             }
             return false;
         }
+
         public bool isInSquare(byte y, byte x, byte nr)     //check if the number is in the square
         {
             List<byte> l = valuesInSquare(y, x);
@@ -293,6 +323,7 @@ namespace SudokuMaxSolver
             }
             return false;
         }
+
         public void load(Sudoku_AI sudoku)
         {
             clear();
