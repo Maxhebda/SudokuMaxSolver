@@ -13,7 +13,7 @@ namespace SudokuMaxSolver
         boardBody[,] board = new boardBody[9, 9];
 
         //  square number square number based on the coordinates
-        static byte squareNumber(byte y, byte x)
+        public static byte squareNumber(byte y, byte x)
         {
             if (y < 3 && x < 3) return 1;
             if (y < 3 && x > 2 && x < 6) return 2;
@@ -26,6 +26,84 @@ namespace SudokuMaxSolver
             if (y > 5 && x < 3) return 7;
             if (y > 5 && x > 2 && x < 6) return 8;
             return 9;
+        }
+
+        //  list of nine cells in a square (only coordinates)
+        public static List<Candidate> cellsInASquare(byte squareNumber)
+        {
+            List<Candidate> tmp = new List<Candidate>();
+            if (squareNumber < 1 && squareNumber > 9)
+            {
+                return tmp; //return empty list;
+            }
+
+            byte y1Square = 0;
+            byte y2Square = 0;
+            byte x1Square = 0;
+            byte x2Square = 0;
+            switch (squareNumber)
+            {
+                case 1:
+                    y1Square = 0;
+                    y2Square = 3;
+                    x1Square = 0;
+                    x2Square = 3;
+                    break;
+                case 2:
+                    y1Square = 0;
+                    y2Square = 3;
+                    x1Square = 3;
+                    x2Square = 6;
+                    break;
+                case 3:
+                    y1Square = 0;
+                    y2Square = 3;
+                    x1Square = 6;
+                    x2Square = 9;
+                    break;
+                case 4:
+                    y1Square = 3;
+                    y2Square = 6;
+                    x1Square = 0;
+                    x2Square = 3;
+                    break;
+                case 5:
+                    y1Square = 3;
+                    y2Square = 6;
+                    x1Square = 3;
+                    x2Square = 6;
+                    break;
+                case 6:
+                    y1Square = 3;
+                    y2Square = 6;
+                    x1Square = 6;
+                    x2Square = 9;
+                    break;
+                case 7:
+                    y1Square = 6;
+                    y2Square = 9;
+                    x1Square = 0;
+                    x2Square = 3;
+                    break;
+                case 8:
+                    y1Square = 6;
+                    y2Square = 9;
+                    x1Square = 3;
+                    x2Square = 6;
+                    break;
+                case 9:
+                    y1Square = 6;
+                    y2Square = 9;
+                    x1Square = 6;
+                    x2Square = 9;
+                    break;
+            }
+            for (byte y = y1Square; y < y2Square; y++)
+                for (byte x = x1Square; x < x2Square; x++)
+                {
+                    tmp.Add(new Candidate(y, x, 0));
+                }
+            return tmp;
         }
 
         public BoardTab()

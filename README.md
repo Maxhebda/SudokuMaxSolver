@@ -1,7 +1,7 @@
 # SudokuMaxSolver
 Project written in c# Visual Studio / WPF
 
-<img src="./projectScreenImage/SudokuMaxSolver4.png" width=600/>
+<img src="./projectScreenImage/SudokuMaxSolver6.png" width=600/>
 
 Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/SudokuMaxSolver.exe)
 
@@ -11,7 +11,7 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 * I am looking for solutions and creating my own algorithms for manual Sudoku solving.
 * Completed algorithm using the "twins" method [link1](https://www.sudokudragon.com/guidehiddentwins.htm) [link2](http://dwojcik.ugu.pl/sudoku/basic/ns.php)
 * Completed algorithm using the "XY-Wings" methods [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
-* I am currently working on creating an algorithm using the "Double Forcing Chains" methods [link](http://hodoku.sourceforge.net/en/tech_chains.php) (algorithm complete)
+* I am currently working on creating an algorithm using the "Naked pairs" methods [link](https://www.learn-sudoku.com/naked-pairs.html)
 * In the future, I plan to rewrite the program for android.
 
 <img src="./projectScreenImage/SudokuMaxSolver2.png" width=300/>
@@ -34,7 +34,7 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 - [x] method 07 - Y-Wings (blocking candidates) [link](http://dwojcik.ugu.pl/sudoku/tough/xywing.php)
 - [x] method 08 - Double Forcing Chains [link](http://dwojcik.ugu.pl/sudoku/extreme/fchain.php)
 - [x] method 09 - Triple Forcing Chains [link](http://hodoku.sourceforge.net/en/tech_chains.php)
-- [ ] method 10 - Naked pairs in row (blocking candidates)
+- [ ] method 10 - Naked pairs in row (blocking candidates) (60% algorithm complete) [link](https://www.learn-sudoku.com/naked-pairs.html)
 - [ ] method 11 - Naked pairs in column (blocking candidates)
 - [ ] method 12 - Naked pairs in square (blocking candidates)
 
@@ -47,4 +47,4 @@ Forcing chanin method example :
 * I have to come up with new methods for solving difficult SUDOKU and then develop algorithms
 
 ## Screen from 23.10.2020 :
-<img src="./projectScreenImage/SudokuMaxSolver1.png" width=250/> | <img src="./projectScreenImage/SudokuMaxSolver3.png" width=250/> | <img src="./projectScreenImage/SudokuMaxSolver5.png" width=500/>
+<img src="./projectScreenImage/SudokuMaxSolver1.png" width=250/>  <img src="./projectScreenImage/SudokuMaxSolver3.png" width=250/>  <img src="./projectScreenImage/SudokuMaxSolver5.png" width=500/>  <img src="./projectScreenImage/SudokuMaxSolver4.png" width=500/>

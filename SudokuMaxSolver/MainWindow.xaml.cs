@@ -234,6 +234,8 @@ namespace SudokuMaxSolver
                 for (byte x = 0; x < 9; x++)
                 {
                     buttonMain[y, x].Content = (board.get(y, x) == 0) ? "" : "" + board.get(y, x);
+                    buttonMain[y, x].FontSize = 14;
+                    buttonMain[y, x].Foreground = Brushes.Black;
                     if (board.getReadOnly(y, x))
                     {
                         buttonMain[y, x].FontWeight = FontWeights.Bold;
@@ -256,8 +258,8 @@ namespace SudokuMaxSolver
             for (byte y = 0; y < 9; y++)
                 for (byte x = 0; x < 9; x++)
                 {
-                    buttonMain[y, x].FontSize = 14;
                     buttonMain[y, x].Content = (board2.get(y, x) == 0) ? "" : "" + board2.get(y, x);
+                    buttonMain[y, x].FontSize = 14;
                     buttonMain[y, x].Foreground = Brushes.Black;
                     if (board2.getReadOnly(y, x))
                     {
@@ -940,7 +942,7 @@ namespace SudokuMaxSolver
                         break;
                     case SolutionInformation.TypeOfSolution.Method10_NakedPairsInRow:
                         {
-                            descriptionTmp = "Goła para '" + item.Get_pointsDetected()[0].Value + ","+ item.Get_pointsDetected()[1].Value + "' w polach ";
+                            descriptionTmp = "Pozioma goła para '" + item.Get_pointsDetected()[0].Value + ","+ item.Get_pointsDetected()[1].Value + "' w polach ";
                             descriptionTmp += $"({item.Get_pointsDetected()[0].Y},{item.Get_pointsDetected()[0].X}),({item.Get_pointsDetected()[2].Y},{item.Get_pointsDetected()[2].X}) ";
                             descriptionTmp += "zablokowała kandydata : ";
                         }

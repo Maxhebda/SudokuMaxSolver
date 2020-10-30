@@ -1961,10 +1961,8 @@ namespace SudokuMaxSolver
                 {
                     if ((imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x).Count : board.allCandidates(row, x).Count) == 2) //only pairs
                     {
-                        //Debug.WriteLine("Tutaj dwoje kandydatów:");
                         pairsCandidates[x].c1 = imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x)[0] : board.allCandidates(row, x)[0];
                         pairsCandidates[x].c2 = imaginaryBoardisActive ? imaginaryBoard.allCandidates(row, x)[1] : board.allCandidates(row, x)[1];
-                        //Debug.WriteLine("Dodano do ewentualnej nagiej pary : y=" + row + ", x=" + x + "->" + pairsCandidates[x].c1 + " i " + pairsCandidates[x].c2);
                     }
                     else
                     {
@@ -1986,7 +1984,7 @@ namespace SudokuMaxSolver
                             //blocking candidates in the row
                             for (byte x = 0; x < 9; x++)
                             {
-                                if ( x != x1 && x != x2 && board.isACandidate(row, x, pairsCandidates[x1].c1))
+                                if ( x != x1 && x != x2 && board.isACandidate(row, x, pairsCandidates[x1].c1) && !board.ExistsFakeCandidate(row, x, pairsCandidates[x1].c1))
                                 {
                                     board.AddFakeCandidate(row, x, pairsCandidates[x1].c1);
                                     listPointOfBlocked.Add(new Candidate(row, x, pairsCandidates[x1].c1));
@@ -1995,7 +1993,7 @@ namespace SudokuMaxSolver
                                     //if something has changed, we exit (break)
                                     endOfSearch = true;
                                 }
-                                if (x != x1 && x != x2 && board.isACandidate(row, x, pairsCandidates[x1].c2))
+                                if (x != x1 && x != x2 && board.isACandidate(row, x, pairsCandidates[x1].c2) && !board.ExistsFakeCandidate(row, x, pairsCandidates[x1].c2))
                                 {
                                     board.AddFakeCandidate(row, x, pairsCandidates[x1].c2);
                                     listPointOfBlocked.Add(new Candidate(row, x, pairsCandidates[x1].c2));
@@ -2005,6 +2003,40 @@ namespace SudokuMaxSolver
                                     endOfSearch = true;
                                 }
                             }
+
+                            //blocking candidates in the square
+                            if (BoardTab.squareNumber(row, x1) == BoardTab.squareNumber(row, x2))   //if they are in one square
+                            {
+                                foreach(var cellCoordinate in BoardTab.cellsInASquare(BoardTab.squareNumber(row, x1)))
+                                {
+                                    if (cellCoordinate.Y == row && ( cellCoordinate.X == x1 || cellCoordinate.X == x2 ))
+                                    {
+                                        //  if the coordinates are equal to the pairs found - do nothing
+                                    }
+                                    else
+                                    {
+                                        if (board.isACandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[x1].c1) && !board.ExistsFakeCandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[x1].c1))
+                                        {
+                                            board.AddFakeCandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[x1].c1);
+                                            listPointOfBlocked.Add(new Candidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[x1].c1));
+                                            Debug.WriteLine($"add fake candidate (square): ({cellCoordinate.Y},{cellCoordinate.X})->{pairsCandidates[x1].c1}");
+
+                                            //if something has changed, we exit (break)
+                                            endOfSearch = true;
+                                        }
+                                        if (board.isACandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[x1].c2) && !board.ExistsFakeCandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[x1].c2))
+                                        {
+                                            board.AddFakeCandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[x1].c2);
+                                            listPointOfBlocked.Add(new Candidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[x1].c2));
+                                            Debug.WriteLine($"add fake candidate (square): ({cellCoordinate.Y},{cellCoordinate.X})->{pairsCandidates[x1].c2}");
+
+                                            //if something has changed, we exit (break)
+                                            endOfSearch = true;
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                         if (endOfSearch)
                         {
