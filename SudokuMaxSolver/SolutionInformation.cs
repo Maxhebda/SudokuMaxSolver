@@ -24,7 +24,8 @@ namespace SudokuMaxSolver
             Method08_DoubleForcingChains,
             Method09_TripleForcingChains,
             Method10_NakedPairsInRow,
-            Method11_NakedPairsInColumn
+            Method11_NakedPairsInColumn,
+            Method12_NakedPairsInSquare
         }
         string destription;
         List<Candidate> pointsDetected;
