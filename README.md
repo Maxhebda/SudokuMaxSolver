@@ -35,8 +35,8 @@ Download applications here -> [SudokuMaxSolver.exe](./SudokuMaxSolver/bin/Debug/
 - [x] method 08 - Double Forcing Chains [link](http://dwojcik.ugu.pl/sudoku/extreme/fchain.php)
 - [x] method 09 - Triple Forcing Chains [link](http://hodoku.sourceforge.net/en/tech_chains.php)
 - [x] method 10 - Naked pairs in row (blocking candidates) [link](https://www.learn-sudoku.com/naked-pairs.html)
-- [ ] method 11 - Naked pairs in column (blocking candidates) (80% algorithm complete)
-- [ ] method 12 - Naked pairs in square (blocking candidates)
+- [x] method 11 - Naked pairs in column (blocking candidates)
+- [x] method 12 - Naked pairs in square (blocking candidates)
 
 Forcing chanin method example :
 <img src="./projectScreenImage/forcingChainExample.png" width=200/>
