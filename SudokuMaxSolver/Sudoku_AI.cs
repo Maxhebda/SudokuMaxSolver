@@ -1927,6 +1927,7 @@ namespace SudokuMaxSolver
             public byte c1;
             public byte c2;
         }
+
         public static SolutionInformation ManualSolver10_NakedPairsInRow(ref BoardTab board, byte[] listRowToCheck = null, BoardTab imaginaryBoard = null)
         {
             if (listRowToCheck == null)
@@ -2044,6 +2045,140 @@ namespace SudokuMaxSolver
                             listPointOfDetected.Add(new Candidate(row, x1, pairsCandidates[x1].c2));
                             listPointOfDetected.Add(new Candidate(row, x2, pairsCandidates[x2].c1));
                             listPointOfDetected.Add(new Candidate(row, x2, pairsCandidates[x2].c2));
+                            break;
+                        }
+                    }
+                    if (endOfSearch)
+                    {
+                        break;
+                    }
+                }
+                if (endOfSearch)
+                {
+                    break;
+                }
+            }
+            tmp.Add(listPointOfBlocked, listPointOfDetected);
+            return tmp;
+        }
+
+        public static SolutionInformation ManualSolver11_NakedPairsInColumn(ref BoardTab board, byte[] listColumnToCheck = null, BoardTab imaginaryBoard = null)
+        {
+            if (listColumnToCheck == null)
+            {
+                listColumnToCheck = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+            }
+
+            //if the imaginary board is active, we will read from the imaginaryBoard one and write it to the oryginal board
+            bool imaginaryBoardisActive;
+            if (imaginaryBoard == null)
+            {
+                imaginaryBoardisActive = false;
+            }
+            else
+            {
+                imaginaryBoardisActive = true;
+            }
+
+            SolutionInformation tmp = new SolutionInformation(SolutionInformation.TypeOfSolution.Method11_NakedPairsInColumn);
+
+            pairCandidate[] pairsCandidates = new pairCandidate[9];
+            byte column;
+            List<Candidate> listPointOfDetected = new List<Candidate>();
+            List<Candidate> listPointOfBlocked = new List<Candidate>();
+
+            for (byte lcolumn = 0; lcolumn < listColumnToCheck.Length; lcolumn++)
+            {
+                column = listColumnToCheck[lcolumn];
+
+                //only search for a pair of candidates
+                for (byte y = 0; y < 9; y++)
+                {
+                    if ((imaginaryBoardisActive ? imaginaryBoard.allCandidates(y, column).Count : board.allCandidates(y, column).Count) == 2) //only pairs
+                    {
+                        pairsCandidates[y].c1 = imaginaryBoardisActive ? imaginaryBoard.allCandidates(y, column)[0] : board.allCandidates(y, column)[0];
+                        pairsCandidates[y].c2 = imaginaryBoardisActive ? imaginaryBoard.allCandidates(y, column)[1] : board.allCandidates(y, column)[1];
+                    }
+                    else
+                    {
+                        pairsCandidates[y].c1 = 0;
+                        pairsCandidates[y].c2 = 0;
+                    }
+                }
+
+                //looking for the naked
+                bool endOfSearch = false;
+                for (byte y1 = 0; y1 < 8; y1++)
+                {
+                    for (byte y2 = (byte)(y1 + 1); y2 < 9; y2++)
+                    {
+                        if (pairsCandidates[y1].c1 != 0 && pairsCandidates[y1].c1 == pairsCandidates[y2].c1 && pairsCandidates[y1].c2 == pairsCandidates[y2].c2)
+                        {
+                            Debug.WriteLine("Znaleziono nagą parę w kolumnie : y1=" + y1 + ", x=" + column + "->" + pairsCandidates[y1].c1 + " i " + pairsCandidates[y1].c2 + ", y2=" + y2 + "->" + pairsCandidates[y2].c1 + " i " + pairsCandidates[y2].c2);
+
+                            //blocking candidates in the column
+                            for (byte y = 0; y < 9; y++)
+                            {
+                                if (y != y1 && y != y2 && board.isACandidate(y, column, pairsCandidates[y1].c1) && !board.ExistsFakeCandidate(y, column, pairsCandidates[y1].c1))
+                                {
+                                    board.AddFakeCandidate(y, column, pairsCandidates[y1].c1);
+                                    listPointOfBlocked.Add(new Candidate(y, column, pairsCandidates[y1].c1));
+                                    Debug.WriteLine($"add fake candidate : ({y},{column})->{pairsCandidates[y1].c1}");
+
+                                    //if something has changed, we exit (break)
+                                    endOfSearch = true;
+                                }
+                                if (y != y1 && y != y2 && board.isACandidate(y, column, pairsCandidates[y1].c2) && !board.ExistsFakeCandidate(y, column, pairsCandidates[y1].c2))
+                                {
+                                    board.AddFakeCandidate(y, column, pairsCandidates[y1].c2);
+                                    listPointOfBlocked.Add(new Candidate(y, column, pairsCandidates[y1].c2));
+                                    Debug.WriteLine($"add fake candidate : ({y},{column})->{pairsCandidates[y1].c2}");
+
+                                    //if something has changed, we exit (break)
+                                    endOfSearch = true;
+                                }
+                            }
+
+                            //blocking candidates in the square
+                            if (BoardTab.squareNumber(y1, column) == BoardTab.squareNumber(y2, column))   //if they are in one square
+                            {
+                                foreach (var cellCoordinate in BoardTab.cellsInASquare(BoardTab.squareNumber(y1, column)))
+                                {
+                                    if (cellCoordinate.X == column && (cellCoordinate.Y == y1 || cellCoordinate.Y == y2))
+                                    {
+                                        //  if the coordinates are equal to the pairs found - do nothing
+                                    }
+                                    else
+                                    {
+                                        if (board.isACandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[y1].c1) && !board.ExistsFakeCandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[y1].c1))
+                                        {
+                                            board.AddFakeCandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[y1].c1);
+                                            listPointOfBlocked.Add(new Candidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[y1].c1));
+                                            Debug.WriteLine($"add fake candidate (square): ({cellCoordinate.Y},{cellCoordinate.X})->{pairsCandidates[y1].c1}");
+
+                                            //if something has changed, we exit (break)
+                                            endOfSearch = true;
+                                        }
+                                        if (board.isACandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[y1].c2) && !board.ExistsFakeCandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[y1].c2))
+                                        {
+                                            board.AddFakeCandidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[y1].c2);
+                                            listPointOfBlocked.Add(new Candidate(cellCoordinate.Y, cellCoordinate.X, pairsCandidates[y1].c2));
+                                            Debug.WriteLine($"add fake candidate (square): ({cellCoordinate.Y},{cellCoordinate.X})->{pairsCandidates[y1].c2}");
+
+                                            //if something has changed, we exit (break)
+                                            endOfSearch = true;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        if (endOfSearch)
+                        {
+                            listPointOfDetected.Add(new Candidate(y1, column, pairsCandidates[y1].c1));
+                            listPointOfDetected.Add(new Candidate(y1, column, pairsCandidates[y1].c2));
+                            listPointOfDetected.Add(new Candidate(y2, column, pairsCandidates[y2].c1));
+                            listPointOfDetected.Add(new Candidate(y2, column, pairsCandidates[y2].c2));
                             break;
                         }
                     }

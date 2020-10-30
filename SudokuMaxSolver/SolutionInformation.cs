@@ -23,7 +23,8 @@ namespace SudokuMaxSolver
             Method07_YWings,
             Method08_DoubleForcingChains,
             Method09_TripleForcingChains,
-            Method10_NakedPairsInRow
+            Method10_NakedPairsInRow,
+            Method11_NakedPairsInColumn
         }
         string destription;
         List<Candidate> pointsDetected;
