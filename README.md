@@ -46,5 +46,5 @@ Forcing chanin method example :
 * sudoku solution with steps and description
 * I have to come up with new methods for solving difficult SUDOKU and then develop algorithms
 
-## Screen from 23.10.2020 :
+## Screen from 23.10.2020r :
 <img src="./projectScreenImage/SudokuMaxSolver1.png" width=250/>  <img src="./projectScreenImage/SudokuMaxSolver3.png" width=250/>  <img src="./projectScreenImage/SudokuMaxSolver5.png" width=500/>  <img src="./projectScreenImage/SudokuMaxSolver4.png" width=500/>
